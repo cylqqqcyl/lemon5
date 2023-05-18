@@ -1,0 +1,4 @@
+**/__pycache__
+.idea/
+*.pth
+**/monotonic_align/
