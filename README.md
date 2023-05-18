@@ -1,15 +1,15 @@
 # Lemon4 多媒体工具箱
 
-1. TextToSpeech
+1. Text-to-Speech
 <img src=imgs/text2speech.png>
 
-2. VoiceConversion
+2. Voice Conversion
 <img src=imgs/voiceConversion.png>
 
-3. AudioDenoise
+3. Speech Enhancement
 <img src=imgs/Denoising.png>
 
-4. ImageRefinement
+4. Image Super Resolution
 <img src=imgs/ImageRefinement.png>
 
 
@@ -46,8 +46,6 @@
    ```
 
 5. python _tts.py to test if VITS works
-
-
 
 <!-- 生成一个强调 -->
 **注意：** 本项目使用pyside2-uic.exe编译.ui文件
