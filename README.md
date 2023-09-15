@@ -1,4 +1,16 @@
-# Lemon4 多媒体工具箱
+# Lemon5 多媒体WEB应用
+
+<img src=imgs/login.gif>
+
+本项目现为Web应用，前端使用react，后端使用Python Flask 框架。 
+
+前端debug 模式启动方法：
+
+```bash
+cd app/frontend
+npm install
+npm run dev
+```
 
 1. Text-to-Speech
 <img src=imgs/text2speech.png>
@@ -8,9 +20,6 @@
 
 3. Speech Enhancement
 <img src=imgs/Denoising.png>
-
-4. Image Super Resolution
-<img src=imgs/ImageRefinement.png>
 
 
 
