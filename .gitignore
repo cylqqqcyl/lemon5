@@ -2,6 +2,12 @@
 # Created by https://www.gitignore.io/api/linux,python,windows,pycharm+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=linux,python,windows,pycharm+all,visualstudiocode
 
+### Backend ###
+# japanese
+*.pth
+
+
+
 ### React ###
 # dependencies
 /node_modules
@@ -94,7 +100,7 @@ cmake-build-*/
 # IntelliJ
 out/
 
-# mpeltonen/sbt-idea plugin
+# mpeltofnen/sbt-idea plugin
 .idea_modules/
 
 # JIRA plugin
