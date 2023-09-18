@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
 import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { alpha } from '@mui/system';  // Import alpha for gradient
 import { Logo } from 'src/components/logo';
 import SoundWaveBox from 'src/sections/login/soundwave-background';
 // TODO: Change subtitle text
 
 export const Layout = (props) => {
   const { children } = props;
+  const theme = useTheme();
 
   return (
     <Box
@@ -35,9 +38,11 @@ export const Layout = (props) => {
             sx={{
               left: 0,
               p: 3,
-              position: 'fixed',
+              position: 'static',
               top: 0,
-              width: '100%'
+              width: '100%',
+              display: 'flex',  // Added flex display
+              alignItems: 'center'  // Center items vertically
             }}
           >
             <Box
@@ -45,12 +50,24 @@ export const Layout = (props) => {
               href="/"
               sx={{
                 display: 'inline-flex',
-                height: 60,
+                height: 40,
                 width: 60
               }}
             >
               <Logo />
             </Box>
+            <Typography
+              variant="h6"
+              sx={{
+                marginLeft: 0,  // Add some left margin
+                background: `linear-gradient(to right, 
+                  ${alpha(theme.palette.primary.main, 1)}, ${alpha(theme.palette.primary.lightest, 1)})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              lemon5
+            </Typography>
           </Box>
           {children}
         </Grid>

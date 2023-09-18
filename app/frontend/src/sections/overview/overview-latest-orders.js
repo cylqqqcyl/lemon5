@@ -16,7 +16,7 @@ import {
   TableRow
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
-import { SeverityPill } from 'src/components/severity-pill';
+import { SeverityPill } from 'src/components/word-pill';
 
 const statusMap = {
   pending: 'warning',

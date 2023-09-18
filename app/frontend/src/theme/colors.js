@@ -13,7 +13,7 @@ const withAlphas = (color) => {
 
 export const neutral = {
   50: '#F3F9E3',
-  100: '#F3F4F6',
+  100: '#F1F8DD',
   200: '#E5E7EB',
   300: '#D2D6DB',
   400: '#9DA4AE',
@@ -39,7 +39,7 @@ export const success = withAlphas({
   main: '#6AB547',
   dark: '#569339',
   darkest: '#3C6728',
-  contrastText: '#242124'
+  contrastText: '#F3F9E3'
 });
 
 export const info = withAlphas({
@@ -48,7 +48,7 @@ export const info = withAlphas({
   main: '#6B4423',
   dark: '#3E2714',
   darkest: '#0F0A05',
-  contrastText: '#F3F913'
+  contrastText: '#F3F9E3'
 });
 
 export const warning = withAlphas({

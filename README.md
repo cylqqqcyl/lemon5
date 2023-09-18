@@ -13,7 +13,7 @@ npm run dev
 ```
 
 1. Text-to-Speech
-<img src=imgs/text2speech.png>
+<img src=imgs/text2speech-demo.gif>
 
 2. Voice Conversion
 <img src=imgs/voiceConversion.png>
