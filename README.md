@@ -52,6 +52,7 @@ npm run dev
    sounddevice
    PySide2
    PyQT5
+   natsume>=1.0.0
    ```
 
 5. python _tts.py to test if VITS works
