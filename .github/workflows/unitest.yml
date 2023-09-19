@@ -10,19 +10,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app/frontend
     strategy:
       matrix:
         node-version: [10.x, 15.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Change working directory
-        working-directory: ./app/frontend
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: ./app/frontend/package-lock.json
       - name: Build frontend
         run: |
           npm ci
