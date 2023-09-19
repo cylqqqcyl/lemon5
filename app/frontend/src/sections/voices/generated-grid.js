@@ -9,6 +9,7 @@ export const GeneratedGrid = ({ generatedCards }) => {
       <Stack spacing={2}>
       {generatedCards.map((card) => (
           <GeneratedCard 
+            key={card.id}
             voice={card.voice}
             text={card.text} 
             // ... other props

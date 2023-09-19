@@ -13,7 +13,7 @@ const TinyText = styled(Typography)({
     letterSpacing: 0.2,
   });
 
-export const GeneratedCard = ({ voice, text }) => {
+export const GeneratedCard = ({ id, voice, text }) => {
   const [isPlaying, setIsPlaying] = useState(false);  // State to manage play/pause
   const duration = 200; // seconds
   const [position, setPosition] = useState(32); // seconds
@@ -67,7 +67,9 @@ export const GeneratedCard = ({ voice, text }) => {
   }, [isPlaying, duration]);  
 
   return (
-    <Card sx={{ p: 1, 
+    <Card 
+    key={id}
+    sx={{ p: 1, 
       display: 'flex', 
       justifyContent: 'space-between',
       alignItems: 'center', 
