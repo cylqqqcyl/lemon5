@@ -21,6 +21,7 @@ jobs:
       - name: change directory
         run: cd app/frontend
       - name: run (debug)
+        working-directory: ./app/frontend
         run: npm run dev
 
 
