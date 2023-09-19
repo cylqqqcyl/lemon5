@@ -14,18 +14,17 @@ jobs:
       matrix:
         node-version: [10.x, 15.x]
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Change working directory
+        working-directory: ./app/frontend
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-        run: npm: npm ci
-      - name: run (debug)
-      - run: npm run build --if-present
-      - run: npm test
-      
-
-
-
-
+      - name: Build frontend
+        run: |
+          npm ci
+          npm run build --if-present
+          npm test
