@@ -17,6 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Change working directory
+        run: ls -l
         working-directory: ./app/frontend
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
