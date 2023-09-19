@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 
 // Connect to the socket.io server
-const socket = io('http://localhost:8080');
+// const socket = io('http://localhost:8080');
 
 const Page = () => {
 

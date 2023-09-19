@@ -1,3 +1,4 @@
+import React from 'react';
 import { AuthGuard } from 'src/guards/auth-guard';
 
 export const withAuthGuard = (Component) => (props) => (

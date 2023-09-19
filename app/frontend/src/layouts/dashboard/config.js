@@ -1,3 +1,4 @@
+import React from 'react';
 import { SvgIcon } from '@mui/material';
 import TextBubbleIcon from '@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon';
 import ConverseIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
