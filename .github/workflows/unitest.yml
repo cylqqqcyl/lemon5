@@ -20,7 +20,9 @@ jobs:
         run: npm install
       - name: run (debug)
         working-directory: ./app/frontend
-        run: npm run dev
+        run: |
+          chmod -R a+x node_modules
+          npm run dev
 
 
 
