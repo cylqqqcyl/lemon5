@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
-import UserIcon from '@heroicons/react/24/solid/UserIcon';
+import UserIcon from '@mui/icons-material/Person';
 import {
   Avatar,
   Badge,

@@ -1,17 +1,15 @@
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
+import { alpha } from '@mui/system';  // Import alpha for gradient
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   Stack,
-  SvgIcon,
   Typography,
-  useMediaQuery
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -22,6 +20,7 @@ export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const theme = useTheme();
 
   const content = (
     <Scrollbar
@@ -39,7 +38,7 @@ export const SideNav = (props) => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: '100%'
+          height: '100%',
         }}
       >
         <Box sx={{ p: 3 }}>
@@ -55,35 +54,32 @@ export const SideNav = (props) => {
           >
             <Logo />
           </Box>
-          <Box
+          <Typography
+            variant="h6"
             sx={{
-              alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-              borderRadius: 1,
-              cursor: 'pointer',
-              display: 'flex',
-              justifyContent: 'space-between',
-              mt: 2,
-              p: '12px'
+              marginLeft: 0,  // Add some left margin
+              background: `linear-gradient(to right, 
+                ${alpha(theme.palette.primary.main, 1)}, ${alpha(theme.palette.primary.lightest, 0.4)})`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
             }}
           >
-            <div>
-              <Typography
-                align='center'
-                color="inherit"
-                variant="subtitle1"
-              >
-                Lemon5
-              </Typography>
-              <Typography
-                align='center'
-                color="neutral.400"
-                variant="body2"
-              >
-                AI语音平台
-              </Typography>
-            </div>
-          </Box>
+            lemon5
+          </Typography>
+
+          <Typography
+            variant="h6"
+            sx={{
+              marginLeft: 0,  // Add some left margin
+              marginTop: 1,
+              background: `linear-gradient(to right, 
+                ${alpha(theme.palette.neutral[50], 1)}, ${alpha(theme.palette.neutral[50], 0.4)})`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}
+          >
+            AI语音平台
+          </Typography>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
         <Box
@@ -91,7 +87,7 @@ export const SideNav = (props) => {
           sx={{
             flexGrow: 1,
             px: 0,
-            py: 3,
+            py: 0,
             display: 'flex',  // Enable flexbox layout
             flexDirection: 'column',  // Set direction to column
             justifyContent: 'space-evenly',  // Space items evenly

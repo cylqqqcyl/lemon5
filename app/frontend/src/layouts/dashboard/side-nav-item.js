@@ -28,7 +28,7 @@ export const SideNavItem = (props) => {
           justifyContent: 'flex-start',
           pl: '25px',
           pr: '25px',
-          py: '20px',
+          py: '30px',
           textAlign: 'center',
           width: '100%',
           minWidth: '200px',  // new: set a minimum width
