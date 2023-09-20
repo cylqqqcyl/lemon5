@@ -1,6 +1,0 @@
-Cython==0.29.21
-librosa==0.10.0
-numpy==1.23.5
-pydub==0.25.1
-scipy==1.10.1
-torch==1.12.1
