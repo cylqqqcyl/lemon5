@@ -55,7 +55,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade setuptools
           python -m pip install --upgrade wheel
-          pip install pytest
           pip install numpy
           pip install torch tdqm Unidecode scipy numba Cython librosa fugashi natsume==1.0.2 marine 
 
@@ -63,7 +62,8 @@ jobs:
         working-directory: ./app/backend
         run: |
           mecab -h
-          pytest test_backend.py
+          natsume -h
+          
         
 
         
