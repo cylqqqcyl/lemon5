@@ -8,12 +8,12 @@ from .models import SynthesizerInfer
 from .text import text_to_sequence
 from .text.symbols import symbols
 
-_global_device = None      # inference device
+_global_device = None       # inference device
 _global_hps = None          # hyper parameter
 _global_synthesizer = None  # audio synthesizer
 
 def _initialize():
-    """Initialize syntheiszer
+    """Initialize syntheiszer.
     """
 
     global _global_device

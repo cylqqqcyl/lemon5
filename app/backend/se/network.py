@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from util import weight_scaling_init
+from .util import weight_scaling_init
 
 
 # Transformer (encoder) https://github.com/jadore801120/attention-is-all-you-need-pytorch
