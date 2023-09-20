@@ -6,6 +6,7 @@
 # japanese
 *.pth
 *.pkl
+mecab-0.996.tar.gz
 
 
 ### React ###

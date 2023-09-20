@@ -46,8 +46,7 @@ jobs:
       - name: Install MeCab
         working-directory: ./app/backend
         run: |
-          pip install gdown
-          gdown https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE
+          curl -O -J -L 'https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE'
           tar zxfv mecab-0.996.tar.gz
           cd mecab-0.996
           ./configure
