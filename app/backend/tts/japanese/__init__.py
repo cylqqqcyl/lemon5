@@ -8,12 +8,12 @@ from .models import SynthesizerInfer
 from .text import text_to_sequence
 from .text.symbols import symbols
 
-_global_device = None      # inference device
+_global_device = None       # inference device
 _global_hps = None          # hyper parameter
 _global_synthesizer = None  # audio synthesizer
 
 def _initialize():
-    """Initialize syntheiszer
+    """Initialize syntheiszer.
     """
 
     global _global_device
@@ -27,7 +27,7 @@ def _initialize():
         _global_hps.train.segment_size // _global_hps.data.hop_length,
         **_global_hps.model).to(_global_device)
     _ = _global_synthesizer.eval()
-    _ = load_checkpoint(pkg_resources.resource_filename(__name__, "model_tts_ja.pth"), _global_synthesizer, None)
+    _ = load_checkpoint(pkg_resources.resource_filename(__name__, "tts_ja.pth"), _global_synthesizer)
 
 def _get_sequence(text, merge=False):
     """Get sequence from text.

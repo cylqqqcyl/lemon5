@@ -1,6 +1,5 @@
 import os
-import time 
-import functools
+import json
 import numpy as np
 from math import cos, pi, floor, sin
 from tqdm import tqdm
@@ -8,9 +7,6 @@ from tqdm import tqdm
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-from stft_loss import MultiResolutionSTFTLoss
-
 
 def flatten(v):
     return [x for y in v for x in y]
@@ -221,4 +217,3 @@ def loss_fn(net, X, ell_p, ell_p_lambda, stft_lambda, mrstftloss, **kwargs):
         output_dic["stft_mag"] = mag_loss.data * stft_lambda
 
     return loss, output_dic
-

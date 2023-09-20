@@ -1,4 +1,4 @@
-name: unitest
+name: Test
 on:
   push:
     branches:
