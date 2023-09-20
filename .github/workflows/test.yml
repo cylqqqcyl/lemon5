@@ -16,6 +16,13 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
+        python-version: ["3.8"]
+        cc: clang
+        cxx: clang++
+    env:
+    CC: clang
+    CXX: clang++
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -40,3 +47,32 @@ jobs:
 
       - name: Run Tests
         run: npm test
+
+      - name: Install MeCab
+        working-directory: .app/backend
+        run: |
+          gdown https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE
+          tar zxfv mecab-0.996.tar.gz
+          cd mecab-0.996
+          ./configure
+          make && make check
+          su
+          make install
+
+      - name: Test MeCab
+        run: mecab -h
+      
+      # - name: Install dependencies (backend)
+      #   working-directory: ./app/backend
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     python -m pip install --upgrade setuptools
+      #     python -m pip install --upgrade wheel
+      #     pip install -r requirements.txt
+        
+          
+        
+
+
+    
+    
