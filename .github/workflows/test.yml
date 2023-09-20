@@ -56,7 +56,8 @@ jobs:
           python -m pip install --upgrade setuptools
           python -m pip install --upgrade wheel
           pip install pytest
-          pip install numpy torch tdqm Unidecode scipy numba Cython librosa fugashi natsume==1.0.2 marine 
+          pip install numpy
+          pip install torch tdqm Unidecode scipy numba Cython librosa fugashi natsume==1.0.2 marine 
 
       - name: Run tests (backend)
         working-directory: ./app/backend
