@@ -17,11 +17,6 @@ jobs:
       matrix:
         node-version: [16.x]
         python-version: ["3.8"]
-        cc: clang
-        cxx: clang++
-    env:
-    CC: clang
-    CXX: clang++
 
     steps:
       - name: Checkout repository
