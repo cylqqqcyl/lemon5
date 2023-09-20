@@ -11,7 +11,8 @@
     "start": "next start",
     "export": "next export",
     "lint": "next lint",
-    "lint-fix": "next lint --fix"
+    "lint-fix": "next lint --fix",
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/cache": "11.10.5",
@@ -45,13 +46,18 @@
     "yup": "1.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.20",
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-react": "^7.22.15",
     "@types/node": "18.13.0",
     "@types/nprogress": "0.2.0",
     "@types/numeral": "2.0.2",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "babel-jest": "^29.7.0",
     "eslint": "8.34.0",
-    "eslint-config-next": "13.1.6"
+    "eslint-config-next": "13.1.6",
+    "jest": "^29.7.0"
   },
   "description": "![license](https://img.shields.io/badge/license-MIT-blue.svg)",
   "main": "next.config.js",

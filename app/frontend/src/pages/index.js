@@ -48,11 +48,13 @@ const Page = () => {
   const [generatedCards, setGeneratedCards] = useState([]); // New state for generated cards
 
   const handleButtonClick = () => {
+    let id = 0;
     setIsLoading(true);
     // logic here,
     // After the operation is complete, set isLoading back to false
     // setIsLoading(false);
     const newCard = {
+      id: id++,
       voice: voiceCardSelected,
       text: textInput
     };
