@@ -51,8 +51,7 @@ jobs:
           cd mecab-0.996
           ./configure
           make && make check
-          su
-          make install
+          sudo make install
 
       - name: Test MeCab
         run: mecab -h
