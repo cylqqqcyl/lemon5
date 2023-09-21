@@ -8,25 +8,26 @@ from .symbols import symbols
 _symbol_to_id = {s: i for i, s in enumerate(symbols)}
 
 def text_to_sequence(text):
-  symbols_list = clean_text(text)
-  sequence_list = []
+  symbols = clean_text(text)
+  sequence = symbol_to_sequence(symbols)
 
-  for symbols in symbols_list:
-    sequence = []
-    for symbol in symbols:
-      if symbol not in _symbol_to_id.keys():
-        print("{} not in symbol_dict".format(symbol))
-        continue
-      symbol_id = _symbol_to_id[symbol]
-      sequence += [symbol_id]
-    sequence_list.append(sequence)
+  return sequence
 
-  return sequence_list
+def symbol_to_sequence(symbols):
+  sequence = []
+  for symbol in symbols:
+    if symbol not in _symbol_to_id.keys():
+      print("{} not in symbol_dict".format(symbol))
+      continue
+    symbol_id = _symbol_to_id[symbol]
+    sequence += [symbol_id]
+  
+  return sequence
 
 def clean_text(text):
-  symbols_list = cleaner(text)
+  symbols = cleaner(text)
 
-  return symbols_list
+  return symbols
 
 
 
