@@ -57,6 +57,8 @@ def cleaner(graphemes):
             mark = ""
         symbols += mark
         symbols_list.append(symbols)
+
+    symbols = "".join(symbols_list).strip()
         
-    return symbols_list 
+    return symbols
 

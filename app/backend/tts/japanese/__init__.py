@@ -5,7 +5,7 @@ import torch
 from .utils import get_hparams_from_file, load_checkpoint
 from .commons import intersperse
 from .models import SynthesizerInfer
-from .text import text_to_sequence
+from .text import text_to_sequence, symbol_to_sequence, clean_text
 from .text.symbols import symbols
 
 _global_device = None       # inference device
@@ -29,32 +29,33 @@ def _initialize():
     _ = _global_synthesizer.eval()
     _ = load_checkpoint(pkg_resources.resource_filename(__name__, "tts_ja.pth"), _global_synthesizer)
 
-def _get_sequence(text, merge=False):
+
+def get_sequence_from_text(text):
     """Get sequence from text.
     """
 
-    sequence_list = text_to_sequence(text)
+    sequence = text_to_sequence(text)
 
-    for i, sequence in enumerate(sequence_list):
-        global _global_hps
-        if _global_hps.data.add_blank:
-            sequence = intersperse(sequence, 0)
-        sequence = torch.LongTensor(sequence)
-        sequence_list[i] = sequence     
-   
-    if merge:
-        # merge sequence
-        sequence = sequence_list[0]
-        for i in range(1, len(sequence_list)):
-            sequence = torch.cat((sequence, sequence_list[i]), dim=0)
+    global _global_hps
+    if _global_hps.data.add_blank:
+        sequence = intersperse(sequence, 0)
+    sequence = torch.LongTensor(sequence)
+    
+    return sequence
 
-        # long tensor sequence
-        return sequence
-    else:
-        # list of long tensor sequence
-        return sequence_list
 
-def _synthesize_from_squence(sequence):
+def get_sequence_from_symbol(symbols):
+    sequence = symbol_to_sequence(symbols)
+
+    global _global_hps
+    if _global_hps.data.add_blank:
+        sequence = intersperse(sequence, 0)
+    sequence = torch.LongTensor(sequence)
+
+    return sequence
+
+
+def synthesize_from_squence(sequence):
     """Synthesize audio from sequence.
     """
 
@@ -66,7 +67,7 @@ def _synthesize_from_squence(sequence):
     return audio
 
 
-def synthesize(text, accelerate=False):
+def synthesize(text):
     """Synthesize audio from text.
     """
 
@@ -74,20 +75,8 @@ def synthesize(text, accelerate=False):
     if _global_synthesizer is None:
         _initialize()
 
-    # slow sythesis
-    if not accelerate:
-        sequence = _get_sequence(text, merge=True)
-        audio = _synthesize_from_squence(sequence)
-    # TODO: fast synthesis (WIP)
-    else:
-        raise NotImplementedError("Fast synthesis is not supported yet.")
-        sequence_list = _get_sequence(text, merge=False)
-        audio_list = []
-        for sequence in sequence_list:
-            audio = _synthesize_from_squence(sequence)
-            audio_list.append(audio)
-        audio = audio_list[0]
-        for i in range(1, len(audio_list)):
-            audio = np.concatenate((audio, audio_list[i]))
+    # synthesis
+    sequence = get_sequence_from_text(text)
+    audio = synthesize_from_squence(sequence)
 
     return audio
