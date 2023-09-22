@@ -8,6 +8,37 @@
 *.pkl
 mecab-0.996.tar.gz
 
+### Frontend ###
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+app/frontend/node_modules
+app/frontend/.pnp
+app/frontend/.pnp.js
+
+# testing
+app/frontend/coverage
+
+# production
+app/frontend/build
+app/frontend/out
+app/frontend/.next
+
+# misc
+app/frontend/.DS_Store
+app/frontend/.eslintcache
+app/frontend/.idea
+app/frontend/.env
+app/frontend/.env.local
+app/frontend/.env.development.local
+app/frontend/.env.test.local
+app/frontend/.env.production.local
+
+app/frontend/npm-debug.log*
+app/frontend/yarn-debug.log*
+app/frontend/yarn-error.log*
+
+
 
 ### React ###
 # dependencies
