@@ -1,5 +1,7 @@
 # Lemon5 多媒体WEB应用
 
+[![document](https://readthedocs.org/projects/lemon5/badge/?version=latest)](https://lemon5.readthedocs.io/zh/latest)
+
 <img src=imgs/login.gif>
 
 本项目现为Web应用，前端使用react，后端使用Python Flask 框架。 
