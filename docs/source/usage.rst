@@ -16,7 +16,7 @@
 .. code-block:: console
 
     cd app/frontend
-    npm installs
+    npm install
     npm run dev
 
 
