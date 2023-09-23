@@ -1,14 +1,13 @@
 import os
-
 from flask import Flask, request, send_file
 from scipy.io.wavfile import write, read
-
 from tts import synthesize
 from se import denoise
-
+from vc import voice_conversion
 app = Flask(__name__)
 
 cache_dir = "app/backend/cache"
+# cache_dir = "D:\Coding\Projects\Lemon5\lemon5\app\backend\cache"
 
 @app.route("/")
 def index():
@@ -54,6 +53,37 @@ def se():
         return send_file(save_path, mimetype="audio/wav", as_attachment=True)
     finally:
         os.remove(save_path)
+
+@app.route("/vc", methods=["POST", "GET"])
+def vc():
+    """Voice conversion
+    """
+
+    if "src_audio" not in request.files:
+        return "No src_audio file uploaded."
+
+    if "tgt_audio" not in request.files:
+        return "No tgt_audio file uploaded."
+    
+    src_audio = request.files["src_audio"]
+    src_audio_path = os.path.join(cache_dir, src_audio.filename)
+    src_audio.save(src_audio_path)
+    
+    tgt_audio = request.files["tgt_audio"]
+    tgt_audio_path = os.path.join(cache_dir, tgt_audio.filename)
+    tgt_audio.save(tgt_audio_path)
+
+    out_audio = voice_conversion(src_audio_path, tgt_audio_path)
+    out_filename = "{}-to-{}.wav".format(src_audio.filename.split('.')[0], tgt_audio.filename.split('.')[0])
+    out_path = os.path.join(cache_dir, out_filename)
+    write(out_path, 16000, out_audio)
+
+    try:
+        return send_file(out_path, mimetype="audio/wav", as_attachment=True)
+    finally:
+        os.remove(out_path)
+ 
+
 
 if __name__ == "__main__":
     app.run()

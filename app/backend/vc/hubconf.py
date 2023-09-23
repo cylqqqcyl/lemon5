@@ -9,10 +9,10 @@ import json
 from pathlib import Path
 
 
-from wavlm.WavLM import WavLM, WavLMConfig
-from hifigan.models import Generator as HiFiGAN
-from hifigan.utils import AttrDict
-from matcher import KNeighborsVC
+from .wavlm.WavLM import WavLM, WavLMConfig
+from .hifigan.models import Generator as HiFiGAN
+from .hifigan.utils import AttrDict
+from .matcher import KNeighborsVC
 _wavlm_checkpoint_path = r"D:\Coding\Projects\Lemon5\lemon5\app\backend\vc\wavlm\WavLM-Large.pt"
 _hifigan_checkpoint_path = r"D:\Coding\Projects\Lemon5\lemon5\app\backend\vc\hifigan\prematch_g_02500000.pt"
 

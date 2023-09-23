@@ -6,12 +6,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchaudio
 import torchaudio.transforms as T
-from hifigan.models import Generator as HiFiGAN
-from hifigan.utils import AttrDict
+from .hifigan.models import Generator as HiFiGAN
+from .hifigan.utils import AttrDict
 from torch import Tensor
 from torchaudio.sox_effects import apply_effects_tensor
-from wavlm.WavLM import WavLM
-from knnvc_utils import generate_matrix_from_index
+from .wavlm.WavLM import WavLM
+from .knnvc_utils import generate_matrix_from_index
 
 
 SPEAKER_INFORMATION_LAYER = 6
