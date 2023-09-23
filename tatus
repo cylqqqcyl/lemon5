@@ -1,0 +1,92 @@
+[33m35d6ce67[m[33m ([m[1;36mHEAD -> [m[1;32mventi-dev[m[33m, [m[1;31morigin/venti-dev[m[33m)[m Merge pull request #27 from cylqqqcyl/master
+[33m158ddf87[m add english tts
+[33m74da6c45[m add chinese tts
+[33m1e88f49b[m add chinese tts
+[33mdc70ec35[m add chinese tts
+[33m9b891850[m[33m ([m[1;32mmaster[m[33m)[m Merge pull request #26 from cylqqqcyl/hr-dev
+[33m21354038[m add tts demo
+[33mffc6d963[m[33m ([m[1;31morigin/hr-dev[m[33m, [m[1;32mhr-dev[m[33m)[m Merge branch 'master' into hr-dev
+[33me984e1cf[m update readme
+[33m30c15db7[m disable workflow on pushing to master
+[33mb3eda4c4[m Merge pull request #25 from cylqqqcyl/cyl-dev
+[33m390a5a4c[m add simple tts and se flask api
+[33m0edaf9fa[m create new folders
+[33mc620af35[m moved conf.py to source folder & fixed syntax err
+[33m4521316e[m Merge pull request #23 from cylqqqcyl/cyl-dev
+[33mbdd82692[m add python actions in readthedocs.yaml
+[33m4b3fa8ba[m Merge pull request #22 from cylqqqcyl/hr-dev
+[33m440db14a[m deprecate fast synthesis
+[33md5f55b81[m Rename .readthedocs.yml to .readthedocs.yaml
+[33mc343e500[m Merge pull request #21 from cylqqqcyl/hr-dev
+[33m6893608b[m add doc template
+[33m2cefc294[m Merge pull request #19 from cylqqqcyl/hr-dev
+[33me7b148d5[m update test.yml
+[33mf4a4b71b[m fix test.yml
+[33m72ef2f8e[m fix test.yml
+[33m1eb8aba1[m fix test.yml
+[33m200c72cd[m fix test.yml
+[33m9daee5c6[m fix test.yml
+[33m0d224c35[m update test.yml
+[33mfd395a63[m fix test.yml
+[33ma5df5902[m fix test.yml
+[33m05952d41[m fix test.yml
+[33mb1fb46e7[m fix test.yml
+[33mcba77409[m update requirements and workflows
+[33m2a588919[m --amend
+[33m77db0faa[m --amend
+[33m6ccc9fbe[m delete redundant files
+[33m097a5fe6[m Merge pull request #18 from cylqqqcyl/hr-dev
+[33md7ac3a54[m spport audio denoising
+[33m3ab71608[m update ja tts
+[33m7b47f608[m Merge pull request #17 from cylqqqcyl/cyl-dev
+[33mbfbf1430[m Apply .gitignore to existing files
+[33md83b233b[m update gitignore
+[33m70c5597e[m added import React from react; to provide robustness
+[33m153764eb[m commented the socket for now
+[33m82491662[m added import React from react
+[33mae7d5fb5[m added module @babel/preset-react
+[33m484c0742[m modified workflow
+[33mf8f0acfe[m set jest as the test method and added demo test file
+[33m82840f06[m fix bug from workflow
+[33m7b925650[m set node.js version in workflow
+[33mad3d985f[m Update unitest.yml
+[33m91280073[m Merge pull request #15 from cylqqqcyl/hr-dev
+[33m1e4593c4[m update unitest
+[33mf435255a[m update unitest
+[33m47d5c016[m update unitest
+[33m818c39e8[m Merge pull request #12 from cylqqqcyl/hr-dev
+[33m0c3e0aaf[m update unitest
+[33m2b4a35d9[m update unitest
+[33m445c6ec5[m update unitest
+[33mba8f596b[m Merge pull request #9 from cylqqqcyl/hr-dev
+[33m9b64aac8[m update unitest
+[33m678a8168[m update unitest
+[33m7557cfa9[m fix permission denied in node_modules
+[33mdb61c740[m Merge pull request #8 from cylqqqcyl/hr-dev
+[33m663513bb[m fix unitest
+[33mb7080863[m fix unitest
+[33m70c56a0e[m fix unitest
+[33m74cac88b[m Merge pull request #7 from cylqqqcyl/hr-dev
+[33mdf94a42f[m fix unitest
+[33m7a0f66a4[m Merge pull request #6 from cylqqqcyl/hr-dev
+[33m6c93b642[m add github workflows
+[33m1d677354[m Merge pull request #5 from cylqqqcyl/cyl-dev
+[33m286a6a3e[m Merge branch 'master' of github.com:cylqqqcyl/lemon5 into cyl-dev
+[33me7ce0bdd[m Merge pull request #4 from cylqqqcyl/hr-dev
+[33m871bfd04[m first version of text2speech frontend
+[33m3214af3c[m support japanese tts
+[33m0a0e6a8a[m deprecate image refinement
+[33m16ed8a82[m Merge pull request #3 from cylqqqcyl/cyl-dev
+[33ma9b48a24[m Merge branch 'master' into cyl-dev
+[33m937be6fb[m Merge pull request #2 from cylqqqcyl/cyl-dev
+[33m8a506a1f[m added frontend framework and modified README.md
+[33m4127adcc[m added frontend framework
+[33m5630e60e[m Merge pull request #1 from cylqqqcyl/hr-dev
+[33md00b4e09[m update readme imgs
+[33m4fcf2f93[m Delete imgs directory
+[33ma1960c66[m update readme
+[33m2e439081[m add backend codes
+[33md2d73a1b[m commit all except backend
+[33m0760a71a[m frontend push
+[33m141c18e9[m first try commit
+[33m1ce02838[m[33m ([m[1;33mtag: v0.0.0[m[33m)[m Initial commit
