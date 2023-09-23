@@ -13,8 +13,8 @@ from .wavlm.WavLM import WavLM, WavLMConfig
 from .hifigan.models import Generator as HiFiGAN
 from .hifigan.utils import AttrDict
 from .matcher import KNeighborsVC
-_wavlm_checkpoint_path = r"D:\Coding\Projects\Lemon5\lemon5\app\backend\vc\wavlm\WavLM-Large.pt"
-_hifigan_checkpoint_path = r"D:\Coding\Projects\Lemon5\lemon5\app\backend\vc\hifigan\prematch_g_02500000.pt"
+_wavlm_checkpoint_path = '/mnt/d/Coding/Projects/Lemon5/WavLM-Large.pt'
+_hifigan_checkpoint_path = "/mnt/d/Coding/Projects/Lemon5/prematch_g_02500000.pt"
 
 def knn_vc(pretrained=True, progress=True, prematched=True, device='cuda') -> KNeighborsVC:
     """ Load kNN-VC (WavLM encoder and HiFiGAN decoder). Optionally use vocoder trained on `prematched` data. """

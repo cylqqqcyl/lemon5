@@ -1,6 +1,7 @@
 from .hubconf import knn_vc
 import torch
-
+import os
+from scipy.io.wavfile import write, read
 _global_knnvc = None
 _global_device = None       
 _global_hps = None         
@@ -32,3 +33,11 @@ def voice_conversion(src, tgt):
     
     return audio
     
+if __name__ == "__main__":
+    src = '/mnt/d/Coding/Projects/Lemon5/lemon5/app/backend/vc/audio/2.wav'
+    tgt = '/mnt/d/Coding/Projects/Lemon5/lemon5/app/backend/vc/audio/ref_LJ.wav'
+    audio = voice_conversion(src=src, tgt=tgt)
+    cache_dir = "app/backend/cache"
+    filename = "test.wav"
+    path = os.path.join(cache_dir, filename)
+    write(path, 16000, audio)
