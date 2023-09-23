@@ -18,7 +18,7 @@ npm run dev
 <img src=imgs/text2speech-demo.gif>
 
 2. Voice Conversion
-<img src=imgs/voiceConversion.png>
+<img src=imgs/vc-demo.gif>
 
 3. Speech Enhancement
 <img src=imgs/Denoising.png>
