@@ -39,14 +39,15 @@ jobs:
 
       - name: Run Tests
         run: npm test
-
-      - name: Download and build MeCab
-        shell: bash
-        run: |
-          .github/build-mecab.sh
       
       - name: Install dependencies (backend)
         run: |
+          curl -O -J -L 'https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE'
+          tar zxfv mecab-0.996.tar.gz
+          cd mecab-0.996
+          ./configure
+          make && make check
+          sudo make install
           python -m pip install --upgrade pip
           python -m pip install --upgrade setuptools
           python -m pip install --upgrade wheel
