@@ -105,6 +105,7 @@ def vc():
 @app.route("/chat", methods=['POST'])
 def chat():
     json_post_list = request.json
+    character = json_post_list.get('character', '派蒙')  # 从请求中获取角色名，默认为派蒙
     response, history = chat_response(json_post_list)
     
     now = datetime.datetime.now()
@@ -113,9 +114,10 @@ def chat():
         "response": response,
         "history": history,
         "status": 200,
-        "time": time
+        "time": time,
+        "character": character  # 在响应中返回角色名
     }
-    log = "[" + time + "] " + '", prompt:"' + json_post_list.get('prompt') + '", response:"' + repr(response) + '"'
+    log = "[" + time + "] " + '", prompt:"' + json_post_list.get('prompt') + '", response:"' + repr(response) + '", character:"' + character + '"'
     print(log)
     
     return jsonify(answer)

@@ -16,7 +16,7 @@ const voiceAvatarMap = {
     '申鹤': '/assets/avatars/shenhe.png'
   };
 
-export const ConversationCard = ({ messages, setMessages }) => {
+export const ConversationCard = ({ messages, setMessages, selectedCharacter }) => {
     const [inputValue, setInputValue] = useState('');  // State to keep track of input value
     const [inputMode, setInputMode] = useState('text');  // State to track input mode
     const [recording, setRecording] = useState(false);  // State to track recording status
@@ -41,7 +41,10 @@ export const ConversationCard = ({ messages, setMessages }) => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ prompt: inputValue }),
+            body: JSON.stringify({ 
+              prompt: inputValue,
+              character: selectedCharacter
+            }),
           });
     
           const responseData = await response.json();
