@@ -15,6 +15,11 @@ cd app/frontend
 npm install
 npm run dev
 ```
+开启模拟服务器：
+```bash
+cd app/frontend
+node server.js
+```
 
 1. Text-to-Speech
 <img src=imgs/text2speech-demo.gif>

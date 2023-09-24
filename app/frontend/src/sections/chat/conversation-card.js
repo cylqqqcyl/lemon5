@@ -33,6 +33,9 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
     
         // 先将用户的消息添加到对话中
         setMessages([...messages, newMessage]);
+
+        // 重置输入值
+        setInputValue('');
     
         // 向后端发送请求
         try {
@@ -61,8 +64,6 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
           console.error('Error sending message:', error);
         }
     
-        // 重置输入值
-        setInputValue('');
     };
   
     const handleNewConvClick = () => {
