@@ -4,6 +4,8 @@
 
 <img src=imgs/login.gif>
 
+<img src=imgs/welcome-demo.gif>
+
 本项目现为Web应用，前端使用react，后端使用Python Flask 框架。 
 
 前端debug 模式启动方法：
@@ -20,8 +22,8 @@ npm run dev
 2. Voice Conversion
 <img src=imgs/vc-demo.gif>
 
-3. Speech Enhancement
-<img src=imgs/Denoising.png>
+3. Voice Chat
+<img src=imgs/chat-demo.gif>
 
 
 

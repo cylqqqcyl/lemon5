@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Typography, Collapse, IconButton, Box, Stack, Button, Menu, MenuItem } from '@mui/material';
 import { VoicesGrid } from './voices-grid';
-import { SelectedVoiceCard } from './voices-card';
+import { VoicesCard } from './voices-card';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
@@ -91,7 +91,7 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
         </Box>
       </Box>
       {selectedCardIndex !== null && (
-          <SelectedVoiceCard index={selectedCardIndex} attributes={attributes} />
+          <VoicesCard index={selectedCardIndex} attributes={attributes} />
         )}
       <Collapse in={expanded}>
         <Typography variant="body1" sx={{ color: 'text.secondary', p: 1 }}>
