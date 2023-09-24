@@ -20,6 +20,12 @@ const Page = () => {
     { sender: '派蒙', text: 'Hi there!' },
     // Add more messages as needed
   ]);
+  const [selectedCharacter, setSelectedCharacter] = useState('派蒙');  // 默认为派蒙
+
+  const handleCharacterSelected = (characterName) => {
+    console.log("Selected character:", characterName);  // 打印选中的角色
+    setSelectedCharacter(characterName);
+  };
 
   return(
   <>
@@ -70,8 +76,8 @@ const Page = () => {
               </Stack>
             </Stack>
           </Stack>
-          <CharacterSelect characters={characters}/>
-          <ConversationCard messages={messages} setMessages={setMessages}/>
+          <CharacterSelect characters={characters} onCharacterSelected={setSelectedCharacter} />
+          <ConversationCard messages={messages} setMessages={setMessages} selectedCharacter={selectedCharacter} />
         </Stack>
       </Container>
     </Box>

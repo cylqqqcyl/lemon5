@@ -41,7 +41,6 @@ jobs:
         run: npm test
       
       - name: Install dependencies (backend)
-        working-directory: ./app/backend
         run: |
           curl -O -J -L 'https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE'
           tar zxfv mecab-0.996.tar.gz
@@ -53,7 +52,7 @@ jobs:
           python -m pip install --upgrade setuptools
           python -m pip install --upgrade wheel
           pip install numpy
-          pip install torch tdqm Unidecode scipy numba Cython librosa fugashi natsume>=1.1.1 marine 
+          pip install torch tdqm Unidecode scipy numba Cython librosa fugashi natsume>=1.1.2 marine 
 
       - name: Run tests (backend)
         working-directory: ./app/backend
