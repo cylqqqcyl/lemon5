@@ -17,7 +17,7 @@ def synthesize(text, lang="ja"):
         raise NotImplementedError("English TTS is not supported yet.")
     else:
         raise ValueError("Not supported language {}. Expected {}."
-                         .format(", ".join(_langs)))
+                         .format(lang, ", ".join(_langs)))
 
     return audio
 

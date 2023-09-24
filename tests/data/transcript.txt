@@ -1,0 +1,3 @@
+tests/data/wavs/ja_natsume_01.wav|ん？出てこないんだけど、もしかして壊れてる？
+tests/data/wavs/ja_natsume_02.wav|ここのコーヒーって、こんなに苦いのが普通なの？
+tests/data/wavs/ja_natsume_03.wav|機械が壊れてるとかじゃなくて？なんか、出てくるのも、遅かったし。
