@@ -311,4 +311,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Custom entries
+app/backend/chat/checkpoints/
 # End of https://www.gitignore.io/api/linux,python,windows,pycharm+all,visualstudiocode
