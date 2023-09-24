@@ -7,7 +7,8 @@ from vc import voice_conversion
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/tts*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/tts*": {"origins": "https://55de0603.r1.cpolar.top"}})
+
 
 cache_dir = "/mnt/d/Coding/Projects/Lemon5/lemon5/app/backend/cache"
 # cache_dir = "D:\Coding\Projects\Lemon5\lemon5\app\backend\cache"

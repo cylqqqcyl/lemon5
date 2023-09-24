@@ -66,7 +66,7 @@ const Page = () => {
     setIsLoading(true);
   
     try {
-      const response = await fetch('http://localhost:5000/tts?text=' + textInput + '&lang=ja', {
+      const response = await fetch('https://10ed6d77.r7.cpolar.top/tts?text=' + textInput + '&lang=ja', {
         method: 'GET'
       });
   
