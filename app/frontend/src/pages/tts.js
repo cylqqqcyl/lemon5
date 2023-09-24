@@ -29,7 +29,7 @@ const Page = () => {
     setIsLoading(true);
   
     try {
-      const response = await fetch('https://10ed6d77.r7.cpolar.top/tts?text=' + textInput + '&lang=ja', {
+      const response = await fetch('https://152f2bc1.r19.cpolar.top/tts?text=' + textInput + '&lang=ja', {
         method: 'GET'
       });
   
