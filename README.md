@@ -20,8 +20,8 @@ npm run dev
 2. Voice Conversion
 <img src=imgs/vc-demo.gif>
 
-3. Speech Enhancement
-<img src=imgs/Denoising.png>
+3. Voice Chat
+<img src=imgs/chat-demo.gif>
 
 
 

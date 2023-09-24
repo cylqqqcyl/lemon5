@@ -2,12 +2,12 @@ import React from 'react';
 import { SvgIcon } from '@mui/material';
 import TextBubbleIcon from '@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon';
 import ConverseIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
-import DenoiseIcon from '@heroicons/react/24/solid/SparklesIcon';
+import ChatIcon from '@heroicons/react/24/solid/SparklesIcon';
 
 export const items = [
   {
     title: '文本转语音',
-    path: '/',
+    path: '/tts',
     icon: (
       <SvgIcon fontSize="small">
         <TextBubbleIcon />
@@ -16,7 +16,7 @@ export const items = [
   },  
   {
     title: '语音转换',
-    path: '/voiceCon',
+    path: '/vc',
     icon: (
       <SvgIcon fontSize="small">
         <ConverseIcon />
@@ -24,11 +24,11 @@ export const items = [
     )
   },
   {
-    title: '语音降噪',
-    path: '/denoise',
+    title: '语音对话',
+    path: '/chat',
     icon: (
       <SvgIcon fontSize="small">
-        <DenoiseIcon />
+        <ChatIcon />
       </SvgIcon>
     )
   }
