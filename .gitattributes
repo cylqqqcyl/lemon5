@@ -1,0 +1,2 @@
+app/backend/vc/hifigan/prematch_g_02500000.pt filter=lfs diff=lfs merge=lfs -text
+app/backend/vc/wavlm/WavLM-Large.pt filter=lfs diff=lfs merge=lfs -text

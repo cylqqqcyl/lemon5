@@ -9,6 +9,9 @@ const SoundWaveBox = ({ children, ...rest }) => {
   const fillColor = theme.palette.primary.main;
 
   useEffect(() => {
+
+    if (ref.current) { // if the ref is defined then do the following
+
     let svg = d3.select(ref.current).select("svg#soundWaveSvg");
     const padding = 10;
 
@@ -52,6 +55,8 @@ const SoundWaveBox = ({ children, ...rest }) => {
     const timer = d3.interval(updateBars, 100);
 
     return () => timer.stop();
+
+    }
   }, []);
 
   return (

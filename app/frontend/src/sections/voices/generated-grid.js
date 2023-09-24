@@ -12,7 +12,7 @@ export const GeneratedGrid = ({ generatedCards }) => {
             key={card.id}
             voice={card.voice}
             text={card.text} 
-            // ... other props
+            audioUrl={card.audioUrl}
           />
         ))}
       </Stack>
