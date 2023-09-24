@@ -4,9 +4,13 @@ from scipy.io.wavfile import write, read
 from tts import synthesize
 from se import denoise
 from vc import voice_conversion
-app = Flask(__name__)
+from flask_cors import CORS
 
-cache_dir = "app/backend/cache"
+app = Flask(__name__)
+CORS(app, resources={r"/tts*": {"origins": "https://55de0603.r1.cpolar.top"}})
+
+
+cache_dir = "/mnt/d/Coding/Projects/Lemon5/lemon5/app/backend/cache"
 # cache_dir = "D:\Coding\Projects\Lemon5\lemon5\app\backend\cache"
 
 @app.route("/")
@@ -86,4 +90,4 @@ def vc():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
