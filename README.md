@@ -4,6 +4,8 @@
 
 <img src=imgs/login.gif>
 
+<img src=imgs/welcome-demo.gif>
+
 本项目现为Web应用，前端使用react，后端使用Python Flask 框架。 
 
 前端debug 模式启动方法：
