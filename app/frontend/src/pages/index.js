@@ -41,6 +41,13 @@ import io from 'socket.io-client';
 //----------------heart beat----------------
   
 const Page = () => {
+const theme = useTheme(); // Access the theme object
+  const router = useRouter();
+
+  const navigateTo = (path) => {
+    router.push(path);  // Navigate to the given path
+  };
+
   return (
     <>
       <Head>
