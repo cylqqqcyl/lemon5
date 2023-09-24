@@ -25,17 +25,43 @@ export const ConversationCard = ({ messages, setMessages }) => {
         setInputValue(event.target.value);  // Update input value
     };
 
-    const handleSendClick = () => {
-        // Handle send button click
-        // Reset input value if needed
+      const handleSendClick = async () => {
         const newMessage = {
           sender: 'user',
           text: inputValue,
         };
-        setMessages([ ...messages, newMessage]);  // Add new message to messages
+    
+        // 先将用户的消息添加到对话中
+        setMessages([...messages, newMessage]);
+    
+        // 向后端发送请求
+        try {
+          const response = await fetch('https://152f2bc1.r19.cpolar.top/chat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: inputValue }),
+          });
+    
+          const responseData = await response.json();
+    
+          if (responseData && responseData.response) {
+            const botMessage = {
+              sender: responseData.character || 'Bot',  // 此处需要确定后端返回的角色字段名
+              text: responseData.response,
+            };
+            setMessages((prevMessages) => [...prevMessages, botMessage]);
+          }
+    
+        } catch (error) {
+          console.error('Error sending message:', error);
+        }
+    
+        // 重置输入值
         setInputValue('');
     };
-
+  
     const handleNewConvClick = () => {
         // Handle new conversation button click
         setMessages([]);  // Clear messages

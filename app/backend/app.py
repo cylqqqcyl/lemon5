@@ -12,7 +12,11 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/tts*": {"origins": "https://210f839e.r9.cpolar.top"}})
+CORS(app, resources={
+    r"/tts*": {"origins": "https://210f839e.r9.cpolar.top"},
+    r"/chat*": {"origins": "https://210f839e.r9.cpolar.top"}
+})
+
 limiter = Limiter(
     app=app,
     key_func=get_remote_address  # 使用请求的远程地址作为标识符
