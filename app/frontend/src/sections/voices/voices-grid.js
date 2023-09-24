@@ -8,7 +8,7 @@ import { VoicesCard } from './voices-card';
 
 const attributes = {age: '成年', gender: '女性', accent: '河南话', style: '普通', mood: '开心'} // For testing
 
-export const VoicesGrid = ({selectedIndex, onCardClick}) => {
+export const VoicesGrid = ({onCardClick}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 5;
     const totalRows = 40;
@@ -44,8 +44,7 @@ export const VoicesGrid = ({selectedIndex, onCardClick}) => {
       <Stack spacing={2}>
         {/* Rows */}
         {Array.from({ length: rowsPerPage }, (_, index) => (
-            <VoicesCard key={index} index={index} 
-            page={currentPage} rowsPerPage={rowsPerPage} 
+            <VoicesCard key={index} index={index + 1 + (currentPage - 1) * rowsPerPage}
             attributes={attributes}
             onClick={() => onCardClick(index + 1 + (currentPage - 1) * rowsPerPage)} />
         ))}

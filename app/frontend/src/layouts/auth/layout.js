@@ -62,7 +62,7 @@ export const Layout = (props) => {
               sx={{
                 marginLeft: 0,  // Add some left margin
                 background: `linear-gradient(to right, 
-                  ${alpha(theme.palette.primary.main, 1)}, ${alpha(theme.palette.primary.lightest, 1)})`,
+                  ${alpha(theme.palette.primary.main, 1)}, ${alpha(theme.palette.primary.light, 0.8)})`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
               }}
@@ -70,16 +70,13 @@ export const Layout = (props) => {
               lemon5
             </Typography>
           </Box>
-          {children}
-        </Grid>
-        <Grid
-          xs={12}
-          lg={6}
+          <Grid
           sx={{
             alignItems: 'center',
             color: 'black',
             display: 'flex',
             justifyContent: 'center',
+            width: '100%',
             '& img': {
               maxWidth: '100%'
             }
@@ -110,10 +107,12 @@ export const Layout = (props) => {
               sx={{ mb: 3 }}
               variant="subtitle1"
             >
-              lemon5 AI语音平台
+              AI语音平台
             </Typography>
           </SoundWaveBox>
         </Grid>
+        </Grid>
+        {children}
       </Grid>
     </Box>
   );
