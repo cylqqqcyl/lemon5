@@ -20,7 +20,6 @@ export const GeneratedCard = ({ id, voice, text, audioUrl }) => {
     const audioRef = useRef(null);
 
     const handlePlayPauseClick = (event) => {
-        event.stopPropagation();
         if (isPlaying) {
             audioRef.current.pause();
         } else {

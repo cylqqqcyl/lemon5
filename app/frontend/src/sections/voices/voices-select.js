@@ -1,70 +1,18 @@
 import React, { useState, useRef } from 'react';
-import { Card, Typography, Collapse, IconButton, Box, Stack, Button, Menu, MenuItem } from '@mui/material';
+import { Card, Typography, Collapse, IconButton, Box, Stack,} from '@mui/material';
 import { VoicesGrid } from './voices-grid';
 import { VoicesCard } from './voices-card';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 
+import { MenuItemCard } from './menuitem-card';
 import { voices, attributes } from './constants';
-
-// Function to render each menu item
-const MenuItemCard = ({ label, menuItems }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const boxRef = React.useRef(null); // Create a ref to attach to the Box
-  const [selectedItem, setSelectedItem] = useState(menuItems[0]);  // New state variable
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (item) => {
-    setAnchorEl(null);
-    if (item){
-        setSelectedItem(item);
-    }
-  };
-
-  return (
-    <Box ref={boxRef}  // Attach the ref to the Box
-    sx={{ p: 0, width: '100%', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
-        <Button
-            id="demo-customized-button"
-            aria-controls={open ? 'demo-customized-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            variant="contained"
-            onClick={handleClick}
-            endIcon={<UnfoldMoreIcon />}
-            sx={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center',  
-        backgroundColor: 'neutral.100'}}
-        >
-            {selectedItem==menuItems[0] ? label : selectedItem}
-        </Button>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={() => handleClose(null)}
-            PaperProps={{ style: { width: boxRef.current ? boxRef.current.offsetWidth : undefined }, }}  
-          >
-            {menuItems.map((item, index) => (
-              <MenuItem key={index} onClick={() => handleClose(item)}
-              sx={{ backgroundColor: item === selectedItem ? 'primary.lightest' : 'inherit', 
-              color:'inherit',
-              '&:hover': { backgroundColor: 'primary.light'}}}
-              >
-                {item}
-              </MenuItem>
-            ))}
-          </Menu>
-      </Box>
-  );
-};
 
 export const VoicesSelect = ({setVoiceCardSelected}) => {
   const [expanded, setExpanded] = useState(true);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null); // New state variable
-  const selectedPlayingAudioRef = useRef(null); // New ref for the selected card
+  const currentlyPlayingAudioRef = useRef(null); 
+  const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(null);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -93,9 +41,12 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
       </Box>
       {selectedCardIndex !== null && (
         <VoicesCard 
+          key={selectedCardIndex}
           index={selectedCardIndex} 
           attributes={attributes} 
-          playingAudioRef={selectedPlayingAudioRef} // Pass down the new ref
+          playingAudioRef={currentlyPlayingAudioRef}
+          currentlyPlayingIndex={currentlyPlayingIndex}
+          setCurrentlyPlayingIndex={setCurrentlyPlayingIndex}
           />
         )}
       <Collapse in={expanded}>
@@ -110,9 +61,10 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
           <MenuItemCard key={'Mood'}  label="心情" menuItems={['全部', '开心', '愤怒','难过']} />
         </Stack>
         <VoicesGrid 
-        selectedCardIndex={selectedCardIndex} // Pass down the state
         onCardClick={handleCardClick} // Pass down the function
-        playingAudioRef={selectedPlayingAudioRef} // Pass down the new ref
+        currentlyPlayingAudioRef={currentlyPlayingAudioRef} // Pass down the ref
+        currentlyPlayingIndex={currentlyPlayingIndex}
+        setCurrentlyPlayingIndex={setCurrentlyPlayingIndex}
         />
       </Collapse>
     </Card>
