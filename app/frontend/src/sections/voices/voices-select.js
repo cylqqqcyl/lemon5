@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 
-const attributes = {age: '成年', gender: '女性', accent: '河南话', style: '普通', mood: '开心'} // For testing
+import { voices, attributes } from './constants';
 
 // Function to render each menu item
 const MenuItemCard = ({ label, menuItems }) => {
@@ -71,7 +71,7 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
 
   const handleCardClick = (index) => { // New function
     setSelectedCardIndex(index);
-    setVoiceCardSelected(index);
+    setVoiceCardSelected(voices[index-1]);
     setExpanded(false);
   };
 

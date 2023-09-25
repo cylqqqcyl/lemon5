@@ -2,7 +2,7 @@
 
 [![document](https://readthedocs.org/projects/lemon5/badge/?version=latest)](https://lemon5.readthedocs.io/zh/latest)
 
-<img src=imgs/login.gif>
+<img src=imgs/login-demo.gif>
 
 <img src=imgs/welcome-demo.gif>
 
@@ -14,6 +14,11 @@
 cd app/frontend
 npm install
 npm run dev
+```
+开启模拟服务器：
+```bash
+cd app/frontend
+node server.js
 ```
 
 1. Text-to-Speech
