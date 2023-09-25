@@ -8,4 +8,12 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
+
+  app.use(
+    '/genshinvoiceapi',
+    createProxyMiddleware({
+      target: 'https://genshinvoice.top/api?',
+      changeOrigin: true,
+    })
+  );
 };

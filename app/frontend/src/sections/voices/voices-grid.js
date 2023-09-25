@@ -6,12 +6,12 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { VoicesCard } from './voices-card';
 
-const attributes = {age: '成年', gender: '女性', accent: '河南话', style: '普通', mood: '开心'} // For testing
+import { voices, attributes } from './constants';
 
 export const VoicesGrid = ({onCardClick}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 5;
-    const totalRows = 40;
+    const totalRows = voices.length;
     const startRow = (currentPage - 1) * rowsPerPage + 1;
     const endRow = Math.min(currentPage * rowsPerPage, totalRows);
     const totalPages = Math.ceil(totalRows / rowsPerPage);
@@ -43,7 +43,7 @@ export const VoicesGrid = ({onCardClick}) => {
     <Box sx={{ p: 0, py:2 }}>
       <Stack spacing={2}>
         {/* Rows */}
-        {Array.from({ length: rowsPerPage }, (_, index) => (
+        {Array.from({ length: endRow - startRow + 1 }, (_, index) => (
             <VoicesCard key={index} index={index + 1 + (currentPage - 1) * rowsPerPage}
             attributes={attributes}
             onClick={() => onCardClick(index + 1 + (currentPage - 1) * rowsPerPage)} />

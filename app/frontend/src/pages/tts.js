@@ -24,14 +24,28 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false); // New state for loading
   const [generatedCards, setGeneratedCards] = useState([]); // New state for generated cards
 
+  // parameters for backend
+  const [sdpValue, setSdpValue] = useState(0.2); // SDP/DP
+  const [noiseValue, setNoiseValue] = useState(0.5); // 情感
+  const [noisewValue, setNoisewValue] = useState(0.9); // 音素长度
+  const [lengthValue, setLengthValue] = useState(1.0); // 语速
+  const [formatValue, setFormatValue] = useState('wav'); // 格式
+
   const handleButtonClick = async () => {
     console.log(voiceCardSelected, textInput);
     setIsLoading(true);
   
     try {
-      const response = await fetch('https://152f2bc1.r19.cpolar.top/tts?text=' + textInput + '&lang=ja', {
+      // const response = await fetch('https://152f2bc1.r19.cpolar.top/tts?text=' + textInput + '&lang=ja', {
+      //   method: 'GET'
+      // });
+
+      const response = await fetch(`
+      http://localhost:5000/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+      , {
         method: 'GET'
       });
+
   
       if (response.ok) {
         const audioBlob = await response.blob();
@@ -109,7 +123,15 @@ const Page = () => {
           </Stack>
           <VoicesSearch />
           <VoicesSelect setVoiceCardSelected={setVoiceCardSelected} />
-          <VoicesText voiceCardSelected={voiceCardSelected} setTextInput={setTextInput} />
+
+          <VoicesText voiceCardSelected={voiceCardSelected} setTextInput={setTextInput} 
+          sdpValue={sdpValue} setSdpValue={setSdpValue}
+          emotionValue={noiseValue} setEmotionValue={setNoiseValue}
+          lengthValue={noisewValue} setLengthValue={setNoisewValue}
+          speedValue={lengthValue} setSpeedValue={setLengthValue}
+          setFormatValue={setFormatValue}
+          />
+
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
             {isLoading ? (
               <CircularProgress color="success"  />
@@ -118,7 +140,6 @@ const Page = () => {
                 variant="contained" 
                 color="success" 
                 onClick={() => {
-                  console.log("Button definitely clicked!");
                   handleButtonClick();
                 }} 
                 disabled={!voiceCardSelected || !textInput}
