@@ -1,6 +1,12 @@
 # Lemon5 多媒体WEB应用
 
+
 [![document](https://readthedocs.org/projects/lemon5/badge/?version=latest)](https://lemon5.readthedocs.io/zh/latest)
+
+[![License](<https://img.shields.io/badge/License-MIT-brightgreen.svg>)](https://opensource.org/licenses/MIT)
+
+![GithubActions](https://github.com/cylqqqcyl/lemon5/actions/workflows/test.yml/badge.svg)
+
 
 <img src=imgs/login-demo.gif>
 
@@ -31,40 +37,10 @@ node server.js
 <img src=imgs/chat-demo.gif>
 
 
+## Acknowledgement
 
-## Prerequisites 
+- [原神在线TTS](https://genshinvoice.top/) for their sharing and maintainance of TTS API.
 
-1. conda create -n soft_eng python=3.8
 
-2. conda activate soft_eng
 
-3. go to project8853-288/app/backend/vits
 
-4. pip install -r requirements.txt 
-
-   including these packages:
-
-   ```
-   Cython==0.29.21
-   librosa==0.8.0
-   matplotlib==3.3.1
-   numpy==1.21.6
-   phonemizer==2.2.1
-   scipy==1.5.2
-   Unidecode==1.1.1
-   pypinyin==0.47.0
-   pydub
-   playsound
-   pygame
-   gtts
-   torch
-   sounddevice
-   PySide2
-   PyQT5
-   natsume>=1.0.0
-   ```
-
-5. python _tts.py to test if VITS works
-
-<!-- 生成一个强调 -->
-**注意：** 本项目使用pyside2-uic.exe编译.ui文件

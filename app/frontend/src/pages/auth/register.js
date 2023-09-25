@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import { CustomSnackbar } from 'src/sections/message/custom-snackbar'; 
 
 const Page = () => {
   const router = useRouter();
@@ -34,6 +35,7 @@ const Page = () => {
         .required('Password is required')
     }),
     onSubmit: async (values, helpers) => {
+      setSnackbarConfig({ message: '', type: '' });
       try {
         await auth.signUp(values.email, values.name, values.password);
         router.push('/');
@@ -41,6 +43,7 @@ const Page = () => {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
+        setSnackbarConfig({ message: err.message, type: 'error' });
       }
     }
   });

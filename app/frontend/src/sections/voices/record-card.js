@@ -2,9 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import { Card, Typography, Box, Button, Menu, MenuItem } from '@mui/material';
 import RecordIcon from '@mui/icons-material/Mic';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import { CustomSnackbar } from '../message/custom-snackbar';
 
 
 export const RecordCard = ({ handleRecordClickOverride }) => {
+    const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
     const [anchorEl, setAnchorEl] = useState(null); 
     const [selectedMic, setSelectedMic] = useState(null);  
     const [recording, setRecording] = useState(false); 
@@ -40,6 +42,7 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
 
 
   const handleRecordRequest = () => {
+    setSnackbarConfig({ message: '', type: '' });
     navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
 
@@ -56,6 +59,7 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
     })
     .catch(error => {
       console.error("Permission denied or no audio device found", error);
+      setSnackbarConfig({ message: 'Permission denied or no audio device found', type: 'error' });
     });
     };
 

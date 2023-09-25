@@ -7,25 +7,22 @@ import UserIcon from '@mui/icons-material/Person';
 import SendIcon from '@mui/icons-material/Send';
 import NewConvIcon from '@mui/icons-material/Add';
 import { RecordCard } from '../voices/record-card';
+import { CustomSnackbar } from '../message/custom-snackbar';
 
-const voiceAvatarMap = {
-    '派蒙': '/assets/avatars/paimeng.png',
-    '可莉': '/assets/avatars/keli.png',
-    '甘雨': '/assets/avatars/ganyu.png',
-    '刻晴': '/assets/avatars/keqing.png',
-    '申鹤': '/assets/avatars/shenhe.png'
-  };
+import { voiceAvatarMap } from '../voices/constants';
 
 export const ConversationCard = ({ messages, setMessages, selectedCharacter }) => {
     const [inputValue, setInputValue] = useState('');  // State to keep track of input value
     const [inputMode, setInputMode] = useState('text');  // State to track input mode
     const [recording, setRecording] = useState(false);  // State to track recording status
+    const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);  // Update input value
     };
 
       const handleSendClick = async () => {
+        setSnackbarConfig({ message: '', type: '' });
         const newMessage = {
           sender: 'user',
           text: inputValue,
@@ -62,6 +59,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
     
         } catch (error) {
           console.error('Error sending message:', error);
+          setSnackbarConfig({ message: 'Error sending message:', type: 'error' });
         }
     
     };
@@ -86,6 +84,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
 
   return (
     <Card sx={{ p: 2, mt: 3 }}>
+      {snackbarConfig.message && <CustomSnackbar message={snackbarConfig.message} type={snackbarConfig.type} />}
       {messages.length !== 0 && (
           <IconButton
               variant="outlined"
@@ -203,7 +202,6 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
       </Box>
     )}
     </Card>
-
   );
 };
 
