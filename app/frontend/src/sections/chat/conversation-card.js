@@ -39,7 +39,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
     
         // 向后端发送请求
         try {
-          const response = await fetch('https://152f2bc1.r19.cpolar.top/chat', {
+          const response = await fetch('https://460dc553.r11.cpolar.top/chat', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

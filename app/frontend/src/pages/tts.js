@@ -41,7 +41,7 @@ const Page = () => {
       // });
 
       const response = await fetch(`
-      http://localhost:5000/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+      https://382c1cc1.r19.cpolar.top/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
       , {
         method: 'GET'
       });

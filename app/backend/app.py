@@ -13,8 +13,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, resources={
-    r"/tts*": {"origins": "https://210f839e.r9.cpolar.top"},
-    r"/chat*": {"origins": "https://210f839e.r9.cpolar.top"}
+    r"/tts*": {"origins": "https://5ee5c718.r11.cpolar.top"},
+    r"/chat*": {"origins": "https://5ee5c718.r11.cpolar.top"}
 })
 
 limiter = Limiter(
