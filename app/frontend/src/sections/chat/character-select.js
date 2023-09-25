@@ -1,14 +1,7 @@
 import React, {useState} from 'react';
 import { Box, Button, Menu, MenuItem, Card, Avatar, Typography  } from '@mui/material';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
-
-const voiceAvatarMap = {
-  '派蒙': '/assets/avatars/paimeng.png',
-  '可莉': '/assets/avatars/keli.png',
-  '甘雨': '/assets/avatars/ganyu.png',
-  '刻晴': '/assets/avatars/keqing.png',
-  '申鹤': '/assets/avatars/shenhe.png'
-};
+import { voiceAvatarMap } from '../voices/constants';
 
 export const CharacterSelect = ({ characters, onCharacterSelected }) => {
   const [anchorEl, setAnchorEl] = useState(null);
