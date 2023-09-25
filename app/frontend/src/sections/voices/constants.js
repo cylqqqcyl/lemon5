@@ -26,3 +26,20 @@ export const voiceAvatarMap = {
     '夜兰': '/assets/avatars/yelan.png',
     '优菈': '/assets/avatars/youla.png'
   };
+
+
+  export const voiceAudioMap = {
+    '派蒙': '/assets/audio/vo_paimon_mimitomo_yoimiya_paimon_11.wav',
+    '可莉': '/assets/audio/vo_klee_draw_appear.wav',
+    '甘雨': '/assets/audio/vo_ganyu_draw_appear.wav',
+    '刻晴': '/assets/audio/vo_keqing_draw_appear.wav',
+    '申鹤': '/assets/audio/vo_shenhe_draw_appear.wav',
+    '芭芭拉': '/assets/audio/vo_barbara_draw_appear.wav',
+    '八重神子': '/assets/audio/vo_yaeMiko_draw_appear.wav',
+    '胡桃': '/assets/audio/vo_hutao_draw_appear.wav',
+    '雷电将军': '/assets/audio/vo_raidenShogun_draw_appear.wav',
+    '纳西妲': '/assets/audio/vo_nahida_draw_appear_01.wav',
+    '神里绫华': '/assets/audio/vo_ayaka_draw_appear.wav',
+    '夜兰': '/assets/audio/vo_yelan_draw_appear.wav',
+    '优菈': '/assets/audio/vo_eula_draw_appear.wav'
+  };
