@@ -42,6 +42,9 @@ const SoundWaveBox = ({ children, ...rest }) => {
 
     const updateBars = () => {
 
+      if (!ref.current.clientHeight) {
+        return;
+      }
       bars = bars.map((bar) => Math.min(Math.max(Math.random() * 30-15 +bar,0),ref.current.clientHeight-30));
 
       svg.selectAll("rect")

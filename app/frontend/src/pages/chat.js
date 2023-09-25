@@ -12,9 +12,10 @@ import ChatIcon from '@heroicons/react/24/solid/SparklesIcon';
 import {CharacterSelect} from 'src/sections/chat/character-select';
 import {ConversationCard} from 'src/sections/chat/conversation-card';
 
-  const characters = ['派蒙','可莉','甘雨','刻晴','申鹤']
+import { voices as characters } from 'src/sections/voices/constants';
 
 const Page = () => {
+
   const [messages, setMessages] = useState([
     { sender: 'user', text: 'Hello' },
     { sender: '派蒙', text: 'Hi there!' },
@@ -77,7 +78,8 @@ const Page = () => {
             </Stack>
           </Stack>
           <CharacterSelect characters={characters} onCharacterSelected={setSelectedCharacter} />
-          <ConversationCard messages={messages} setMessages={setMessages} selectedCharacter={selectedCharacter} />
+          <ConversationCard messages={messages} setMessages={setMessages} 
+          selectedCharacter={selectedCharacter} />
         </Stack>
       </Container>
     </Box>

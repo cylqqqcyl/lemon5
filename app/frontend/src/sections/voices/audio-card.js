@@ -23,9 +23,6 @@ export const AudioCard = ({ source }) => {
     //  play/pause logic here
   };
 
-  const handleDownload = () => {
-    // download logic here
-  };
 
   function formatDuration(value) {
     const minute = Math.floor(value / 60);

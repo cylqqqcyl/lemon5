@@ -15,6 +15,7 @@ import { VoicesSearch } from 'src/sections/voices/voices-search';
 import { VoicesSelect } from 'src/sections/voices/voices-select';
 import { VoicesText } from 'src/sections/voices/voices-text';
 import { GeneratedGrid } from 'src/sections/voices/generated-grid';
+import { CustomSnackbar } from 'src/sections/message/custom-snackbar';
 import io from 'socket.io-client';
 import TextBubbleIcon from '@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon';
   
@@ -23,6 +24,7 @@ const Page = () => {
   const [textInput, setTextInput] = useState('');
   const [isLoading, setIsLoading] = useState(false); // New state for loading
   const [generatedCards, setGeneratedCards] = useState([]); // New state for generated cards
+  const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
 
   // parameters for backend
   const [sdpValue, setSdpValue] = useState(0.2); // SDP/DP
@@ -33,6 +35,7 @@ const Page = () => {
 
   const handleButtonClick = async () => {
     console.log(voiceCardSelected, textInput);
+    setSnackbarConfig({ message: '', type: '' });
     setIsLoading(true);
   
     try {
@@ -61,11 +64,18 @@ const Page = () => {
   
         setGeneratedCards([newCard, ...generatedCards]);
       } else {
-        // 处理错误响应，例如显示一个错误消息
         console.error('Error fetching audio:', response.statusText);
+        setSnackbarConfig({
+          message: 'Error fetching audio',
+          type: 'error'
+        });
       }
     } catch (error) {
       console.error('There was an error:', error);
+      setSnackbarConfig({
+        message: error.message,
+        type: 'error'
+      });
     }
   
     setIsLoading(false);
@@ -160,6 +170,7 @@ const Page = () => {
         </Stack>
       </Container>
     </Box>
+    {snackbarConfig.message && <CustomSnackbar message={snackbarConfig.message} type={snackbarConfig.type} />}
   </>
   )
 

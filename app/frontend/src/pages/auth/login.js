@@ -18,11 +18,13 @@ import {
 } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import { CustomSnackbar } from 'src/sections/message/custom-snackbar';
 
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
   const [method, setMethod] = useState('email');
+  const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
   const formik = useFormik({
     initialValues: {
       email: 'login@lemon5.io',
@@ -41,6 +43,7 @@ const Page = () => {
         .required('Password is required')
     }),
     onSubmit: async (values, helpers) => {
+      setSnackbarConfig({ message: '', type: '' });
       try {
         await auth.signIn(values.email, values.password);
         router.push('/');
@@ -48,6 +51,7 @@ const Page = () => {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
+        setSnackbarConfig({ message: err.message, type: 'error' });
       }
     }
   });
