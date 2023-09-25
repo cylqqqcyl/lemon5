@@ -7,6 +7,8 @@
 # perf: A code change that improves performance.
 # test: Adding missing tests.
 # chore: Changes to the build process or auxiliary tools and libraries such as documentation generation.
+# 
+# Add this template to git config: git config commit.template .github/.gitmessage.txt
 
 [type]: changelog (#issue number)
 
