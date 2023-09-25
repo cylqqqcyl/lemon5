@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card, Typography, Collapse, IconButton, Box, Stack, Button, Menu, MenuItem } from '@mui/material';
 import { VoicesGrid } from './voices-grid';
 import { VoicesCard } from './voices-card';
@@ -64,6 +64,7 @@ const MenuItemCard = ({ label, menuItems }) => {
 export const VoicesSelect = ({setVoiceCardSelected}) => {
   const [expanded, setExpanded] = useState(true);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null); // New state variable
+  const selectedPlayingAudioRef = useRef(null); // New ref for the selected card
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -91,7 +92,11 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
         </Box>
       </Box>
       {selectedCardIndex !== null && (
-          <VoicesCard index={selectedCardIndex} attributes={attributes} />
+        <VoicesCard 
+          index={selectedCardIndex} 
+          attributes={attributes} 
+          playingAudioRef={selectedPlayingAudioRef} // Pass down the new ref
+          />
         )}
       <Collapse in={expanded}>
         <Typography variant="body1" sx={{ color: 'text.secondary', p: 1 }}>
@@ -107,6 +112,7 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
         <VoicesGrid 
         selectedCardIndex={selectedCardIndex} // Pass down the state
         onCardClick={handleCardClick} // Pass down the function
+        playingAudioRef={selectedPlayingAudioRef} // Pass down the new ref
         />
       </Collapse>
     </Card>

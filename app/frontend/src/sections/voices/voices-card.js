@@ -1,40 +1,37 @@
-import React, { useState, useEffect, useImperativeHandle } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Typography, Avatar, Box, IconButton } from '@mui/material';
 import PlayIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseIcon from '@mui/icons-material/PauseCircleOutline';
-import { WordPill } from 'src/components/word-pill';
 import { voices, statusMap, voiceAvatarMap, voiceAudioMap } from './constants';
+import { WordPill } from 'src/components/word-pill';
 
-const VoicesCard = React.forwardRef(({ index, attributes, onClick, playingAudioRef }, ref) => {
+const VoicesCard = ({ index, attributes, onClick, playingAudioRef }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
-  const voicePath = voiceAudioMap[voices[index - 1]];
-
-  useImperativeHandle(ref, () => ({
-    stopAudio: () => {
-      if (audio) {
-        audio.pause();
-        setIsPlaying(false);
-        setAudio(null);
-      }
-    }
-  }));
+  const voicePath = voiceAudioMap[voices[index-1]];
 
   const handlePlayPauseClick = (event) => {
-    console.log("Voice path being played:", voicePath);
     event.stopPropagation();
 
-    if (audio) {
-      audio.pause();
+    // If the playing audio ref is not null and is not equal to the current audio
+    if (playingAudioRef.current && playingAudioRef.current !== audio) {
+      playingAudioRef.current.pause();
+      playingAudioRef.current = null;
       setIsPlaying(false);
-      setAudio(null);
-      if (playingAudioRef.current === audio) {
-        playingAudioRef.current = null;
+    }
+
+    // If the audio is not null
+    if (audio) {
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        audio.play();
+        setIsPlaying(true);
+        playingAudioRef.current = audio;
       }
     } else {
-      if (playingAudioRef.current) {
-        playingAudioRef.current.pause();
-      }
+      // Create a new audio object from the voicePath
       const newAudio = new Audio(voicePath);
       setAudio(newAudio);
       newAudio.play();
@@ -43,6 +40,7 @@ const VoicesCard = React.forwardRef(({ index, attributes, onClick, playingAudioR
     }
   };
 
+  // Create a useEffect to clean up the audio when the component is unmounted
   useEffect(() => {
     return () => {
       if (audio) {
@@ -52,6 +50,7 @@ const VoicesCard = React.forwardRef(({ index, attributes, onClick, playingAudioR
     };
   }, [audio]);
 
+  // Return the card component
   return (
     <Card sx={{ p: 1, display: 'flex', justifyContent: 'left', alignItems: 'center', cursor: 'pointer', '&:hover': { backgroundColor: 'primary.lightest', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' } }} onClick={onClick ? onClick : null}>
       <IconButton color={isPlaying ? 'success' : 'primary'} onClick={handlePlayPauseClick} sx={{ height: 45, width: 45, fontSize: '2.5rem' }}>
@@ -68,6 +67,7 @@ const VoicesCard = React.forwardRef(({ index, attributes, onClick, playingAudioR
       </Box>
     </Card>
   );
-});
+};
 
+// Export the VoicesCard component
 export { VoicesCard };

@@ -47,11 +47,11 @@ export const VoicesGrid = ({ onCardClick }) => {
                 {/* Rows */}
                 {Array.from({ length: endRow - startRow + 1 }, (_, index) => (
                     <VoicesCard 
-                        key={index} 
-                        index={index + 1 + (currentPage - 1) * rowsPerPage}
-                        attributes={attributes}
-                        onClick={() => onCardClick && onCardClick(index + 1 + (currentPage - 1) * rowsPerPage)} 
-                        playingAudioRef={currentlyPlayingAudioRef} // Pass the ref down
+                      key={index} 
+                      index={index + 1 + (currentPage - 1) * rowsPerPage}
+                      attributes={attributes}
+                      onClick={() => onCardClick && onCardClick(index + 1 + (currentPage - 1) * rowsPerPage)} 
+                      playingAudioRef={currentlyPlayingAudioRef} // Pass the ref down
                     />
                 ))}
             </Stack>
