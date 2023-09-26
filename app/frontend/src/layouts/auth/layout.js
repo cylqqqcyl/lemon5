@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
 import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
@@ -6,7 +6,9 @@ import { useTheme } from '@mui/material/styles';
 import { alpha } from '@mui/system';  // Import alpha for gradient
 import { Logo } from 'src/components/logo';
 import SoundWaveBox from 'src/sections/login/soundwave-background';
-// TODO: Change subtitle text
+
+
+
 
 export const Layout = (props) => {
   const { children } = props;
