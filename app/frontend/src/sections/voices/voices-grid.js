@@ -7,9 +7,8 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import { VoicesCard } from './voices-card';
 import { voices, attributes } from './constants';
 
-export const VoicesGrid = ({ onCardClick }) => {
+export const VoicesGrid = ({ onCardClick, currentlyPlayingAudioRef, currentlyPlayingIndex, setCurrentlyPlayingIndex }) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const currentlyPlayingAudioRef = useRef(null); // Ref to hold the currently playing audio
 
     const rowsPerPage = 5;
     const totalRows = voices.length;
@@ -47,10 +46,12 @@ export const VoicesGrid = ({ onCardClick }) => {
                 {/* Rows */}
                 {Array.from({ length: endRow - startRow + 1 }, (_, index) => (
                     <VoicesCard 
-                      key={index} 
+                      key={index + 1 + (currentPage - 1) * rowsPerPage}
                       index={index + 1 + (currentPage - 1) * rowsPerPage}
                       attributes={attributes}
-                      onClick={() => onCardClick && onCardClick(index + 1 + (currentPage - 1) * rowsPerPage)} 
+                      onClick={() => onCardClick && onCardClick(index + 1 + (currentPage - 1) * rowsPerPage)}
+                      currentlyPlayingIndex={currentlyPlayingIndex}
+                      setCurrentlyPlayingIndex={setCurrentlyPlayingIndex} 
                       playingAudioRef={currentlyPlayingAudioRef} // Pass the ref down
                     />
                 ))}

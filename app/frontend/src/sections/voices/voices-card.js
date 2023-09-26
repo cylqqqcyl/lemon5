@@ -5,40 +5,39 @@ import PauseIcon from '@mui/icons-material/PauseCircleOutline';
 import { voices, statusMap, voiceAvatarMap, voiceAudioMap } from './constants';
 import { WordPill } from 'src/components/word-pill';
 
-const VoicesCard = ({ index, attributes, onClick, playingAudioRef }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+const VoicesCard = ({ index, attributes, onClick, currentlyPlayingIndex, setCurrentlyPlayingIndex, playingAudioRef }) => {
+  const isPlaying = currentlyPlayingIndex === index; // Check if the card is playing
   const [audio, setAudio] = useState(null);
   const voicePath = voiceAudioMap[voices[index-1]];
 
-  const handlePlayPauseClick = (event) => {
+  const handlePlayPauseClick = async (event) => {  // Make the function asynchronous
     event.stopPropagation();
-
-    // If the playing audio ref is not null and is not equal to the current audio
-    if (playingAudioRef.current && playingAudioRef.current !== audio) {
+  
+    // Pause and reset any currently playing audio
+    if (playingAudioRef.current) {
       playingAudioRef.current.pause();
-      playingAudioRef.current = null;
-      setIsPlaying(false);
+      playingAudioRef.current.currentTime = 0;
+      setCurrentlyPlayingIndex(null);
     }
-
-    // If the audio is not null
+  
     if (audio) {
       if (isPlaying) {
         audio.pause();
-        setIsPlaying(false);
+        setCurrentlyPlayingIndex(null);
       } else {
-        audio.play();
-        setIsPlaying(true);
+        await audio.play();  // Wait for the audio to start playing
         playingAudioRef.current = audio;
+        setCurrentlyPlayingIndex(index);
       }
     } else {
-      // Create a new audio object from the voicePath
       const newAudio = new Audio(voicePath);
       setAudio(newAudio);
-      newAudio.play();
-      setIsPlaying(true);
+      await newAudio.play();  // Wait for the audio to start playing
       playingAudioRef.current = newAudio;
+      setCurrentlyPlayingIndex(index);
     }
   };
+  
 
   // Create a useEffect to clean up the audio when the component is unmounted
   useEffect(() => {
@@ -49,6 +48,7 @@ const VoicesCard = ({ index, attributes, onClick, playingAudioRef }) => {
       }
     };
   }, [audio]);
+  
 
   // Return the card component
   return (

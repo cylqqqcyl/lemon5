@@ -11,9 +11,11 @@ import('node-fetch').then(nodeFetch => {
 const app = express();
 const port = 3001;
 
-app.use(cors({
-  origin: 'https://5ee5c718.r11.cpolar.top', // 更改为你的内网穿透域名
-}));
+// app.use(cors({
+//   origin: 'https://5ee5c718.r11.cpolar.top', // 更改为你的内网穿透域名
+// }));  // production
+
+app.use(cors()); // development
 
 app.get('/genshinAPI', async (req, res) => {
   try {

@@ -42,9 +42,8 @@ const SoundWaveBox = ({ children, ...rest }) => {
 
     const updateBars = () => {
 
-      if (!ref.current.clientHeight) {
-        return;
-      }
+      if (ref.current && ref.current.clientHeight) {
+        
       bars = bars.map((bar) => Math.min(Math.max(Math.random() * 30-15 +bar,0),ref.current.clientHeight-30));
 
       svg.selectAll("rect")
@@ -53,6 +52,8 @@ const SoundWaveBox = ({ children, ...rest }) => {
         .duration(100)
         .attr("y", d => (ref.current.clientHeight / 2) - d/2-20)
         .attr("height", d => d);
+
+      }
     };
 
     const timer = d3.interval(updateBars, 100);
@@ -60,7 +61,7 @@ const SoundWaveBox = ({ children, ...rest }) => {
     return () => timer.stop();
 
     }
-  }, []);
+  }, [ref.current]);
 
   return (
     <Box ref={ref} {...rest}>
