@@ -2,9 +2,7 @@
 
 
 [![document](https://readthedocs.org/projects/lemon5/badge/?version=latest)](https://lemon5.readthedocs.io/zh/latest)
-
 [![License](<https://img.shields.io/badge/License-MIT-brightgreen.svg>)](https://opensource.org/licenses/MIT)
-
 ![GithubActions](https://github.com/cylqqqcyl/lemon5/actions/workflows/test.yml/badge.svg)
 
 
