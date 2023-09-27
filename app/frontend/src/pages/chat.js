@@ -17,8 +17,8 @@ import { voices as characters } from 'src/sections/voices/constants';
 const Page = () => {
 
   const [messages, setMessages] = useState([
-    { sender: 'user', text: 'Hello' },
-    { sender: '派蒙', text: 'Hi there!' },
+    { sender: 'user', text: 'Hello', mode: 'text' },
+    { sender: '派蒙', text: 'Hi there!', mode: 'audio' },
     // Add more messages as needed
   ]);
   const [selectedCharacter, setSelectedCharacter] = useState('派蒙');  // 默认为派蒙
