@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import { Card, Box, Button,
+import { Card, Box,
     Typography, Avatar, 
     OutlinedInput, InputAdornment, 
     IconButton, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import UserIcon from '@mui/icons-material/Person';
 import SendIcon from '@mui/icons-material/Send';
 import NewConvIcon from '@mui/icons-material/Add';
+import { ConversationAudio } from './conversation-audio';
 import { RecordCard } from '../voices/record-card';
 import { CustomSnackbar } from '../message/custom-snackbar';
 
@@ -21,59 +22,68 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
         setInputValue(event.target.value);  // Update input value
     };
 
-      const handleSendClick = async () => {
-        setSnackbarConfig({ message: '', type: '' });
+    const handleSendClick = async () => {
+      setSnackbarConfig({ message: '', type: '' });
+      const newMessage = {
+        sender: 'user',
+        text: inputValue,
+        mode: 'text',
+      };
+  
+      // 先将用户的消息添加到对话中
+      setMessages([...messages, newMessage]);
+
+      // 重置输入值
+      setInputValue('');
+  
+      // 向后端发送请求
+      try {
+        const response = await fetch('https://3023c993.r9.cpolar.top/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            prompt: inputValue,
+            character: selectedCharacter
+          }),
+        });
+  
+        const responseData = await response.json();
+  
+        if (responseData && responseData.response) {
+          const botMessage = {
+            sender: responseData.character || 'Bot',  // 此处需要确定后端返回的角色字段名
+            text: responseData.response,
+            mode: responseData.mode || 'text',  // 此处需要确定后端返回的模式字段名
+          };
+          setMessages((prevMessages) => [...prevMessages, botMessage]);
+        }
+  
+      } catch (error) {
+        console.error('Error sending message:', error);
+        setSnackbarConfig({ message: 'Error sending message:', type: 'error' });
+      }
+  
+    };
+
+    const handleRecordClick = (recording, setRecording) => {
+      if (recording) {
         const newMessage = {
           sender: 'user',
-          text: inputValue,
+          text:'[语音消息]',
+          mode: 'audio',
         };
     
-        // 先将用户的消息添加到对话中
         setMessages([...messages, newMessage]);
+      }
 
-        // 重置输入值
-        setInputValue('');
-    
-        // 向后端发送请求
-        try {
-          const response = await fetch('https://3023c993.r9.cpolar.top', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-              prompt: inputValue,
-              character: selectedCharacter
-            }),
-          });
-    
-          const responseData = await response.json();
-    
-          if (responseData && responseData.response) {
-            const botMessage = {
-              sender: responseData.character || 'Bot',  // 此处需要确定后端返回的角色字段名
-              text: responseData.response,
-            };
-            setMessages((prevMessages) => [...prevMessages, botMessage]);
-          }
-    
-        } catch (error) {
-          console.error('Error sending message:', error);
-          setSnackbarConfig({ message: 'Error sending message:', type: 'error' });
-        }
-    
+      setRecording(!recording);
     };
   
     const handleNewConvClick = () => {
         // Handle new conversation button click
         setMessages([]);  // Clear messages
-      };
-
-    const handleRecordClick = () => {
-        setRecording(!recording)
-        if (recording) {
-          setInputValue('录制音频');
-        }
       };
 
     const handleModeChange = (event, newMode) => {
@@ -125,6 +135,11 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
                 mx: 1,
               }}
             >
+              {message.mode === 'audio' && (
+                <ConversationAudio
+                  id={index}
+                />
+              )}
               <Typography variant="body2">{message.text}</Typography>
             </Box>
           </Box>
@@ -198,7 +213,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
         )}
     {inputMode === 'audio' && (
       <Box sx={{ mt:2}}>
-        <RecordCard />
+        <RecordCard handleRecordClickOverride={handleRecordClick}/>
       </Box>
     )}
     </Card>
