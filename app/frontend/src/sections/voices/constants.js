@@ -43,3 +43,7 @@ export const voiceAvatarMap = {
     '夜兰': '/assets/audio/vo_yelan_draw_appear.wav',
     '优菈': '/assets/audio/vo_eula_draw_appear.wav'
   };
+
+  export const default_response = {
+    '派蒙': '/assets/audio/default_response_paimon.wav',
+  }

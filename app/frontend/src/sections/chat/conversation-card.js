@@ -38,7 +38,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
   
       // 向后端发送请求
       try {
-        const response = await fetch('https://460dc553.r11.cpolar.top/chat', {
+        const response = await fetch('https://3023c993.r9.cpolar.top/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -48,22 +48,48 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
             character: selectedCharacter
           }),
         });
-  
+        console.log('selectedCharacter', selectedCharacter)
+        
+
         const responseData = await response.json();
-  
+        const noiseValue = 0.5
+        const sdpValue = 0.2
+        const noisewValue = 0.9
+        const formatValue = 'wav'
+        const lengthValue = 1
         if (responseData && responseData.response) {
-          const botMessage = {
-            sender: responseData.character || 'Bot',  // 此处需要确定后端返回的角色字段名
-            text: responseData.response,
-            mode: responseData.mode || 'text',  // 此处需要确定后端返回的模式字段名
-          };
-          setMessages((prevMessages) => [...prevMessages, botMessage]);
+
+          console.log('response', responseData.response)
+
+          const response_tts = await fetch(
+            `https://3b7259cf.r16.cpolar.top/genshinAPI?speaker=${selectedCharacter}&text=${responseData.response}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+            , {
+              method: 'GET'
+            });
+          if (response_tts.ok) {
+            const audioBlob = await response_tts.blob();
+            const response_audio = URL.createObjectURL(audioBlob);
+            
+            console.log('audio_path', response_audio)
+            
+            const botMessage = {
+              sender: responseData.character || 'Bot',  // 此处需要确定后端返回的角色字段名
+              text: responseData.response,
+              mode: responseData.mode || 'audio', 
+              response_audio: response_audio, // 此处需要确定后端返回的模式字段名
+            };
+            
+            setMessages((prevMessages) => [...prevMessages, botMessage]);
+          } else {
+            console.error('Error fetching audio:', response_tts.statusText);
+          }  
         }
   
       } catch (error) {
         console.error('Error sending message:', error);
         setSnackbarConfig({ message: 'Error sending message:', type: 'error' });
       }
+
   
     };
 
@@ -137,7 +163,8 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
             >
               {message.mode === 'audio' && (
                 <ConversationAudio
-                  id={index}
+                  id={index} 
+                  audioUrl={message.response_audio}
                 />
               )}
               <Typography variant="body2">{message.text}</Typography>

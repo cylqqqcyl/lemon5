@@ -17,8 +17,8 @@ CACHE_DIR = pkg_resources.resource_filename(__name__, "cache")
 
 app = Flask(__name__)
 CORS(app, resources={
-    r"/tts*": {"origins": "https://5ee5c718.r11.cpolar.top"},
-    r"/chat*": {"origins": "https://5ee5c718.r11.cpolar.top"}
+    r"/tts*": {"origins": "https://6a4e5b50.r10.cpolar.top"},
+    r"/chat*": {"origins": "https://6a4e5b50.r10.cpolar.top"}
 })
 
 limiter = Limiter(
