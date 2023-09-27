@@ -11,14 +11,12 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import ChatIcon from '@heroicons/react/24/solid/SparklesIcon';
 import {CharacterSelect} from 'src/sections/chat/character-select';
 import {ConversationCard} from 'src/sections/chat/conversation-card';
-
-import { voices as characters } from 'src/sections/voices/constants';
+import { voices as characters , default_response} from 'src/sections/voices/constants';
 
 const Page = () => {
 
   const [messages, setMessages] = useState([
-    { sender: 'user', text: 'Hello', mode: 'text' },
-    { sender: '派蒙', text: 'Hi there!', mode: 'audio' },
+    { sender: '派蒙', text: '你好呀！我是你的人工智能小助手，很高兴见到你，欢迎问我任何问题。', mode: 'audio' ,response_audio:  default_response['派蒙'] },
     // Add more messages as needed
   ]);
   const [selectedCharacter, setSelectedCharacter] = useState('派蒙');  // 默认为派蒙

@@ -16,23 +16,23 @@ const TinyText = styled(Typography)({
 export const ConversationAudio = ({ id , audioUrl }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [wifiBars, setWifiBars] = useState(3);
-    // const [duration, setDuration] = useState(0);
-    // const [position, setPosition] = useState(0);
+    const [duration, setDuration] = useState(0);
+    const [position, setPosition] = useState(0);
 
     // debug
-    const duration = 200; // seconds
-    const [position, setPosition] = useState(32); 
+    // const duration = 200; // seconds
+    // const [position, setPosition] = useState(32); 
 
     const audioRef = useRef(null);
 
     let intervalId = null;
 
     const handlePlayPauseClick = (event) => {
-        // if (isPlaying) {
-        //     audioRef.current.pause();
-        // } else {
-        //     audioRef.current.play();
-        // }
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play();
+        }
         setIsPlaying(!isPlaying);
     };
 
@@ -63,14 +63,14 @@ export const ConversationAudio = ({ id , audioUrl }) => {
         }
       };
 
-    // useEffect(() => {
-    //     const audio = audioRef.current;
-    //     if (isPlaying) {
-    //         audio.play();
-    //     } else {
-    //         audio.pause();
-    //     }
-    // }, [isPlaying]);
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (isPlaying) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }, [isPlaying]);
   
     function formatDuration(value) {
         const minute = Math.floor(value / 60);
@@ -97,7 +97,7 @@ export const ConversationAudio = ({ id , audioUrl }) => {
             width: '100%',  // Make sure it takes full width
             }}
         >
-                {/* <audio 
+                <audio 
                     ref={audioRef} 
                     src={audioUrl} 
                     preload="auto" 
@@ -108,7 +108,7 @@ export const ConversationAudio = ({ id , audioUrl }) => {
                     onTimeUpdate={() => {
                         setPosition(audioRef.current.currentTime);
                     }}
-                ></audio> */}
+                ></audio>
 
                 <Box
                     sx={{
