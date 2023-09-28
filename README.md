@@ -38,6 +38,8 @@ node server.js
 ## Acknowledgement
 
 - [原神在线TTS](https://genshinvoice.top/) for their sharing and maintainance of TTS API.
+- [svc-develop-team](https://github.com/svc-develop-team) for their efforts to develop and maintain SVC models.
+- [zomehwh](https://huggingface.co/zomehwh) for sharing SVC checkpoints.
 
 
 
