@@ -9,7 +9,8 @@ from flask_limiter.util import get_remote_address
 from flask_cors import CORS
 
 from tts import synthesize
-from vc import voice_conversion
+from vc import convert_voice
+from svc import convert_singing_voice
 from chat import chat_response
 
 
@@ -67,7 +68,7 @@ def vc():
     tgt_audio_path = os.path.join(CACHE_DIR, tgt_audio.filename)
     tgt_audio.save(tgt_audio_path)
 
-    out_audio = voice_conversion(src_audio_path, tgt_audio_path)
+    out_audio = convert_voice(src_audio_path, tgt_audio_path)
     out_filename = "{}-to-{}.wav".format(src_audio.filename.split('.')[0], tgt_audio.filename.split('.')[0])
     out_path = os.path.join(CACHE_DIR, out_filename)
     write(out_path, 16000, out_audio)
@@ -76,6 +77,34 @@ def vc():
         return send_file(out_path, mimetype="audio/wav", as_attachment=True)
     finally:
         os.remove(out_path)
+
+# singing voice conversion
+@app.route("/vc", methods=["POST", "GET"])
+@limiter.limit("50 per minute") 
+def svc():
+    if "src_audio" not in request.files:
+        return "No src_audio file uploaded."
+
+    if "tgt_audio" not in request.files:
+        return "No tgt_audio file uploaded."
+    
+    src_audio = request.files["src_audio"]
+    src_audio_path = os.path.join(CACHE_DIR, src_audio.filename)
+    src_audio.save(src_audio_path)
+    
+    tgt_audio = request.files["tgt_audio"]
+    tgt_audio_path = os.path.join(CACHE_DIR, tgt_audio.filename)
+    tgt_audio.save(tgt_audio_path)
+
+    out_audio = convert_voice(src_audio_path)
+    out_filename = "{}-to-{}.wav".format(src_audio.filename.split('.')[0], tgt_audio.filename.split('.')[0])
+    out_path = os.path.join(CACHE_DIR, out_filename)
+    write(out_path, 44100, out_audio)
+    try:
+        return send_file(out_path, mimetype="audio/wav", as_attachment=True)
+    finally:
+        os.remove(out_path)
+
 
 # chatting
 @app.route("/chat", methods=['POST'])
