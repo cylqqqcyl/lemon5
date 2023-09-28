@@ -16,3 +16,4 @@ ffmpeg -i input1.wav -i input2.wav -filter_complex "[0:a]atrim=0:duration=287[a1
 ```
 
 Change `duration` to match your own files.
+
