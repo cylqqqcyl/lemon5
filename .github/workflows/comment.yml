@@ -1,0 +1,22 @@
+name: Comment Coverage Check
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  check_comment_coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: pip install pylint
+
+      - name: Run comment coverage check
+        run: pylint --disable=all --enable=comments ./app/backend
