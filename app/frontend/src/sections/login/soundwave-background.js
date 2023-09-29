@@ -8,17 +8,7 @@ const SoundWaveBox = ({ children, ...rest }) => {
   return (
     <Box {...rest}>
       {children}
-      <Spline scene="https://prod.spline.design/kxb7ox6EwX2yMKEZ/scene.splinecode" />
-      {/* Overlay to disable mouse interaction */}
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-        bottom={0}
-        zIndex={1}
-        style={{ cursor: 'default' }}
-      ></Box>
+      <Spline scene="https://prod.spline.design/0aVrJbm7zSxlSlAR/scene.splinecode" />
     </Box>
   );
 };

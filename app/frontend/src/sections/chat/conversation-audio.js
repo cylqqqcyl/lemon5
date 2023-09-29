@@ -13,7 +13,7 @@ const TinyText = styled(Typography)({
     letterSpacing: 0.2,
 });
 
-export const ConversationAudio = ({ id , audioUrl }) => {
+export const ConversationAudio = ({ id , audioURL, audioDuration }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [wifiBars, setWifiBars] = useState(3);
     const [duration, setDuration] = useState(0);
@@ -101,12 +101,11 @@ export const ConversationAudio = ({ id , audioUrl }) => {
         >
                 <audio 
                     ref={audioRef} 
-                    src={audioUrl} 
+                    src={audioURL} 
                     preload="auto" 
                     onEnded={() => setIsPlaying(false)}
                     onLoadedMetadata={() => {
-                        setDuration(audioRef.current.duration);
-                        console.log(audioRef.current.duration);
+                        setDuration(audioDuration ? audioDuration : audioRef.current.duration);
                     }}
                     onTimeUpdate={() => {
                         setPosition(audioRef.current.currentTime);

@@ -92,16 +92,18 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
     };
 
 
-    const handleRecordClick = (recording, recordURL) => {
+    const handleRecordClick = (recording, recordURL, recordDuration) => {
       if (recording) {
         setWasRecording(true);  // Update wasRecording state when recording starts
       } else if (!recording && wasRecording && recordURL) {
         // Only add the message if the state has transitioned from recording to stop
+        console.log('recordURL', recordURL)
         const newMessage = {
           sender: 'user',
           text: '[语音消息]',
           mode: 'audio',
           audioURL: recordURL,
+          audioDuration: recordDuration,
         };
         
         setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -171,7 +173,8 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
               {message.mode === 'audio' && (
                 <ConversationAudio
                   id={index} 
-                  audioUrl={message.audioURL}
+                  audioURL={message.audioURL}
+                  audioDuration={message.audioDuration}
                 />
               )}
               <Typography variant="body2">{message.text}</Typography>

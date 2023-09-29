@@ -16,6 +16,10 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
     const [recorder, setRecorder] = useState(null);
     const [stream, setStream] = useState(null);
     const [recording, setRecording] = useState(false);
+    const [startTime, setStartTime] = useState(0);
+    const [endTime, setEndTime] = useState(0);
+    const [recordDuration, setRecordDuration] = useState(0);
+
 
 
     const boxRef = useRef(null); // Create a ref to attach to the Box
@@ -36,6 +40,7 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
         const blob = new Blob(chunksRef.current, { type: 'audio/webm;codecs=opus' });
         const url = URL.createObjectURL(blob);
         setRecordAudioURL(url);
+        console.log(url);
         chunksRef.current = [];  // Clear the chunks
         setRecording(false);
       };
@@ -69,14 +74,16 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
 
   const handleRecordClick = () => {
     if (!recording) {
+      setStartTime(Date.now());
       startRecording();
     } else {
+      setRecordDuration((Date.now() - startTime) / 1000);
       stopRecording();
     }
   };
   
   useEffect(() => {
-    handleRecordClickOverride(recording, recordAudioURL);
+    handleRecordClickOverride(recording, recordAudioURL, recordDuration);
   }, [recording]);
 
   useEffect(() => {
