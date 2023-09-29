@@ -8,11 +8,52 @@ import { CustomSnackbar } from '../message/custom-snackbar';
 export const RecordCard = ({ handleRecordClickOverride }) => {
     const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
     const [anchorEl, setAnchorEl] = useState(null); 
-    const [selectedMic, setSelectedMic] = useState(null);  
-    const [recording, setRecording] = useState(false); 
+    const [selectedMic, setSelectedMic] = useState(null);
+    const [selectedMicId, setSelectedMicId] = useState(null);
+    const [recordAudioURL, setRecordAudioURL] = useState(null);
     const [mics, setMics] = useState([]);  
+    const [micIDs, setMicIDs] = useState([]);
+    const [recorder, setRecorder] = useState(null);
+    const [stream, setStream] = useState(null);
+    const [recording, setRecording] = useState(false);
+
 
     const boxRef = useRef(null); // Create a ref to attach to the Box
+    const chunksRef = useRef([]);
+
+    const startRecording = async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true , deviceId: selectedMicId});
+      setStream(stream);
+
+      const recorder = new MediaRecorder(stream);
+      setRecorder(recorder);
+
+      recorder.ondataavailable = (e) => {
+        chunksRef.current.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        const blob = new Blob(chunksRef.current, { type: 'audio/webm;codecs=opus' });
+        const url = URL.createObjectURL(blob);
+        setRecordAudioURL(url);
+        chunksRef.current = [];  // Clear the chunks
+        setRecording(false);
+      };
+  
+      recorder.start();
+      setRecorder(recorder);
+      setRecording(true);
+    };
+
+    const stopRecording = () => {
+      if (recorder) {
+        recorder.stop();
+        stream.getTracks().forEach((track) => track.stop());
+        setStream(null);
+      }
+    };
+
+
     
     const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,19 +63,21 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
     setAnchorEl(null);
     if (item){
         setSelectedMic(item);
+        setSelectedMicId(micIDs[mics.indexOf(item)]);
     }
   };
 
   const handleRecordClick = () => {
-    if (handleRecordClickOverride) {
-      // Use the overridden function if provided
-      handleRecordClickOverride(recording, setRecording);
+    if (!recording) {
+      startRecording();
     } else {
-      // Default implementation
-      setRecording(!recording);
-      // ... (rest of your existing code)
+      stopRecording();
     }
   };
+  
+  useEffect(() => {
+    handleRecordClickOverride(recording, recordAudioURL);
+  }, [recording]);
 
   useEffect(() => {
     handleRecordRequest();
@@ -54,8 +97,11 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
       const audioDevices = devices.filter(device => device.kind === 'audioinput');
       // Get the device names
       const audioDeviceNames = audioDevices.map(device => device.label);
+      // Get the device IDs
+      const audioDeviceIDs = audioDevices.map(device => device.deviceId);
       // Set the state variable
       setMics(audioDeviceNames);
+      setMicIDs(audioDeviceIDs);
     })
     .catch(error => {
       console.error("Permission denied or no audio device found", error);
@@ -66,6 +112,7 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
   return (
     <Box>
     <Card sx={{ position: 'relative', p: 2}}>
+      <CustomSnackbar message={snackbarConfig.message} type={snackbarConfig.type} />
       <Typography variant="body2" sx={{ color: 'text.secondary', p: 1, alignItems: 'left' }}>
           选择麦克风
       </Typography>

@@ -46,4 +46,16 @@ export const voiceAvatarMap = {
 
   export const default_response = {
     '派蒙': '/assets/audio/default_response_paimon.wav',
+    '可莉': '/assets/audio/default_response_paimon.wav',
+    '甘雨': '/assets/audio/default_response_paimon.wav',
+    '刻晴': '/assets/audio/default_response_paimon.wav',
+    '申鹤': '/assets/audio/default_response_paimon.wav',
+    '芭芭拉': '/assets/audio/default_response_paimon.wav',
+    '八重神子': '/assets/audio/default_response_paimon.wav',
+    '胡桃': '/assets/audio/default_response_paimon.wav',
+    '雷电将军': '/assets/audio/default_response_paimon.wav',
+    '纳西妲': '/assets/audio/default_response_paimon.wav',
+    '神里绫华': '/assets/audio/default_response_paimon.wav',
+    '夜兰': '/assets/audio/default_response_paimon.wav',
+    '优菈': '/assets/audio/default_response_paimon.wav'
   }

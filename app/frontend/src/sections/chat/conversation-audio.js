@@ -42,10 +42,12 @@ export const ConversationAudio = ({ id , audioUrl }) => {
             setWifiBars((prevWifiBars) => (prevWifiBars === 3 ? 1 : prevWifiBars + 1));
           }, 500);
         } else {
+          setWifiBars(3);
           clearInterval(intervalId);
         }
     
         return () => {
+          setWifiBars(3);
           clearInterval(intervalId);
         };
       }, [isPlaying]);
@@ -104,6 +106,7 @@ export const ConversationAudio = ({ id , audioUrl }) => {
                     onEnded={() => setIsPlaying(false)}
                     onLoadedMetadata={() => {
                         setDuration(audioRef.current.duration);
+                        console.log(audioRef.current.duration);
                     }}
                     onTimeUpdate={() => {
                         setPosition(audioRef.current.currentTime);
@@ -119,20 +122,7 @@ export const ConversationAudio = ({ id , audioUrl }) => {
                         onClick={handlePlayPauseClick} // Move onClick here
                 >
                     {getWifiIcon()}
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center'}}>
-                    <Stack sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                width: '100%'
-                            }}
-                        >
-                            <TinyText>{formatDuration(Math.round(duration))}</TinyText>
-                        </Box>
-                    </Stack>
+                    <TinyText>{formatDuration(Math.ceil(duration))}</TinyText>
                 </Box>
             </Box>
             <Divider sx={{ mt:1, width: '100%' }} />  {/* Add Divider here */}

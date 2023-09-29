@@ -15,7 +15,7 @@ import { voiceAvatarMap } from '../voices/constants';
 export const ConversationCard = ({ messages, setMessages, selectedCharacter }) => {
     const [inputValue, setInputValue] = useState('');  // State to keep track of input value
     const [inputMode, setInputMode] = useState('text');  // State to track input mode
-    const [recording, setRecording] = useState(false);  // State to track recording status
+    const [wasRecording, setWasRecording] = useState(false);  // State variable to keep track of previous recording state
     const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
 
     const handleInputChange = (event) => {
@@ -69,14 +69,12 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
           if (response_tts.ok) {
             const audioBlob = await response_tts.blob();
             const response_audio = URL.createObjectURL(audioBlob);
-            
-            console.log('audio_path', response_audio)
-            
+                        
             const botMessage = {
               sender: responseData.character || 'Bot',  // 此处需要确定后端返回的角色字段名
               text: responseData.response,
               mode: responseData.mode || 'audio', 
-              response_audio: response_audio, // 此处需要确定后端返回的模式字段名
+              audioURL: response_audio, // 此处需要确定后端返回的模式字段名
             };
             
             setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -93,19 +91,27 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
   
     };
 
-    const handleRecordClick = (recording, setRecording) => {
+
+    const handleRecordClick = (recording, recordURL) => {
       if (recording) {
+        setWasRecording(true);  // Update wasRecording state when recording starts
+      } else if (!recording && wasRecording && recordURL) {
+        // Only add the message if the state has transitioned from recording to stop
         const newMessage = {
           sender: 'user',
-          text:'[语音消息]',
+          text: '[语音消息]',
           mode: 'audio',
+          audioURL: recordURL,
         };
-    
-        setMessages([...messages, newMessage]);
+        
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setWasRecording(false);  // Reset for the next recording cycle
       }
-
-      setRecording(!recording);
+      else {
+        setWasRecording(false);  // Reset for the next recording cycle
+      }
     };
+
   
     const handleNewConvClick = () => {
         // Handle new conversation button click
@@ -126,8 +132,9 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
               variant="outlined"
               edge="end"
               onClick={handleNewConvClick}
-              borderColor="success.main"
-              sx={{borderRadius: '15px', border: '2px solid', borderColor: 'success.main', color: 'success.main'}}
+              bordercolor="success.main"
+              sx={{borderRadius: '15px', border: '2px solid', 
+              color: 'success.main', mb: 2,}}
             >
               <NewConvIcon />
               <Typography variant="body2" sx={{fontWeight:'bold'}}>新对话</Typography>
@@ -164,7 +171,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
               {message.mode === 'audio' && (
                 <ConversationAudio
                   id={index} 
-                  audioUrl={message.response_audio}
+                  audioUrl={message.audioURL}
                 />
               )}
               <Typography variant="body2">{message.text}</Typography>
@@ -210,7 +217,6 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
 
       {inputMode === 'text' && (
         <OutlinedInput
-        defaultValue=""
         value={inputValue}
         onChange={handleInputChange}
         fullWidth

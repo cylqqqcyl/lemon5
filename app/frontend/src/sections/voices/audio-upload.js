@@ -36,9 +36,8 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
 
   };
   
-  const handleRecordClick = (recording, setRecording) => {
-    setRecording(!recording);
-    if (recording) {
+  const handleRecordClick = (recording, audioURL) => {
+    if (!recording) { // recording is updated before the override function is called
       setInputAudio('录制音频');
       setAudioSource('录制音频');
       setAudioInput('录制音频');
