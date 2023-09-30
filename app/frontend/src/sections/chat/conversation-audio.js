@@ -13,7 +13,7 @@ const TinyText = styled(Typography)({
     letterSpacing: 0.2,
 });
 
-export const ConversationAudio = ({ id , audioUrl }) => {
+export const ConversationAudio = ({ id , audioURL, audioDuration }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [wifiBars, setWifiBars] = useState(3);
     const [duration, setDuration] = useState(0);
@@ -42,10 +42,12 @@ export const ConversationAudio = ({ id , audioUrl }) => {
             setWifiBars((prevWifiBars) => (prevWifiBars === 3 ? 1 : prevWifiBars + 1));
           }, 500);
         } else {
+          setWifiBars(3);
           clearInterval(intervalId);
         }
     
         return () => {
+          setWifiBars(3);
           clearInterval(intervalId);
         };
       }, [isPlaying]);
@@ -99,11 +101,11 @@ export const ConversationAudio = ({ id , audioUrl }) => {
         >
                 <audio 
                     ref={audioRef} 
-                    src={audioUrl} 
+                    src={audioURL} 
                     preload="auto" 
                     onEnded={() => setIsPlaying(false)}
                     onLoadedMetadata={() => {
-                        setDuration(audioRef.current.duration);
+                        setDuration(audioDuration ? audioDuration : audioRef.current.duration);
                     }}
                     onTimeUpdate={() => {
                         setPosition(audioRef.current.currentTime);
@@ -119,20 +121,7 @@ export const ConversationAudio = ({ id , audioUrl }) => {
                         onClick={handlePlayPauseClick} // Move onClick here
                 >
                     {getWifiIcon()}
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center'}}>
-                    <Stack sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                width: '100%'
-                            }}
-                        >
-                            <TinyText>{formatDuration(Math.round(duration))}</TinyText>
-                        </Box>
-                    </Stack>
+                    <TinyText>{formatDuration(Math.ceil(duration))}</TinyText>
                 </Box>
             </Box>
             <Divider sx={{ mt:1, width: '100%' }} />  {/* Add Divider here */}

@@ -18,6 +18,8 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
   const [audioSource, setAudioSource] = useState(null); 
   const [choseUpload, setChoseUpload] = useState(false);
   const [choseRecord, setChoseRecord] = useState(false);
+  const [recordURL, setRecordURL] = useState(null);
+  const [recordDuration, setRecordDuration] = useState(0);
 
   const fileInputRef = useRef(null); // Create a ref to the file input element
 
@@ -36,12 +38,13 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
 
   };
   
-  const handleRecordClick = (recording, setRecording) => {
-    setRecording(!recording);
-    if (recording) {
+  const handleRecordClick = (recording, audioURL, duration) => {
+    if (!recording && audioURL) {
       setInputAudio('录制音频');
       setAudioSource('录制音频');
       setAudioInput('录制音频');
+      setRecordURL(audioURL);
+      setRecordDuration(duration);
       setChoseRecord(false);
       setChangeAudioSelected(false);
     }
@@ -99,8 +102,8 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
       </Box>
       <Collapse in={expanded}>
         {inputAudio && !choseUpload && !choseRecord && !changeAudioSelected &&
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <AudioCard source={audioSource} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+          <AudioCard text={audioSource} audioURL={recordURL} audioDuration={recordDuration} />
           <Typography variant="body1" onClick={handleChangeClick}
           sx={{ color: 'info', mt:2, fontWeight: 'bold', cursor: 'pointer' }}>
                   更换音频

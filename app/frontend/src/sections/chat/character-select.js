@@ -3,10 +3,9 @@ import { Box, Button, Menu, MenuItem, Card, Avatar, Typography  } from '@mui/mat
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import { voiceAvatarMap } from '../voices/constants';
 
-export const CharacterSelect = ({ characters, onCharacterSelected }) => {
+export const CharacterSelect = ({ characters, selectedCharacter, onCharacterSelected }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const boxRef = React.useRef(null);
-  const [localSelectedCharacter, setLocalSelectedCharacter] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -15,7 +14,6 @@ export const CharacterSelect = ({ characters, onCharacterSelected }) => {
   const handleClose = (item) => {
     setAnchorEl(null);
     if (item) {
-        setLocalSelectedCharacter(item);
         onCharacterSelected(item);  // Notify the parent component
     }
   };
@@ -32,12 +30,12 @@ export const CharacterSelect = ({ characters, onCharacterSelected }) => {
             endIcon={<UnfoldMoreIcon />}
             sx={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'neutral.100'}}
         >
-          {localSelectedCharacter ? (
+          {selectedCharacter ? (
             <>
               <Avatar sx={{ height: 45, width: 45, bgcolor: 'primary.main' }}
-                      src={voiceAvatarMap[localSelectedCharacter]} />
+                      src={voiceAvatarMap[selectedCharacter]} />
               <Typography variant="h6" sx={{ ml: 2, color: 'info.main' }}>
-                {localSelectedCharacter}
+                {selectedCharacter}
               </Typography>
             </>
           ) : (
@@ -54,7 +52,7 @@ export const CharacterSelect = ({ characters, onCharacterSelected }) => {
         >
           {characters && characters.map((item, index) => (
             <MenuItem key={index} onClick={() => handleClose(item)}
-                      sx={{ backgroundColor: item === localSelectedCharacter ? 'primary.lightest' : 'inherit',
+                      sx={{ backgroundColor: item === selectedCharacter ? 'primary.lightest' : 'inherit',
                             color: 'inherit',
                             '&:hover': { backgroundColor: 'primary.light' }}}
             >

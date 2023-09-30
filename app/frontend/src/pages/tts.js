@@ -53,14 +53,14 @@ const Page = () => {
   
       if (response.ok) {
         const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        console.log('audio_path', audioUrl)
+        const audioURL = URL.createObjectURL(audioBlob);
+        console.log('audio_path', audioURL)
         
         const newCard = {
           id: Date.now(), // 使用时间戳作为 id 可能更好
           voice: voiceCardSelected,
           text: textInput,
-          audioUrl: audioUrl // 将音频 URL 保存到卡片中
+          audioURL: audioURL // 将音频 URL 保存到卡片中
         };
   
         setGeneratedCards([newCard, ...generatedCards]);

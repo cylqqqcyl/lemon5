@@ -84,7 +84,7 @@ export const Layout = (props) => {
             }
           }}
         >
-          <SoundWaveBox sx={{ p: 3 }}>
+          <SoundWaveBox sx={{ }}>
             <Typography
               align="center"
               color="inherit"

@@ -16,14 +16,16 @@ import { voices as characters , default_response} from 'src/sections/voices/cons
 const Page = () => {
 
   const [messages, setMessages] = useState([
-    { sender: '派蒙', text: '你好呀！我是你的人工智能小助手，很高兴见到你，欢迎问我任何问题。', mode: 'audio' ,response_audio:  default_response['派蒙'] },
+    { sender: '派蒙', text: '你好呀！我是你的人工智能小助手，很高兴见到你，欢迎问我任何问题。', mode: 'audio' ,audioURL:  default_response['派蒙'] },
     // Add more messages as needed
   ]);
   const [selectedCharacter, setSelectedCharacter] = useState('派蒙');  // 默认为派蒙
 
   const handleCharacterSelected = (characterName) => {
-    console.log("Selected character:", characterName);  // 打印选中的角色
     setSelectedCharacter(characterName);
+    setMessages([ // Reset messages
+      { sender: characterName, text: '你好呀！我是你的人工智能小助手，很高兴见到你，欢迎问我任何问题。', mode: 'audio' ,audioURL:  default_response[characterName] },
+    ]);
   };
 
   return(
@@ -75,7 +77,7 @@ const Page = () => {
               </Stack>
             </Stack>
           </Stack>
-          <CharacterSelect characters={characters} onCharacterSelected={setSelectedCharacter} />
+          <CharacterSelect characters={characters} selectedCharacter={selectedCharacter} onCharacterSelected={handleCharacterSelected} />
           <ConversationCard messages={messages} setMessages={setMessages} 
           selectedCharacter={selectedCharacter} />
         </Stack>
