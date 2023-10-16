@@ -76,7 +76,8 @@ const theme = useTheme(); // Access the theme object
           </Box>
 
 
-          <Typography variant="h1" gutterBottom
+          <Typography variant="h1" 
+          gutterBottom
             sx={{
               background: `linear-gradient(270deg, 
                 ${theme.palette.neutral[500]}, ${theme.palette.neutral[50]}, ${theme.palette.neutral[800]})`,
@@ -100,24 +101,31 @@ const theme = useTheme(); // Access the theme object
           >
             欢迎来到 Lemon5 AI语音平台
           </Typography>
-          <Stack direction="row" spacing={2} sx={{ mt:5 ,width: '50%', justifyContent: 'center' }}>
-            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+          <Stack direction="row" 
+          spacing={2} sx={{ mt:5 ,width: '50%', justifyContent: 'center' }}>
+            <Box display="flex" 
+            flexDirection="column" alignItems="center" justifyContent="center"
             sx={{ width: '100%'}}>
-            <Button variant="contained" color="info" onClick={() => navigateTo('/tts')} 
+            <Button variant="contained" 
+            color="info" onClick={() => navigateTo('/tts')} 
             startIcon={<TextBubbleIcon style={{ width: '24px', height: '24px' }} />}>
                 文本转语音
               </Button>
             </Box>
-            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+            <Box display="flex" 
+            flexDirection="column" alignItems="center" justifyContent="center"
             sx={{ width: '100%'}}>
-            <Button variant="contained" color="info" onClick={() => navigateTo('/vc')}
+            <Button variant="contained" 
+            color="info" onClick={() => navigateTo('/vc')}
             startIcon={<ConverseIcon style={{ width: '24px', height: '24px' }} />}>
                 语音转换
               </Button>
             </Box>
-            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+            <Box display="flex" 
+            flexDirection="column" alignItems="center" justifyContent="center"
             sx={{ width: '100%'}}>
-            <Button variant="contained" color="info" onClick={() => navigateTo('/chat')}
+            <Button variant="contained" 
+            color="info" onClick={() => navigateTo('/chat')}
             startIcon={<ChatIcon style={{ width: '24px', height: '24px' }} />}>
                 语音对话
               </Button>
