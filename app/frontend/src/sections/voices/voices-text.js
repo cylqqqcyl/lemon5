@@ -95,7 +95,7 @@ const handleMenuClose = (item) => {
       defaultValue={sdpValue} onChange={setSdpValue} />
       <ParameterCard description="感情" min={0.2} max={1.1} step={0.1}
       defaultValue={emotionValue} onChange={setEmotionValue} />
-      <ParameterCard description="音素长度" min={0.6} max={1.4} step={1}
+      <ParameterCard description="音素长度" min={0.1} max={1} step={0.1}
       defaultValue={lengthValue} onChange={setLengthValue} />
       <ParameterCard description="语速" min={0.6} max={1.9} step={0.1}
       defaultValue={speedValue} onChange={setSpeedValue} />
