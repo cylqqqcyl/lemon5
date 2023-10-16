@@ -1,0 +1,18 @@
+{
+    "builds": [
+      {
+        "src": "app/frontend/package.json",
+        "use": "@vercel/react",
+        "config": {
+          "distDir": "build"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "app/frontend/$1"
+      }
+    ]
+}
+  
