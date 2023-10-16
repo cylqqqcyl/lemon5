@@ -2,17 +2,11 @@
     "builds": [
       {
         "src": "app/frontend/package.json",
-        "use": "@vercel/react",
+        "use": "@vercel/next",
         "config": {
-          "distDir": "build"
+          "distDir": ".next"
         }
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "app/frontend/$1"
-      }
     ]
-}
+  }
   
