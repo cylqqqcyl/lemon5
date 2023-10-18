@@ -13,6 +13,7 @@ const port = 3001;
 
 app.use(cors({
   origin: 'https://6a4e5b50.r10.cpolar.top', // 更改为你的内网穿透域名
+  // origin: 'http://localhost:3001'
 }));  // production
 
 // app.use(cors()); // development
