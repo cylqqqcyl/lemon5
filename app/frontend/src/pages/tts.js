@@ -44,8 +44,8 @@ const Page = () => {
       // });
 
       const response = await fetch(
-      `https://3b7259cf.r16.cpolar.top/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
-      // `http://localhost:3001/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+      // `https://3b7259cf.r16.cpolar.top/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+      `http://localhost:3001/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
       , {
         method: 'GET'
       });

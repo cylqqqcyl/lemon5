@@ -9,8 +9,8 @@ import NewConvIcon from '@mui/icons-material/Add';
 import { ConversationAudio } from './conversation-audio';
 import { RecordCard } from '../voices/record-card';
 import { CustomSnackbar } from '../message/custom-snackbar';
-
 import { voiceAvatarMap } from '../voices/constants';
+
 
 export const ConversationCard = ({ messages, setMessages, selectedCharacter }) => {
     const [inputValue, setInputValue] = useState('');  // State to keep track of input value
@@ -38,43 +38,48 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
   
       // 向后端发送请求
       try {
-        const response = await fetch('https://3023c993.r9.cpolar.top/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            prompt: inputValue,
-            character: selectedCharacter
-          }),
-        });
-        console.log('selectedCharacter', selectedCharacter)
-        
-
+        const response = await fetch('http://localhost:5000/chat', { // Adjust the protocol and port as necessary
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+              prompt: inputValue,
+              character: selectedCharacter
+            }),
+        })    
         const responseData = await response.json();
+        console.log('responseData', responseData);
         const noiseValue = 0.5
         const sdpValue = 0.2
         const noisewValue = 0.9
         const formatValue = 'wav'
         const lengthValue = 1
-        if (responseData && responseData.response) {
+        if (responseData ) {
 
-          console.log('response', responseData.response)
+          // console.log('response', responseData.response)
 
-          const response_tts = await fetch(
-            `https://3b7259cf.r16.cpolar.top/genshinAPI?speaker=${selectedCharacter}&text=${responseData.response}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
-            , {
-              method: 'GET'
-            });
+          // const response_tts = await fetch(
+          //   `https://3b7259cf.r16.cpolar.top/genshinAPI?speaker=${selectedCharacter}&text=${responseData.response}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+          //   , {
+          //     method: 'GET'
+          //   });
+          const response_tts = response
           if (response_tts.ok) {
-            const audioBlob = await response_tts.blob();
+            const audioResponse = await fetch(`http://localhost:5000/audio/${responseData.audioURL}`,
+            {
+              method: 'GET',
+            });
+            console.log('audioResponse', audioResponse)
+            const audioBlob = await audioResponse.blob();
             const response_audio = URL.createObjectURL(audioBlob);
                         
             const botMessage = {
               sender: responseData.character || 'Bot',  // 此处需要确定后端返回的角色字段名
               text: responseData.response,
               mode: responseData.mode || 'audio', 
-              audioURL: response_audio, // 此处需要确定后端返回的模式字段名
+              // audioURL: response_audio, // 此处需要确定后端返回的模式字段名
+              audioURL: response_audio
             };
             
             setMessages((prevMessages) => [...prevMessages, botMessage]);
