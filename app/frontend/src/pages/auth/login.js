@@ -46,7 +46,11 @@ const Page = () => {
       setSnackbarConfig({ message: '', type: '' });
       try {
         await auth.signIn(values.email, values.password);
-        router.push('/');
+        setSnackbarConfig({ message: '登录成功', type: 'success' });
+        setTimeout(() => {
+          router.push('/');
+        }
+        , 500); // 1s
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -127,17 +131,14 @@ const Page = () => {
                   />
                 </Stack>
                 <FormHelperText sx={{ mt: 1 }}>
-                  点击跳过即可跳过登录
-                </FormHelperText>
-                {formik.errors.submit && (
-                  <Typography
-                    color="error"
-                    sx={{ mt: 3 }}
-                    variant="body2"
+                  <Link
+                    component={NextLink}
+                    href="/auth/register"
+                    variant="subtitle1"
                   >
-                    {formik.errors.submit}
-                  </Typography>
-                )}
+                    注册账号
+                  </Link>
+                </FormHelperText>
                 <Button
                   fullWidth
                   size="large"
@@ -169,6 +170,7 @@ const Page = () => {
           </div>
         </Box>
       </Box>
+      {snackbarConfig.message && <CustomSnackbar message={snackbarConfig.message} type={snackbarConfig.type} />}
     </>
   );
 };

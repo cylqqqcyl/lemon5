@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState}from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,6 +10,7 @@ import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 import { CustomSnackbar } from 'src/sections/message/custom-snackbar'; 
 
 const Page = () => {
+  const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
   const router = useRouter();
   const auth = useAuth();
   const formik = useFormik({
@@ -22,23 +23,27 @@ const Page = () => {
     validationSchema: Yup.object({
       email: Yup
         .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required'),
+        .email('必须为合法邮箱地址')
+        .max(50)
+        .required('需要输入邮箱'),
       name: Yup
         .string()
-        .max(255)
-        .required('Name is required'),
+        .max(50)
+        .required('需要输入用户名'),
       password: Yup
         .string()
-        .max(255)
-        .required('Password is required')
+        .max(80)
+        .required('需要输入密码')
     }),
     onSubmit: async (values, helpers) => {
       setSnackbarConfig({ message: '', type: '' });
       try {
         await auth.signUp(values.email, values.name, values.password);
-        router.push('/');
+        setSnackbarConfig({ message: '注册成功', type: 'success' });
+        setTimeout(() => {
+        router.push('/auth/login');
+        }
+        , 500);
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -52,7 +57,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Register | Devias Kit
+        Lemon5 | 注册
         </title>
       </Head>
       <Box
@@ -77,13 +82,13 @@ const Page = () => {
               sx={{ mb: 3 }}
             >
               <Typography variant="h4">
-                Register
+                注册
               </Typography>
               <Typography
                 color="text.secondary"
                 variant="body2"
               >
-                Already have an account?
+                已有账号?
                 &nbsp;
                 <Link
                   component={NextLink}
@@ -91,7 +96,7 @@ const Page = () => {
                   underline="hover"
                   variant="subtitle2"
                 >
-                  Log in
+                  登录
                 </Link>
               </Typography>
             </Stack>
@@ -104,7 +109,7 @@ const Page = () => {
                   error={!!(formik.touched.name && formik.errors.name)}
                   fullWidth
                   helperText={formik.touched.name && formik.errors.name}
-                  label="Name"
+                  label="用户名"
                   name="name"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
@@ -114,7 +119,7 @@ const Page = () => {
                   error={!!(formik.touched.email && formik.errors.email)}
                   fullWidth
                   helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
+                  label="邮箱"
                   name="email"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
@@ -125,7 +130,7 @@ const Page = () => {
                   error={!!(formik.touched.password && formik.errors.password)}
                   fullWidth
                   helperText={formik.touched.password && formik.errors.password}
-                  label="Password"
+                  label="密码"
                   name="password"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
@@ -133,15 +138,6 @@ const Page = () => {
                   value={formik.values.password}
                 />
               </Stack>
-              {formik.errors.submit && (
-                <Typography
-                  color="error"
-                  sx={{ mt: 3 }}
-                  variant="body2"
-                >
-                  {formik.errors.submit}
-                </Typography>
-              )}
               <Button
                 fullWidth
                 size="large"
@@ -149,12 +145,13 @@ const Page = () => {
                 type="submit"
                 variant="contained"
               >
-                Continue
+                注册账号
               </Button>
             </form>
           </div>
         </Box>
       </Box>
+      {snackbarConfig.message&&<CustomSnackbar message={snackbarConfig.message} type={snackbarConfig.type} />}
     </>
   );
 };

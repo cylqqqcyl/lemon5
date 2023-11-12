@@ -128,32 +128,66 @@ export const AuthProvider = (props) => {
   };
 
   const signIn = async (email, password) => {
-    if (email !== 'login@lemon5.io' || password !== 'lemon5') {
-      throw new Error('请检测您的账号和密码');
-    }
-
     try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
+      }
+  
+      const user = {
+        id: '5e86809283e28b96d2d38537',
+        avatar: '/assets/avatars/avatar-anika-visser.png',
+        name: 'Anika Visser',
+        email: 'anika.visser@devias.io'
+      };
+  
+      dispatch({
+        type: HANDLERS.SIGN_IN,
+        payload: user
+      });
+    } catch (error) {
+      throw new Error(error.message);
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
   };
 
   const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          name: name,
+          password: password
+        })
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
+      }
+  
+      const data = await response.json();
+      return data; // This would be the response from your backend, e.g., a success message or user data
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
+  
 
   const signOut = () => {
     dispatch({
