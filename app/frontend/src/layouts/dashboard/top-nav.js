@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UserIcon from '@mui/icons-material/Person';
+import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import {
   Avatar,
   Badge,
@@ -12,6 +13,7 @@ import {
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
 import { useRouter } from 'next/router';
@@ -29,7 +31,7 @@ export const TopNav = (props) => {
 
   const handleNotificationClick = () => {
     setHasNotification(false); // 点击后设定没有通知
-    router.push('/logs');
+    
   };
 
   return (
@@ -37,21 +39,28 @@ export const TopNav = (props) => {
       <Box
         component="header"
         sx={{
-          backgroundColor: 'transparent',
-          position: 'absolute', // Change from 'sticky' to 'absolute'
-          right: 0, // Add this to align the header to the right
+          backdropFilter: 'blur(6px)',
+          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.1),
+          position: 'sticky',
+          left: {
+            lg: `${SIDE_NAV_WIDTH}px`
+          },
           top: 0,
-          width: 92,
+          width: 
+          {
+            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+          },
           zIndex: (theme) => theme.zIndex.appBar
         }}
       >
         <Stack
           alignItems="center"
           direction="row"
-          justifyContent="flex-end" // Change to 'flex-end' to align items to the right
+          justifyContent="space-between" // Change to 'flex-end' to align items to the right
           spacing={2}
           sx={{
             minHeight: TOP_NAV_HEIGHT,
+            width: '100%',
             px: 0,
             pr:1
           }}
@@ -60,6 +69,25 @@ export const TopNav = (props) => {
             alignItems="center"
             direction="row"
             spacing={2}
+            sx={{
+              ml: 1,
+            }}
+          >
+          {!lgUp && (
+              <IconButton onClick={onNavOpen}>
+                <SvgIcon fontSize="small">
+                  <Bars3Icon />
+                </SvgIcon>
+              </IconButton>
+            )}
+          </Stack>
+          <Stack
+            alignItems="center"
+            direction="row"
+            spacing={2}
+            sx={{
+              mr: 1,
+            }}
           >
             <Tooltip title="消息">
             <IconButton onClick={handleNotificationClick}>
