@@ -184,12 +184,30 @@ export const AuthProvider = (props) => {
   };
   
 
-  const signOut = () => {
-    window.sessionStorage.removeItem('authenticated');
-    window.sessionStorage.removeItem('user');
-    dispatch({
-      type: HANDLERS.SIGN_OUT
-    });
+  const signOut = async () => {
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
+      }
+
+      window.sessionStorage.removeItem('authenticated');
+      window.sessionStorage.removeItem('user');
+
+      dispatch({
+        type: HANDLERS.SIGN_OUT
+      });
+    }
+    catch (error) {
+      throw new Error(error.message);
+    }
   };
 
   return (

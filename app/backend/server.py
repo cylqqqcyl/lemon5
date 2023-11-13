@@ -156,9 +156,13 @@ def chat():
     data = request.json  # Get JSON data sent in the POST request
     prompt = data.get("prompt")
     character = data.get("character")
+    newConv = data.get("newConv")
 
     with open(f"sysprompts/{character}.txt", "r", encoding='utf-8') as f:
         sysprompt = f.read()
+
+    if newConv:
+        chat_history.clear()
 
     chat_history.append({"role": "user", "content": prompt})
     url = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" + get_access_token()
@@ -167,10 +171,10 @@ def chat():
     response = requests.request("POST", url, headers=headers, data=payload).json()
     print(response)
     chat_history.append({"role": "assistant", "content": response['result']})
+
+
     # tts
-    audio_file_path = tts_for_chat(response['result'])
-    path_parts = audio_file_path.split(os.sep)
-    audio_url = path_parts[-2] + "/" + path_parts[-1]
+    audio_url = tts_for_chat(response['result'],character)
     # Construct the response object
     bot_message = {
         "character": character,  # Replace with actual sender if available
@@ -193,24 +197,63 @@ def serve_audio(filename):
     )
 
 
-def tts_for_chat(text):
+def tts_for_chat(text,charactor):
     cache_dir = 'cache'
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
-    client = Client("https://modelscope.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/",
-                    output_dir=cache_dir)
-    result = client.predict(
-        text,  # str in 'Text' Textbox component
-        "Speaker",  # str (Option from: ['Speaker']) in 'Speaker' Dropdown component
-        0.2,  # int | float (numeric value between 0.1 and 1) in 'SDP/DP混合比' Slider component
-        1,  # int | float (numeric value between 0.1 and 1) in '感情调节' Slider component
-        0.3,  # int | float (numeric value between 0.1 and 1) in '音素长度' Slider component
-        1,  # int | float (numeric value between 0.1 and 2) in '生成长度' Slider component
-        fn_index=0
-    )
-    print("result:")
-    print(result[1])
-    return result[1]
+    if charactor == '丁真':
+        client = Client("https://modelscope.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/",
+                        output_dir=cache_dir)
+        result = client.predict(
+            text,  # str in 'Text' Textbox component
+            "Speaker",  # str (Option from: ['Speaker']) in 'Speaker' Dropdown component
+            0.2,  # int | float (numeric value between 0.1 and 1) in 'SDP/DP混合比' Slider component
+            1,  # int | float (numeric value between 0.1 and 1) in '感情调节' Slider component
+            0.3,  # int | float (numeric value between 0.1 and 1) in '音素长度' Slider component
+            1,  # int | float (numeric value between 0.1 and 2) in '生成长度' Slider component
+            fn_index=0
+        )
+        print("result:")
+        print(result[1])
+        dirname, filename = result[1].split('\\')[-2], result[1].split('\\')[-1]
+        newfilename = dirname + '.wav'
+        # move file one level up
+        os.rename(os.path.join('cache', dirname, filename), os.path.join('cache', newfilename))
+        # remove folder
+        os.rmdir(os.path.join('cache', dirname))
+        return newfilename
+    else:
+        # Define the API endpoint and parameters as per API documentation
+        api_url = 'http://genshinvoice.top/api'
+        params = {'speaker': charactor+"_ZH",
+                  'text': text,
+                  'format': 'wav',
+                  'language': 'ZH',
+                  'sdp': 0.2,
+                  'noise': 1,
+                  'noisew': 0.3,
+                  'length': 1
+                  }
+
+        # Make a request to the TTS API
+        response = requests.get(api_url, params=params)
+        if response.headers.get('Content-Type') == 'audio/wav':
+            # Generate a unique filename
+            filename = f"{uuid.uuid4()}.wav"
+            cache_dir = 'cache'
+            if not os.path.exists(cache_dir):
+                os.makedirs(cache_dir)
+
+            file_path = os.path.join(cache_dir, filename)
+
+            # Save the audio file
+            with open(file_path, 'wb') as audio_file:
+                audio_file.write(response.content)
+
+            # Return the filename to the frontend
+            return filename
+        else:
+            return jsonify({'error': 'Invalid content type received'}), 400
 
 
 
@@ -308,6 +351,14 @@ def login():
     else:
         return jsonify({'message': '用户名或密码错误'}), 401
 
+@app.route('/signout', methods=['POST'])
+def logout():
+    # clear cache
+    for filename in os.listdir('cache'):
+        os.remove(os.path.join('cache', filename))
+    # clear chat history
+    chat_history.clear()
+    return jsonify({'message': 'User logout successfully'}), 200
 
 if __name__ == "__main__":
     # with app.app_context():

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { Box, Button, Menu, MenuItem, Card, Avatar, Typography  } from '@mui/material';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
-import { voiceAvatarMap } from '../voices/constants';
 
 export const CharacterSelect = ({ characters, selectedCharacter, onCharacterSelected }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,9 +32,9 @@ export const CharacterSelect = ({ characters, selectedCharacter, onCharacterSele
           {selectedCharacter ? (
             <>
               <Avatar sx={{ height: 45, width: 45, bgcolor: 'primary.main' }}
-                      src={voiceAvatarMap[selectedCharacter]} />
+                      src={selectedCharacter.avatar}/>
               <Typography variant="h6" sx={{ ml: 2, color: 'info.main' }}>
-                {selectedCharacter}
+                {selectedCharacter.name}
               </Typography>
             </>
           ) : (
@@ -50,9 +49,9 @@ export const CharacterSelect = ({ characters, selectedCharacter, onCharacterSele
             onClose={() => handleClose(null)}
             PaperProps={{ style: { width: boxRef.current ? boxRef.current.offsetWidth : undefined } }}
         >
-          {characters && characters.map((item, index) => (
-            <MenuItem key={index} onClick={() => handleClose(item)}
-                      sx={{ backgroundColor: item === selectedCharacter ? 'primary.lightest' : 'inherit',
+          {characters && characters.map((character, index) => (
+            <MenuItem key={index} onClick={() => handleClose(character)}
+                      sx={{ backgroundColor: character.name === selectedCharacter ? 'primary.lightest' : 'inherit',
                             color: 'inherit',
                             '&:hover': { backgroundColor: 'primary.light' }}}
             >
@@ -62,10 +61,10 @@ export const CharacterSelect = ({ characters, selectedCharacter, onCharacterSele
                     width: 45,
                     mr: 2,
                   }}
-                  src={voiceAvatarMap[item]}
+                  src={character.avatar}
               />
               <Typography variant="h6" sx={{ color: 'inherit' }}>
-                {item}
+                {character.name}
               </Typography>
             </MenuItem>
           ))}

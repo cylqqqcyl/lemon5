@@ -9,7 +9,6 @@ import NewConvIcon from '@mui/icons-material/Add';
 import { ConversationAudio } from './conversation-audio';
 import { RecordCard } from '../voices/record-card';
 import { CustomSnackbar } from '../message/custom-snackbar';
-import { voiceAvatarMap } from '../voices/constants';
 
 
 export const ConversationCard = ({ messages, setMessages, selectedCharacter }) => {
@@ -21,6 +20,12 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
     const handleInputChange = (event) => {
         setInputValue(event.target.value);  // Update input value
     };
+
+    const handleKeyPress = (event) => {
+      if (event.key === 'Enter') {
+          handleSendClick();  // Call the send click handler if Enter key is pressed
+      }
+  };
 
     const handleSendClick = async () => {
       setSnackbarConfig({ message: '', type: '' });
@@ -45,7 +50,8 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
             },
             body: JSON.stringify({ 
               prompt: inputValue,
-              character: selectedCharacter
+              character: selectedCharacter.name,
+              newConv: messages.length <= 1 ? true : false,
             }),
         })    
         const responseData = await response.json();       
@@ -146,7 +152,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
           >
             {message.sender !== 'user' && (
               <Avatar sx={{ height: 45, width: 45, bgcolor: 'primary.main' }} 
-               src={voiceAvatarMap[message.sender]} />
+               src={selectedCharacter.avatar} />
             )}
             {message.sender === 'user' && (
               <Avatar sx={{ height: 45, width: 45, bgcolor: 'primary.main' }}>
@@ -213,6 +219,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
         <OutlinedInput
         value={inputValue}
         onChange={handleInputChange}
+        onKeyPress={handleKeyPress}
         fullWidth
         placeholder="发送信息"
         endAdornment={(
