@@ -79,7 +79,7 @@ const VoicesCard = ({voice, onClick, playingAudioRef, currentlyPlayingIndex, set
           <Typography variant="h6">{voice.name}</Typography>
           <Box sx={{ display: 'flex', gap: 1, pt: 1 }}>
             {voice.attributes.map((attr, i) => (
-              <Box>
+              <Box key={i}>
                 {/* Ensure this rendering logic matches your data structure */}
                 <WordPill color={attrMap[attr.element]}>{attr.element}</WordPill>
                 <WordPill color={attrMap[attr.style]}>{attr.style}</WordPill>
