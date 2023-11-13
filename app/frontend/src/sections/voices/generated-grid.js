@@ -11,7 +11,11 @@ export const GeneratedGrid = ({ generatedCards }) => {
           <AudioCard
             key={card.id}
             voice={card.voice}
-            text={card.text} 
+            text={card.text}
+            noise={card.noise}
+            noisew={card.noisew}
+            sdp={card.sdp}
+            length={card.length}
             audioURL={card.audioURL}
           />
         ))}

@@ -48,22 +48,8 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
               character: selectedCharacter
             }),
         })    
-        const responseData = await response.json();
-        console.log('responseData', responseData);
-        const noiseValue = 0.5
-        const sdpValue = 0.2
-        const noisewValue = 0.9
-        const formatValue = 'wav'
-        const lengthValue = 1
-        if (responseData ) {
-
-          // console.log('response', responseData.response)
-
-          // const response_tts = await fetch(
-          //   `https://3b7259cf.r16.cpolar.top/genshinAPI?speaker=${selectedCharacter}&text=${responseData.response}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
-          //   , {
-          //     method: 'GET'
-          //   });
+        const responseData = await response.json();       
+        if (responseData) {
           const response_tts = response
           if (response_tts.ok) {
             const audioResponse = await fetch(`http://localhost:5000/audio/${responseData.audioURL}`,

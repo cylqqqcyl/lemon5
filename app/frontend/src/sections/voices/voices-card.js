@@ -2,13 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Card, Typography, Avatar, Box, IconButton } from '@mui/material';
 import PlayIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseIcon from '@mui/icons-material/PauseCircleOutline';
-import { voices, statusMap, voiceAvatarMap, voiceAudioMap } from './constants';
 import { WordPill } from 'src/components/word-pill';
 
-const VoicesCard = ({ index, attributes, onClick, currentlyPlayingIndex, setCurrentlyPlayingIndex, playingAudioRef }) => {
-  const isPlaying = currentlyPlayingIndex === index; // Check if the card is playing
+const attrMap = {
+  '火': '#fcb98e',
+  '水': '#33d5eb',
+  '雷': '#d1a4f9',
+  '冰': '#9bfdfd',
+  '草': '#b2eb2b',
+  '无': '#242124',
+  default: 'primary'
+};
+
+
+const VoicesCard = ({voice, onClick, playingAudioRef, currentlyPlayingIndex, setCurrentlyPlayingIndex}) => {
   const [audio, setAudio] = useState(null);
-  const voicePath = voiceAudioMap[voices[index-1]];
+  const index = voice.id;
+  const isPlaying = currentlyPlayingIndex === index
+  
+  const handleAudioEnd = () => {
+        setCurrentlyPlayingIndex(null);  // Reset the playing index
+    };
+
 
   const handlePlayPauseClick = async (event) => {  // Make the function asynchronous
     event.stopPropagation();
@@ -30,7 +45,8 @@ const VoicesCard = ({ index, attributes, onClick, currentlyPlayingIndex, setCurr
         setCurrentlyPlayingIndex(index);
       }
     } else {
-      const newAudio = new Audio(voicePath);
+      const newAudio = new Audio(voice.audio);
+      newAudio.addEventListener('ended', handleAudioEnd);
       setAudio(newAudio);
       await newAudio.play();  // Wait for the audio to start playing
       playingAudioRef.current = newAudio;
@@ -43,6 +59,7 @@ const VoicesCard = ({ index, attributes, onClick, currentlyPlayingIndex, setCurr
   useEffect(() => {
     return () => {
       if (audio) {
+        audio.removeEventListener('ended', handleAudioEnd);
         audio.pause();
         setAudio(null);
       }
@@ -57,11 +74,17 @@ const VoicesCard = ({ index, attributes, onClick, currentlyPlayingIndex, setCurr
         {isPlaying ? <PauseIcon fontSize="inherit" /> : <PlayIcon fontSize="inherit" />}
       </IconButton>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar sx={{ height: 45, width: 45, bgcolor: isPlaying ? 'success.main' : 'primary.main' }} src={voiceAvatarMap[voices[index - 1]]} />
+        <Avatar sx={{ height: 45, width: 45, bgcolor: isPlaying ? 'success.main' : 'primary.main' }} src={voice.avatar} />
         <Box sx={{ marginLeft: 2 }}>
-          <Typography variant="h6">{voices[index - 1]}</Typography>
+          <Typography variant="h6">{voice.name}</Typography>
           <Box sx={{ display: 'flex', gap: 1, pt: 1 }}>
-            {Object.keys(attributes).map((key, i) => (<WordPill key={i} color={statusMap[key]}>{attributes[key]}</WordPill>))}
+            {voice.attributes.map((attr, i) => (
+              <Box>
+                {/* Ensure this rendering logic matches your data structure */}
+                <WordPill color={attrMap[attr.element]}>{attr.element}</WordPill>
+                <WordPill color={attrMap[attr.style]}>{attr.style}</WordPill>
+              </Box>
+            ))}
           </Box>
         </Box>
       </Box>

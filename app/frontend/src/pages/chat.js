@@ -11,7 +11,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import ChatIcon from '@heroicons/react/24/solid/SparklesIcon';
 import {CharacterSelect} from 'src/sections/chat/character-select';
 import {ConversationCard} from 'src/sections/chat/conversation-card';
-import { voices as characters , default_response} from 'src/sections/voices/constants';
+import { voices as characters } from 'src/sections/voices/constants';
 
 const Page = () => {
 

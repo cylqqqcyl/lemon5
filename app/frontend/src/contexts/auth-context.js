@@ -76,17 +76,13 @@ export const AuthProvider = (props) => {
 
     try {
       isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
+
     } catch (err) {
       console.error(err);
     }
 
     if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
+      const user = JSON.parse(window.sessionStorage.getItem('user'));
 
       dispatch({
         type: HANDLERS.INITIALIZE,
@@ -144,14 +140,13 @@ export const AuthProvider = (props) => {
         const data = await response.json();
         throw new Error(data.message);
       }
+
+      const data = await response.json();
+      const user = data.user;
+      window.sessionStorage.setItem('authenticated', 'true');
+      window.sessionStorage.setItem('user', JSON.stringify(user));
   
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
-  
+
       dispatch({
         type: HANDLERS.SIGN_IN,
         payload: user
@@ -190,6 +185,8 @@ export const AuthProvider = (props) => {
   
 
   const signOut = () => {
+    window.sessionStorage.removeItem('authenticated');
+    window.sessionStorage.removeItem('user');
     dispatch({
       type: HANDLERS.SIGN_OUT
     });

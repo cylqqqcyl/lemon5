@@ -43,7 +43,7 @@ export const AccountPopover = (props) => {
           color="text.secondary"
           variant="body2"
         >
-          Admin
+          {auth.user?auth.user:'Admin'}
         </Typography>
       </Box>
       <Divider />
