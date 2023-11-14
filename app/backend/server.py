@@ -1,9 +1,10 @@
 import os
-import io
+from datetime import datetime
 import pkg_resources
 import requests
 import json
-from flask import Flask, request, send_file, jsonify, send_from_directory, url_for
+from flask import Flask, request, send_file, jsonify
+from flask_socketio import SocketIO
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_cors import CORS, cross_origin
@@ -18,6 +19,7 @@ chat_history = [
 CACHE_DIR = pkg_resources.resource_filename(__name__, "cache")
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backend.db'
 db = SQLAlchemy(app)
@@ -62,63 +64,76 @@ def tts():
     noise = data.get('noise')
     noisew = data.get('noisew')
     length = data.get('length')
-    if speaker == '丁真':
-        cache_dir = 'cache'
-        if not os.path.exists(cache_dir):
-            os.makedirs(cache_dir)
-        client = Client("https://modelscope.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/",
-                        output_dir=cache_dir)
-        result = client.predict(
-            text,  # str in 'Text' Textbox component
-            "Speaker",  # str (Option from: ['Speaker']) in 'Speaker' Dropdown component
-            float(sdp),  # int | float (numeric value between 0.1 and 1) in 'SDP/DP混合比' Slider component
-            float(noise),  # int | float (numeric value between 0.1 and 1) in '感情调节' Slider component
-            float(noisew),  # int | float (numeric value between 0.1 and 1) in '音素长度' Slider component
-            float(length),  # int | float (numeric value between 0.1 and 2) in '生成长度' Slider component
-            fn_index=0
-        )
-        print("result:")
-        print(result[1])
-        dirname, filename = result[1].split('\\')[-2], result[1].split('\\')[-1]
-        newfilename = dirname + '.wav'
-        # move file one level up
-        os.rename(os.path.join('cache', dirname, filename), os.path.join('cache', newfilename))
-        # remove folder
-        os.rmdir(os.path.join('cache', dirname))
-        return jsonify({'filename': newfilename})
-    else:
-        # Define the API endpoint and parameters as per API documentation
-        api_url = 'http://genshinvoice.top/api'
-        params = {'speaker': speaker+"_ZH",
-                  'text': text,
-                  'format': format,
-                  'language': 'ZH',
-                  'sdp': sdp,
-                  'noise': noise,
-                  'noisew': noisew,
-                  'length': length
-                  }
-
-
-        # Make a request to the TTS API
-        response = requests.get(api_url, params=params)
-        if response.headers.get('Content-Type') == 'audio/wav':
-            # Generate a unique filename
-            filename = f"{uuid.uuid4()}.wav"
+    try:
+        if speaker == '丁真':
             cache_dir = 'cache'
             if not os.path.exists(cache_dir):
                 os.makedirs(cache_dir)
-
-            file_path = os.path.join(cache_dir, filename)
-
-            # Save the audio file
-            with open(file_path, 'wb') as audio_file:
-                audio_file.write(response.content)
-
-            # Return the filename to the frontend
-            return jsonify({'filename': filename})
+            client = Client("https://modelscope.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/",
+                            output_dir=cache_dir)
+            result = client.predict(
+                text,  # str in 'Text' Textbox component
+                "Speaker",  # str (Option from: ['Speaker']) in 'Speaker' Dropdown component
+                float(sdp),  # int | float (numeric value between 0.1 and 1) in 'SDP/DP混合比' Slider component
+                float(noise),  # int | float (numeric value between 0.1 and 1) in '感情调节' Slider component
+                float(noisew),  # int | float (numeric value between 0.1 and 1) in '音素长度' Slider component
+                float(length),  # int | float (numeric value between 0.1 and 2) in '生成长度' Slider component
+                fn_index=0
+            )
+            print("result:")
+            print(result[1])
+            dirname, filename = result[1].split('\\')[-2], result[1].split('\\')[-1]
+            newfilename = dirname + '.wav'
+            # move file one level up
+            os.rename(os.path.join('cache', dirname, filename), os.path.join('cache', newfilename))
+            # remove folder
+            os.rmdir(os.path.join('cache', dirname))
+            socketio.emit('notification', {'message': f'{speaker}语音合成完成',
+                                           'time': str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
+            return jsonify({'filename': newfilename})
         else:
-            return jsonify({'error': 'Invalid content type received'}), 400
+            # Define the API endpoint and parameters as per API documentation
+            api_url = 'http://genshinvoice.top/api'
+            params = {'speaker': speaker+"_ZH",
+                      'text': text,
+                      'format': format,
+                      'language': 'ZH',
+                      'sdp': sdp,
+                      'noise': noise,
+                      'noisew': noisew,
+                      'length': length
+                      }
+
+
+            # Make a request to the TTS API
+            response = requests.get(api_url, params=params)
+            if response.headers.get('Content-Type') == 'audio/wav':
+                # Generate a unique filename
+                filename = f"{uuid.uuid4()}.wav"
+                cache_dir = 'cache'
+                if not os.path.exists(cache_dir):
+                    os.makedirs(cache_dir)
+
+                file_path = os.path.join(cache_dir, filename)
+
+                # Save the audio file
+                with open(file_path, 'wb') as audio_file:
+                    audio_file.write(response.content)
+
+                socketio.emit('notification', {'message': f'{speaker}语音合成完成',
+                                               'time': str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
+                # Return the filename to the frontend
+                return jsonify({'filename': filename})
+            else:
+                socketio.emit('notification', {'message': f'{speaker}语音合成完成',
+                                               'time': str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
+                return jsonify({'error': 'Invalid content type received'}), 400
+    except Exception as e:
+        print(e)
+        # pass to front end with current time
+        socketio.emit('notification', {'message': f'{speaker}语音合成失败',
+                                       'time': str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
+        return jsonify({'error': 'Invalid content type received'}), 400
 
 
 
@@ -253,6 +268,8 @@ def tts_for_chat(text,charactor):
             # Return the filename to the frontend
             return filename
         else:
+            socketio.emit('notification', {'message': f'{charactor}语音合成失败',
+                                           'time': str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
             return jsonify({'error': 'Invalid content type received'}), 400
 
 
@@ -347,6 +364,8 @@ def login():
 
     user = User.query.filter_by(email=email, password=password).first()
     if user:
+        socketio.emit('notification', {'message': f'{user.name}登录成功',
+                                       'time': str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
         return jsonify({'user': user.name}), 200
     else:
         return jsonify({'message': '用户名或密码错误'}), 401
@@ -360,8 +379,16 @@ def logout():
     chat_history.clear()
     return jsonify({'message': 'User logout successfully'}), 200
 
-if __name__ == "__main__":
-    # with app.app_context():
-    #     db.create_all()
-    app.run(debug=True)
+# Database model for Notification
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
 
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+    socketio.run(app, debug=True)
