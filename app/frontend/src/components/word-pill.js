@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
+import { a } from '@react-spring/web';
 
 const WordPillRoot = styled('span')(({ theme, ownerState }) => {
-  const backgroundColor = theme.palette[ownerState.color].alpha12;
-  const color = theme.palette.mode === 'dark'
+  //find the color in the theme palette, if it's not there, use the default alpha12
+  const backgroundColor =  theme.palette[ownerState.color]
+    ? theme.palette[ownerState.color].alpha12
+    : alpha(ownerState.color, 0.12);
+  const color = theme.palette[ownerState.color]
     ? theme.palette[ownerState.color].main
-    : theme.palette[ownerState.color].dark;
+    : ownerState.color;
 
   return {
     alignItems: 'center',
     backgroundColor,
     borderRadius: 12,
+    border: `2px solid ${color}`,
     color,
     cursor: 'default',
     display: 'inline-flex',
@@ -27,6 +32,7 @@ const WordPillRoot = styled('span')(({ theme, ownerState }) => {
     paddingRight: theme.spacing(2),
     textTransform: 'uppercase',
     whiteSpace: 'nowrap',
+    marginLeft: theme.spacing(1),
   };
 });
 

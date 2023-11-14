@@ -30,10 +30,10 @@ app/frontend/.DS_Store
 app/frontend/.eslintcache
 app/frontend/.idea
 app/frontend/.env
-app/frontend/.env.local
+# app/frontend/.env.local
 app/frontend/.env.development.local
 app/frontend/.env.test.local
-app/frontend/.env.production.local
+# app/frontend/.env.production.local
 
 app/frontend/npm-debug.log*
 app/frontend/yarn-debug.log*
@@ -60,10 +60,8 @@ out
 .eslintcache
 .idea
 /.env
-/.env.local
 /.env.development.local
 /.env.test.local
-/.env.production.local
 
 npm-debug.log*
 yarn-debug.log*
@@ -314,4 +312,7 @@ $RECYCLE.BIN/
 
 # Custom entries
 app/backend/chat/checkpoints/
+cache/
+# But not the folder itself
+
 # End of https://www.gitignore.io/api/linux,python,windows,pycharm+all,visualstudiocode

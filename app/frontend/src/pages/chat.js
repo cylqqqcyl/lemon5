@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Head from 'next/head';
 import {
   Box,
@@ -11,20 +11,30 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import ChatIcon from '@heroicons/react/24/solid/SparklesIcon';
 import {CharacterSelect} from 'src/sections/chat/character-select';
 import {ConversationCard} from 'src/sections/chat/conversation-card';
-import { voices as characters , default_response} from 'src/sections/voices/constants';
+
 
 const Page = () => {
-
-  const [messages, setMessages] = useState([
-    // Add more messages as needed
-  ]);
-  const [selectedCharacter, setSelectedCharacter] = useState('派蒙');  // 默认为派蒙
+  const [characters, setCharacters] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   const handleCharacterSelected = (characterName) => {
     setSelectedCharacter(characterName);
     setMessages([ // Reset messages
     ]);
   };
+  useEffect(() => {
+    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/voices`);
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        setCharacters(data);
+      })
+      .catch(error => {
+        console.error('Error fetching character data:', error);
+      });
+  }, []);
 
   return(
   <>

@@ -1,18 +1,53 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, Typography, Collapse, IconButton, Box, Stack,} from '@mui/material';
 import { VoicesGrid } from './voices-grid';
 import { VoicesCard } from './voices-card';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-
 import { MenuItemCard } from './menuitem-card';
-import { voices, attributes } from './constants';
 
-export const VoicesSelect = ({setVoiceCardSelected}) => {
+export const VoicesSelect = ({setVoiceCardSelected, searchText}) => {
   const [expanded, setExpanded] = useState(true);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null); // New state variable
-  const currentlyPlayingAudioRef = useRef(null); 
-  const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(null);
+  const currentlyPlayingAudioRef = useRef(null);
+  const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(null); 
+  const [voices, setVoices] = useState([]);
+  const [selectedElement, setSelectedElement] = useState('');
+  const [selectedStyle, setSelectedStyle] = useState('');
+
+  const handleElementSelect = (element) => {
+    setSelectedElement(element);
+  };
+  
+  const handleStyleSelect = (style) => {
+    setSelectedStyle(style);
+  };
+  
+
+  useEffect(() => {
+    // Fetch voices data from server
+    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/voices`);
+  
+    if (searchText) {
+      url.searchParams.append('name', searchText); // Append searchText as a query parameter
+    }
+    if (selectedElement&&selectedElement!=='全部') { 
+      url.searchParams.append('element', selectedElement);
+    }
+    if (selectedStyle&&selectedStyle!=='全部') {
+      url.searchParams.append('style', selectedStyle);
+    } 
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        //set selected card index to null when data changes
+        setSelectedCardIndex(null);
+        setVoices(data);  
+      })
+      .catch(error => {
+        console.error('Error fetching voices data:', error);
+      });
+  }, [searchText, selectedElement, selectedStyle]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -41,12 +76,11 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
       </Box>
       {selectedCardIndex !== null && (
         <VoicesCard 
-          key={selectedCardIndex}
-          index={selectedCardIndex} 
-          attributes={attributes} 
-          playingAudioRef={currentlyPlayingAudioRef}
-          currentlyPlayingIndex={currentlyPlayingIndex}
-          setCurrentlyPlayingIndex={setCurrentlyPlayingIndex}
+          key={selectedCardIndex} // Pass the key down
+          voice={voices[selectedCardIndex-1]} // Pass the voice object down
+          playingAudioRef={currentlyPlayingAudioRef} // Pass the ref down
+          currentlyPlayingIndex={currentlyPlayingIndex} // Pass the state variable down
+          setCurrentlyPlayingIndex={setCurrentlyPlayingIndex} // Pass the state setter down
           />
         )}
       <Collapse in={expanded}>
@@ -54,17 +88,21 @@ export const VoicesSelect = ({setVoiceCardSelected}) => {
           音色列表
         </Typography>
         <Stack direction="row" spacing={2}>
-          <MenuItemCard key={'Age'} label="年龄" menuItems={['全部', '青年', '成年']} />
-          <MenuItemCard key={'Gender'}  label="性别" menuItems={['全部', '男性', '女性']} />
-          <MenuItemCard key={'Accent'}  label="口音" menuItems={['全部', '普通话', '河南话']} />
-          <MenuItemCard key={'Style'}  label="风格" menuItems={['全部', '普通', '播音']} />
-          <MenuItemCard key={'Mood'}  label="心情" menuItems={['全部', '开心', '愤怒','难过']} />
+          <MenuItemCard key={'Element'} label="元素" 
+          menuItems={['全部','无', '火', '水', '雷', '冰', '草']} 
+          onItemSelect={handleElementSelect}
+          />
+          <MenuItemCard key={'Style'}  label="风格" 
+          menuItems={['全部','萝莉音','少女音','御姐音','烟嗓']} 
+          onItemSelect={handleStyleSelect}
+          />
         </Stack>
         <VoicesGrid 
         onCardClick={handleCardClick} // Pass down the function
         currentlyPlayingAudioRef={currentlyPlayingAudioRef} // Pass down the ref
-        currentlyPlayingIndex={currentlyPlayingIndex}
+        voices={voices}
         setCurrentlyPlayingIndex={setCurrentlyPlayingIndex}
+        currentlyPlayingIndex={currentlyPlayingIndex}
         />
       </Collapse>
     </Card>

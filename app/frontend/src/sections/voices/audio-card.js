@@ -13,7 +13,7 @@ const TinyText = styled(Typography)({
     letterSpacing: 0.2,
 });
 
-export const AudioCard = ({ id, voice, text, audioURL, audioDuration, isGenerated }) => {
+export const AudioCard = ({ id, voice, text, audioURL, audioDuration, noise, noisew, sdp, length }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [duration, setDuration] = useState(0);
     const [position, setPosition] = useState(0);
@@ -99,25 +99,18 @@ export const AudioCard = ({ id, voice, text, audioURL, audioDuration, isGenerate
                 >
                     {isPlaying ? <PauseIcon fontSize="inherit" /> : <PlayIcon fontSize="inherit" />}
                 </IconButton>
-                { isGenerated && (
                 <Box sx={{ marginLeft: 2 }}>
                     <Typography variant="body1" sx={{ color: 'text.primary'}}>
                         {text}
                     </Typography>
-                    <Box sx={{ gap: 0, pt: 2 }}>
+                    <Box sx={{ gap: 0, ml: -1 }}>
                         <WordPill color={'info'}>{voice}</WordPill>
+                        <WordPill color={'warning'}>{sdp}</WordPill>
+                        <WordPill color={'warning'}>{noise}</WordPill>
+                        <WordPill color={'warning'}>{noisew}</WordPill>
+                        <WordPill color={'warning'}>{length}</WordPill>
                     </Box>
                 </Box>
-                )}
-
-                { !isGenerated && (
-                <Box sx={{ marginLeft: 1 }}>
-                    <Typography variant="body1" sx={{ color: 'text.primary'}}
-                    style={{ wordWrap: 'break-word', maxWidth: '100%' }}>
-                        {text}
-                    </Typography>
-                </Box>
-                )}
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center'}}>
                 <Stack sx={{ display: 'flex', alignItems: 'center', pr: 2 }}>
@@ -148,11 +141,9 @@ export const AudioCard = ({ id, voice, text, audioURL, audioDuration, isGenerate
                         <TinyText>-{formatDuration(Math.round(duration - position))}</TinyText>
                     </Box>
                 </Stack>
-                { isGenerated && (
                 <IconButton onClick={handleDownload} sx={{ marginRight: 1 }}>
                     <DownloadIcon />
                 </IconButton>
-                )}
             </Box>
         </Card>
     );

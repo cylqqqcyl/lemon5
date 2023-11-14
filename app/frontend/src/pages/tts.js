@@ -16,11 +16,11 @@ import { VoicesSelect } from 'src/sections/voices/voices-select';
 import { VoicesText } from 'src/sections/voices/voices-text';
 import { GeneratedGrid } from 'src/sections/voices/generated-grid';
 import { CustomSnackbar } from 'src/sections/message/custom-snackbar';
-import io from 'socket.io-client';
 import TextBubbleIcon from '@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon';
   
 const Page = () => {
   const [voiceCardSelected, setVoiceCardSelected] = useState(null);
+  const [searchText, setSearchText] = useState('');
   const [textInput, setTextInput] = useState('');
   const [isLoading, setIsLoading] = useState(false); // New state for loading
   const [generatedCards, setGeneratedCards] = useState([]); // New state for generated cards
@@ -39,31 +39,38 @@ const Page = () => {
     setIsLoading(true);
   
     try {
-      // const response = await fetch('https://152f2bc1.r19.cpolar.top/tts?text=' + textInput + '&lang=ja', {
-      //   method: 'GET'
-      // });
 
       const response = await fetch(
-      // `https://3b7259cf.r16.cpolar.top/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
-      `http://localhost:3001/genshinAPI?speaker=${voiceCardSelected}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/tts?speaker=${voiceCardSelected.name}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
       , {
         method: 'GET'
       });
 
-  
-      if (response.ok) {
-        const audioBlob = await response.blob();
-        const audioURL = URL.createObjectURL(audioBlob);
-        console.log('audio_path', audioURL)
-        
-        const newCard = {
-          id: Date.now(), // 使用时间戳作为 id 可能更好
-          voice: voiceCardSelected,
-          text: textInput,
-          audioURL: audioURL // 将音频 URL 保存到卡片中
-        };
-  
-        setGeneratedCards([newCard, ...generatedCards]);
+      const responseData = await response.json();  
+      if (responseData) {
+        if (response.ok) {
+          const audioResponse = await fetch(`http://localhost:5000/audio/${responseData.filename}`,
+          {
+            method: 'GET',
+          });
+          console.log('audioResponse', audioResponse)
+          const audioBlob = await audioResponse.blob();
+          const audioURL= URL.createObjectURL(audioBlob);
+          console.log('audio_path', audioURL)
+          
+          const newCard = {
+            id: responseData.filename,
+            voice: voiceCardSelected.name,
+            length: lengthValue,
+            noise: noiseValue,
+            noisew: noisewValue,
+            sdp: sdpValue,
+            text: textInput,
+            audioURL: audioURL // 将音频 URL 保存到卡片中
+          };
+    
+          setGeneratedCards([newCard, ...generatedCards]);
+        }
       } else {
         console.error('Error fetching audio:', response.statusText);
         setSnackbarConfig({
@@ -132,8 +139,9 @@ const Page = () => {
               </Stack>
             </Stack>
           </Stack>
-          <VoicesSearch />
-          <VoicesSelect setVoiceCardSelected={setVoiceCardSelected} />
+          <VoicesSearch setSearchText={setSearchText} />
+          <VoicesSelect setVoiceCardSelected={setVoiceCardSelected}
+            searchText={searchText} />
 
           <VoicesText voiceCardSelected={voiceCardSelected} setTextInput={setTextInput} 
           sdpValue={sdpValue} setSdpValue={setSdpValue}

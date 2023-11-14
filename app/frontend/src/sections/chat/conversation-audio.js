@@ -106,6 +106,8 @@ export const ConversationAudio = ({ id , audioURL, audioDuration }) => {
                     onEnded={() => setIsPlaying(false)}
                     onLoadedMetadata={() => {
                         setDuration(audioDuration ? audioDuration : audioRef.current.duration);
+                        // start playing
+                        setIsPlaying(true);
                     }}
                     onTimeUpdate={() => {
                         setPosition(audioRef.current.currentTime);

@@ -2,7 +2,7 @@ import React from 'react';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
 
-export const VoicesSearch = () => (
+export const VoicesSearch = ({ setSearchText }) => (
   <Card sx={{ p: 2 }}>
     <OutlinedInput
       defaultValue=""
@@ -18,6 +18,7 @@ export const VoicesSearch = () => (
           </SvgIcon>
         </InputAdornment>
       )}
+      onChange={(event) => setSearchText(event.target.value)}
       sx={{  }}
     />
   </Card>

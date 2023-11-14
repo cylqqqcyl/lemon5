@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UserIcon from '@mui/icons-material/Person';
@@ -16,8 +16,20 @@ import {
 import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
+import { NotificationPopover } from './notification-popover';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import io from 'socket.io-client';
+
+const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
+  reconnection: true,       // whether to automatically attempt to reconnect
+  reconnectionAttempts: 5,  // number of reconnection attempts before giving up
+  reconnectionDelay: 1000,  // how long to initially wait before attempting a new reconnection
+  reconnectionDelayMax: 5000, // maximum amount of time to wait between reconnection attempts
+  randomizationFactor: 0.5  // randomization factor for the reconnection delay
+});
+
+
 
 const SIDE_NAV_WIDTH = 180;
 const TOP_NAV_HEIGHT = 64;
@@ -26,13 +38,40 @@ export const TopNav = (props) => {
   const { onNavOpen } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover(); 
-  const router = useRouter();
-  const [hasNotification, setHasNotification] = useState(true); // 初始设定有通知
+  const notificationPopover = usePopover();
+  const [hasNotification, setHasNotification] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
-  const handleNotificationClick = () => {
-    setHasNotification(false); // 点击后设定没有通知
-    
+  socket.on('connect', () => {
+    console.log('Connected to the server');
+  });
+  
+  socket.on('disconnect', () => {
+    console.log('Disconnected from the server');
+  });
+  
+  socket.on('reconnect_attempt', (attemptNumber) => {
+    console.log(`Reconnect attempt ${attemptNumber}`);
+  });
+
+  useEffect(() => {
+    // Listen for 'new_notification' event from the server
+    socket.on('notification', (notification) => {
+      setNotifications([notification, ...notifications]);
+      setHasNotification(true);
+    });
+
+    return () => {
+      socket.off('new_notification');
+    };
+  }, []);
+
+
+  const handleNotificationClick = async () => {
+    setHasNotification(false);
+    notificationPopover.handleOpen();
   };
+
 
   return (
     <>
@@ -90,7 +129,9 @@ export const TopNav = (props) => {
             }}
           >
             <Tooltip title="消息">
-            <IconButton onClick={handleNotificationClick}>
+            <IconButton onClick={handleNotificationClick}
+              ref={notificationPopover.anchorRef}
+            >
               <Badge
                 badgeContent={hasNotification ? 1 : 0} // 如果有通知则显示小点，否则不显示
                 color="success"
@@ -121,6 +162,12 @@ export const TopNav = (props) => {
         anchorEl={accountPopover.anchorRef.current}
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
+      />
+      <NotificationPopover
+        anchorEl={notificationPopover.anchorRef.current}
+        open={notificationPopover.open}
+        onClose={notificationPopover.handleClose}
+        notifications={notifications}
       />
     </>
   );

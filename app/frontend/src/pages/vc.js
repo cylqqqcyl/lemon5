@@ -19,6 +19,7 @@ import ConverseIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
 
   
 const Page = () => {
+  const [searchText, setSearchText] = useState('');
   const [voiceCardSelected, setVoiceCardSelected] = useState(null);
   const [audioInput, setAudioInput] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // New state for loading
@@ -88,8 +89,8 @@ const Page = () => {
               </Stack>
             </Stack>
           </Stack>
-          <VoicesSearch />
-          <VoicesSelect setVoiceCardSelected={setVoiceCardSelected} />
+          <VoicesSearch setSearchText={setSearchText} />
+          <VoicesSelect setVoiceCardSelected={setVoiceCardSelected} searchText={searchText} />
           <AudioUpload voiceCardSelected={voiceCardSelected} setAudioInput={setAudioInput} />
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
             {isLoading ? (

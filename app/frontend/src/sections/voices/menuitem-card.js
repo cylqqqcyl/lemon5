@@ -4,7 +4,7 @@ import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 
 
 // Function to render each menu item
-export const MenuItemCard = ({ label, menuItems }) => {
+export const MenuItemCard = ({ label, menuItems, onItemSelect }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const boxRef = React.useRef(null); // Create a ref to attach to the Box
     const [selectedItem, setSelectedItem] = useState(menuItems[0]);  
@@ -17,6 +17,7 @@ export const MenuItemCard = ({ label, menuItems }) => {
       setAnchorEl(null);
       if (item){
           setSelectedItem(item);
+          onItemSelect(item);
       }
     };
   

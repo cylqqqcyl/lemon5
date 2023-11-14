@@ -1,0 +1,128 @@
+[
+  {
+    "name": "派蒙",
+    "avatar": "/assets/avatars/paimeng.png",
+    "audio": "/assets/audio/vo_paimon_mimitomo_yoimiya_paimon_11.wav",
+    "attributes": {
+      "element":"无",
+      "style": "萝莉音"
+    }
+  },
+  {
+    "name": "可莉",
+    "avatar": "/assets/avatars/keli.png",
+    "audio": "/assets/audio/vo_klee_draw_appear.wav",
+    "attributes": {
+      "element":"火",
+      "style": "萝莉音"
+    }
+  },
+  {
+    "name": "甘雨",
+    "avatar": "/assets/avatars/ganyu.png",
+    "audio": "/assets/audio/vo_ganyu_draw_appear.wav",
+    "attributes": {
+      "element":"冰",
+      "style": "少女音"
+    }
+  },
+  {
+    "name": "刻晴",
+    "avatar": "/assets/avatars/keqing.png",
+    "audio": "/assets/audio/vo_keqing_draw_appear.wav",
+    "attributes": {
+      "element":"雷",
+      "style": "少女音"
+    }
+  },
+  {
+    "name": "申鹤",
+    "avatar": "/assets/avatars/shenhe.png",
+    "audio": "/assets/audio/vo_shenhe_draw_appear.wav",
+    "attributes": {
+      "element":"冰",
+      "style": "御姐音"
+    }
+  },
+  {
+    "name": "芭芭拉",
+    "avatar": "/assets/avatars/babala.png",
+    "audio": "/assets/audio/vo_barbara_draw_appear.wav",
+    "attributes": {
+      "element":"水",
+      "style": "少女音"
+    }
+  },
+  {
+    "name": "八重神子",
+    "avatar": "/assets/avatars/bachongshenzi.png",
+    "audio": "/assets/audio/vo_yaeMiko_draw_appear.wav",
+    "attributes": {
+      "element":"雷",
+      "style": "御姐音"
+    }
+  },
+  {
+    "name": "胡桃",
+    "avatar": "/assets/avatars/hutao.png",
+    "audio": "/assets/audio/vo_hutao_draw_appear.wav",
+    "attributes": {
+      "element":"火",
+      "style": "少女音"
+    }
+  },
+  {
+    "name": "雷电将军",
+    "avatar": "/assets/avatars/leidianjiangjun.png",
+    "audio": "/assets/audio/vo_raidenShogun_draw_appear.wav",
+    "attributes": {
+      "element":"雷",
+      "style": "御姐音"
+    }
+  },
+  {
+    "name": "纳西妲",
+    "avatar": "/assets/avatars/naxida.png",
+    "audio": "/assets/audio/vo_nahida_draw_appear_01.wav",
+    "attributes": {
+      "element":"草",
+      "style": "萝莉音"
+    }
+  },
+  {
+    "name": "神里绫华",
+    "avatar": "/assets/avatars/shenlilinghua.png",
+    "audio": "/assets/audio/vo_ayaka_draw_appear.wav",
+    "attributes": {
+      "element":"冰",
+      "style": "少女音"
+    }
+  },
+  {
+    "name": "夜兰",
+    "avatar": "/assets/avatars/yelan.png",
+    "audio": "/assets/audio/vo_yelan_draw_appear.wav",
+    "attributes": {
+      "element":"水",
+      "style": "御姐音"
+    }
+  },
+  {
+    "name": "优菈",
+    "avatar": "/assets/avatars/youla.png",
+    "audio": "/assets/audio/vo_eula_draw_appear.wav",
+    "attributes": {
+      "element":"冰",
+      "style": "御姐音"
+    }
+  },
+  {
+    "name": "丁真",
+    "avatar": "/assets/avatars/dingzhen.png",
+    "audio": "/assets/audio/vo_dingzhen_draw_appear.wav",
+    "attributes": {
+      "element":"无",
+      "style": "烟嗓"
+    }
+  }
+]

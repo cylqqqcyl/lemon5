@@ -5,9 +5,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { VoicesCard } from './voices-card';
-import { voices, attributes } from './constants';
 
-export const VoicesGrid = ({ onCardClick, currentlyPlayingAudioRef, currentlyPlayingIndex, setCurrentlyPlayingIndex }) => {
+export const VoicesGrid = ({ onCardClick, currentlyPlayingAudioRef, currentlyPlayingIndex, setCurrentlyPlayingIndex, voices }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const rowsPerPage = 5;
@@ -46,13 +45,12 @@ export const VoicesGrid = ({ onCardClick, currentlyPlayingAudioRef, currentlyPla
                 {/* Rows */}
                 {Array.from({ length: endRow - startRow + 1 }, (_, index) => (
                     <VoicesCard 
-                      key={index + 1 + (currentPage - 1) * rowsPerPage}
-                      index={index + 1 + (currentPage - 1) * rowsPerPage}
-                      attributes={attributes}
+                      key={index + (currentPage - 1) * rowsPerPage}
+                      voice={voices[index + (currentPage - 1) * rowsPerPage]}
                       onClick={() => onCardClick && onCardClick(index + 1 + (currentPage - 1) * rowsPerPage)}
-                      currentlyPlayingIndex={currentlyPlayingIndex}
-                      setCurrentlyPlayingIndex={setCurrentlyPlayingIndex} 
                       playingAudioRef={currentlyPlayingAudioRef} // Pass the ref down
+                      currentlyPlayingIndex={currentlyPlayingIndex} // Pass the state variable down
+                      setCurrentlyPlayingIndex={setCurrentlyPlayingIndex} // Pass the state setter down
                     />
                 ))}
             </Stack>
