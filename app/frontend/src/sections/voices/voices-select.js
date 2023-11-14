@@ -26,7 +26,7 @@ export const VoicesSelect = ({setVoiceCardSelected, searchText}) => {
 
   useEffect(() => {
     // Fetch voices data from server
-    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/voices`);
+    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/voices`);
   
     if (searchText) {
       url.searchParams.append('name', searchText); // Append searchText as a query parameter

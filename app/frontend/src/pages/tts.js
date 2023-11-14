@@ -41,7 +41,7 @@ const Page = () => {
     try {
 
       const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/tts?speaker=${voiceCardSelected.name}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tts?speaker=${voiceCardSelected.name}&text=${textInput}&format=${formatValue}&length=${lengthValue}&noise=${noiseValue}&noisew=${noisewValue}&sdp=${sdpValue}`
       , {
         method: 'GET'
       });
