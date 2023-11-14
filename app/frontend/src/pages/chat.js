@@ -24,7 +24,7 @@ const Page = () => {
     ]);
   };
   useEffect(() => {
-    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/voices`);
+    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/voices`);
 
     fetch(url)
       .then(response => response.json())

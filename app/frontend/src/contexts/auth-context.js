@@ -125,7 +125,7 @@ export const AuthProvider = (props) => {
 
   const signIn = async (email, password) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/signin`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -159,7 +159,7 @@ export const AuthProvider = (props) => {
 
   const signUp = async (email, name, password) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/signup`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -187,7 +187,7 @@ export const AuthProvider = (props) => {
   const signOut = async () => {
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/signout`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

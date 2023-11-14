@@ -21,7 +21,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import io from 'socket.io-client';
 
-const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api`, {
+const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
   reconnection: true,       // whether to automatically attempt to reconnect
   reconnectionAttempts: 5,  // number of reconnection attempts before giving up
   reconnectionDelay: 1000,  // how long to initially wait before attempting a new reconnection
