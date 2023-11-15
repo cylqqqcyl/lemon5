@@ -49,7 +49,7 @@ const Page = () => {
       const responseData = await response.json();  
       if (responseData) {
         if (response.ok) {
-          const audioResponse = await fetch(`http://localhost:5000/audio/${responseData.filename}`,
+          const audioResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/audio/${responseData.filename}`,
           {
             method: 'GET',
           });
