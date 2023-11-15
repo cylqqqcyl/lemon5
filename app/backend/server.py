@@ -47,13 +47,13 @@ def get_access_token():
 
 
 # index page
-@app.route("/")
+@app.route("/api/")
 def index():
     return "<p>Welcome to lemon5!</p>"
 
 
 # text-to-speech
-@app.route("/tts", methods=["GET"])
+@app.route("/api/tts", methods=["GET"])
 def tts():
     # Extract data from the incoming request
     data = request.args  # Get JSON data sent in the POST request
@@ -138,7 +138,7 @@ def tts():
 
 
 # # voice conversion
-# @app.route("/vc", methods=["POST", "GET"])
+# @app.route("/api/vc", methods=["POST", "GET"])
 # @limiter.limit("50 per minute")
 # def vc():
 #     if "src_audio" not in request.files:
@@ -165,7 +165,7 @@ def tts():
 #     finally:
 #         os.remove(out_path)
 
-@app.route("/chat", methods=["POST"])
+@app.route("/api/chat", methods=["POST"])
 @cross_origin()
 def chat():
     data = request.json  # Get JSON data sent in the POST request
@@ -200,7 +200,7 @@ def chat():
 
     return jsonify(bot_message)
 
-@app.route('/audio/<path:filename>', methods=['GET', 'POST'])
+@app.route('/api/audio/<path:filename>', methods=['GET', 'POST'])
 @cross_origin()
 def serve_audio(filename):
     # Replace 'path_to_file.wav' with the actual file path
@@ -300,7 +300,7 @@ class Attribute(db.Model):
     voice_id = db.Column(db.Integer, db.ForeignKey('voice.id'), nullable=False)
 
 
-@app.route('/voices', methods=['GET'])
+@app.route('/api/voices', methods=['GET'])
 def get_filtered_voices():
     # Fetch query parameters
     name_query = request.args.get('name')
@@ -338,7 +338,7 @@ class User(db.Model):
 
 
 # User Registration Endpoint
-@app.route('/signup', methods=['POST'])
+@app.route('/api/signup', methods=['POST'])
 def register():
     data = request.get_json()
     name = data['name']
@@ -356,7 +356,7 @@ def register():
 
 
 # User Login Endpoint
-@app.route('/signin', methods=['POST'])
+@app.route('/api/signin', methods=['POST'])
 def login():
     data = request.get_json()
     email = data['email']
@@ -370,7 +370,7 @@ def login():
     else:
         return jsonify({'message': '用户名或密码错误'}), 401
 
-@app.route('/signout', methods=['POST'])
+@app.route('/api/signout', methods=['POST'])
 def logout():
     # clear cache
     for filename in os.listdir('cache'):
