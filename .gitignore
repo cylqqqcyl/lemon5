@@ -30,10 +30,10 @@ app/frontend/.DS_Store
 app/frontend/.eslintcache
 app/frontend/.idea
 app/frontend/.env
-# app/frontend/.env.local
-app/frontend/.env.development.local
+app/frontend/.env.local
+app/frontend/.env.development
 app/frontend/.env.test.local
-# app/frontend/.env.production.local
+app/frontend/.env.production
 
 app/frontend/npm-debug.log*
 app/frontend/yarn-debug.log*
