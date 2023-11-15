@@ -43,7 +43,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
   
       // 向后端发送请求
       try {
-        const response = await fetch('http://localhost:5000/chat', { // Adjust the protocol and port as necessary
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`, { // Adjust the protocol and port as necessary
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
         if (responseData) {
           const response_tts = response
           if (response_tts.ok) {
-            const audioResponse = await fetch(`http://localhost:5000/audio/${responseData.audioURL}`,
+            const audioResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/audio/${responseData.audioURL}`,
             {
               method: 'GET',
             });
