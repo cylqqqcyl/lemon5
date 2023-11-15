@@ -12,6 +12,15 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_
 from gradio_client import Client
 import uuid
+import platform
+
+# Identify the current operating system
+current_os = platform.system()
+
+if current_os == 'Windows':
+    path_delimiter = '\\'
+else:
+    path_delimiter = '/'
 
 chat_history = [
 ]
@@ -82,7 +91,7 @@ def tts():
             )
             print("result:")
             print(result[1])
-            dirname, filename = result[1].split('\\')[-2], result[1].split('\\')[-1]
+            dirname, filename = result[1].split(path_delimiter)[-2], result[1].split(path_delimiter)[-1]
             newfilename = dirname + '.wav'
             # move file one level up
             os.rename(os.path.join('cache', dirname, filename), os.path.join('cache', newfilename))
@@ -230,7 +239,7 @@ def tts_for_chat(text,charactor):
         )
         print("result:")
         print(result[1])
-        dirname, filename = result[1].split('\\')[-2], result[1].split('\\')[-1]
+        dirname, filename = result[1].split(path_delimiter)[-2], result[1].split(path_delimiter)[-1]
         newfilename = dirname + '.wav'
         # move file one level up
         os.rename(os.path.join('cache', dirname, filename), os.path.join('cache', newfilename))
