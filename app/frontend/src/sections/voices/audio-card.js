@@ -13,7 +13,7 @@ const TinyText = styled(Typography)({
     letterSpacing: 0.2,
 });
 
-export const AudioCard = ({ id, voice, text, audioURL, audioDuration, noise, noisew, sdp, length }) => {
+export const AudioCard = ({ id, voice, text, audioURL, audioDuration, noise, noisew, sdp, length}) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [duration, setDuration] = useState(0);
     const [position, setPosition] = useState(0);
@@ -104,11 +104,11 @@ export const AudioCard = ({ id, voice, text, audioURL, audioDuration, noise, noi
                         {text}
                     </Typography>
                     <Box sx={{ gap: 0, ml: -1 }}>
-                        <WordPill color={'info'}>{voice}</WordPill>
-                        <WordPill color={'warning'}>{sdp}</WordPill>
-                        <WordPill color={'warning'}>{noise}</WordPill>
-                        <WordPill color={'warning'}>{noisew}</WordPill>
-                        <WordPill color={'warning'}>{length}</WordPill>
+                        {voice && <WordPill color={'info'}>{voice}</WordPill>}
+                        {sdp && <WordPill color={'warning'}>{sdp}</WordPill>}
+                        {noise && <WordPill color={'warning'}>{noise}</WordPill>}
+                        {noisew && <WordPill color={'warning'}>{noisew}</WordPill>}
+                        {length && <WordPill color={'warning'}>{length}</WordPill>}
                     </Box>
                 </Box>
             </Box>

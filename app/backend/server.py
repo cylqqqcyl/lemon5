@@ -146,6 +146,26 @@ def tts():
 
 
 
+@app.route('/api/whisper', methods=['POST'])
+def handle_audio():
+    if 'file' not in request.files:
+        return 'No file part', 400
+    file = request.files['file']
+    # save file
+    filename = f"{uuid.uuid4()}.wav"
+    cache_dir = 'recordings'
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
+    file_path = os.path.join(cache_dir, filename)
+    file.save(file_path)
+    client = Client("https://hf-audio-whisper-large-v3.hf.space/")
+    result = client.predict(
+        file_path,  # str (filepath or URL to file) in 'inputs' Audio component
+        "transcribe",  # str in 'Task' Radio component
+        api_name="/predict_1"
+    )
+    return jsonify({'text': result}), 200
+
 # # voice conversion
 # @app.route("/api/vc", methods=["POST", "GET"])
 # @limiter.limit("50 per minute")
@@ -382,8 +402,8 @@ def login():
 @app.route('/api/signout', methods=['POST'])
 def logout():
     # clear cache
-    for filename in os.listdir('cache'):
-        os.remove(os.path.join('cache', filename))
+    os.remove('cache')
+    os.remove('recordings')
     # clear chat history
     chat_history.clear()
     return jsonify({'message': 'User logout successfully'}), 200

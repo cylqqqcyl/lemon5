@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { Card, Typography, Box, Button, Menu, MenuItem } from '@mui/material';
+import { Card, Typography, Box, Button, Menu, MenuItem, duration } from '@mui/material';
 import RecordIcon from '@mui/icons-material/Mic';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import { CustomSnackbar } from '../message/custom-snackbar';
+import { setDate } from 'date-fns';
 
 
-export const RecordCard = ({ handleRecordClickOverride }) => {
+export const RecordCard = ({ handleRecordClickOverride}) => {
     const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
     const [anchorEl, setAnchorEl] = useState(null); 
     const [selectedMic, setSelectedMic] = useState(null);
@@ -57,8 +58,6 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
         setStream(null);
       }
     };
-
-
     
     const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,15 +76,15 @@ export const RecordCard = ({ handleRecordClickOverride }) => {
       setStartTime(Date.now());
       startRecording();
     } else {
-      setRecordDuration((Date.now() - startTime) / 1000);
+      setRecordDuration((Date.now() - startTime)/1000);
       stopRecording();
     }
   };
   
   useEffect(() => {
     handleRecordClickOverride(recording, recordAudioURL, recordDuration);
-  }, [recording]);
-
+  }, [recording]); 
+  
   useEffect(() => {
     handleRecordRequest();
   }, []); // Empty dependency array means this useEffect runs once when the component mounts

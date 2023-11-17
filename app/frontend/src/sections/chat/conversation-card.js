@@ -14,7 +14,6 @@ import { CustomSnackbar } from '../message/custom-snackbar';
 export const ConversationCard = ({ messages, setMessages, selectedCharacter }) => {
     const [inputValue, setInputValue] = useState('');  // State to keep track of input value
     const [inputMode, setInputMode] = useState('text');  // State to track input mode
-    const [wasRecording, setWasRecording] = useState(false);  // State variable to keep track of previous recording state
     const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
 
     const handleInputChange = (event) => {
@@ -42,6 +41,77 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
       setInputValue('');
   
       // 向后端发送请求
+      askBot(inputValue);
+  
+    };
+
+
+    const handleRecordClick = async (recording, recordURL, recordDuration) => {
+      if (!recording && recordURL) {
+          // Placeholder message
+            const placeholderMessage = {
+              sender: 'user',
+              text: '音频识别中...',
+              mode: 'audio',
+              audioURL: recordURL,
+              audioDuration: recordDuration,
+              isPlaceholder: true,  // Flag to identify the placeholder
+          };
+
+          // Add the placeholder message to the conversation
+          setMessages(prevMessages => [...prevMessages, placeholderMessage]);
+          const audioBlob = await fetch(recordURL).then(r => r.blob());
+
+          // Sending the audio blob to the server for voice recognition
+          try {
+              const formData = new FormData();
+              formData.append('file', audioBlob, 'recording.webm');
+              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/whisper`, {
+                  method: 'POST',
+                  body: formData,
+              });
+              const result = await response.json();
+  
+              if (response.ok) {
+                  // Assuming result.text contains the recognized text
+                  const newMessage = {
+                      sender: 'user',
+                      text: result.text,  // The recognized text from the audio
+                      mode: 'audio',
+                      audioURL: recordURL,
+                      audioDuration: recordDuration,
+                  };
+                  // Update messages: replace the placeholder with the actual message
+                setMessages(prevMessages => {
+                  const updatedMessages = prevMessages.filter(msg => !msg.isPlaceholder);
+                  return [...updatedMessages, newMessage];
+                });
+
+                
+                askBot(result.text);
+
+              } else {
+                  console.error('Error in voice recognition:', result.error);
+              }
+          } catch (error) {
+              console.error('Error sending audio file:', error);
+          }
+      }
+  };  
+
+  
+    const handleNewConvClick = () => {
+        // Handle new conversation button click
+        setMessages([]);  // Clear messages
+      };
+
+    const handleModeChange = (event, newMode) => {
+        if (newMode !== null) {
+          setInputMode(newMode);  // Update input mode
+        }
+      };
+
+    const askBot = async (prompt) => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`, { // Adjust the protocol and port as necessary
             method: 'POST',
@@ -49,7 +119,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 
-              prompt: inputValue,
+              prompt: prompt,
               character: selectedCharacter.name,
               newConv: messages.length <= 1 ? true : false,
             }),
@@ -84,44 +154,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
         console.error('Error sending message:', error);
         setSnackbarConfig({ message: 'Error sending message:', type: 'error' });
       }
-
-  
-    };
-
-
-    const handleRecordClick = (recording, recordURL, recordDuration) => {
-      if (recording) {
-        setWasRecording(true);  // Update wasRecording state when recording starts
-      } else if (!recording && wasRecording && recordURL) {
-        // Only add the message if the state has transitioned from recording to stop
-        console.log('recordURL', recordURL)
-        const newMessage = {
-          sender: 'user',
-          text: '[语音消息]',
-          mode: 'audio',
-          audioURL: recordURL,
-          audioDuration: recordDuration,
-        };
-        
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-        setWasRecording(false);  // Reset for the next recording cycle
-      }
-      else {
-        setWasRecording(false);  // Reset for the next recording cycle
-      }
-    };
-
-  
-    const handleNewConvClick = () => {
-        // Handle new conversation button click
-        setMessages([]);  // Clear messages
-      };
-
-    const handleModeChange = (event, newMode) => {
-        if (newMode !== null) {
-          setInputMode(newMode);  // Update input mode
-        }
-      };
+    }
 
   return (
     <Card sx={{ p: 2, mt: 3 }}>

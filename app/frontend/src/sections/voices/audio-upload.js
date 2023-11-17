@@ -7,7 +7,6 @@ import BackIcon from '@mui/icons-material/ArrowBack';
 import UploadIcon from '@mui/icons-material/CloudUpload';
 import RecordIcon from '@mui/icons-material/Mic';
 import FileIcon from '@mui/icons-material/AudioFile';
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import { RecordCard } from './record-card';
 
 
@@ -20,6 +19,8 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
   const [choseRecord, setChoseRecord] = useState(false);
   const [recordURL, setRecordURL] = useState(null);
   const [recordDuration, setRecordDuration] = useState(0);
+  const [audioURL, setAudioURL] = useState(null);
+  const [serverFile, setServerFile] = useState(''); // File uploaded to server
 
   const fileInputRef = useRef(null); // Create a ref to the file input element
 
@@ -38,13 +39,14 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
 
   };
   
-  const handleRecordClick = (recording, audioURL, duration) => {
-    if (!recording && audioURL) {
+  const handleRecordClick = (recording, recordURL, duration) => {
+    if (!recording && recordURL) {
       setInputAudio('录制音频');
       setAudioSource('录制音频');
       setAudioInput('录制音频');
-      setRecordURL(audioURL);
+      setRecordURL(recordURL);
       setRecordDuration(duration);
+      
       setChoseRecord(false);
       setChangeAudioSelected(false);
     }
@@ -63,27 +65,85 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
     setChangeAudioSelected(true);
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      handleFileDrop(files[0]);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleFileDrop = (file) => {
+    setInputAudio(file);
+    setAudioSource(file.name);
+    setAudioInput(file.name);
+    setChoseUpload(false);
+    setChangeAudioSelected(false);
+    sendFileToServer(file); // Function to send file to server
+  };
+
   const handleUploadFile = () => {
     fileInputRef.current.click(); // Programmatically trigger the file input click event
   };
 
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Get the selected file
+    const file = e.target.files[0]; // Get the file from the input event
     if (file) {
+      try {
+        // Revoke the old Blob URL to avoid memory leaks
+        if (audioURL) {
+          URL.revokeObjectURL(audioURL);
+      }
+
+      const url = URL.createObjectURL(file);
+      setAudioURL(url);
       setInputAudio(file); // Update your state or do something with the file
       setAudioSource(file.name);
       setAudioInput(file.name);
       setChoseUpload(false);
       setChangeAudioSelected(false);
+      sendFileToServer(file); // Function to send file to server
+      } catch (error) {
+        console.error("Error in uploading file", error);
+      }
     }
   };
 
+
+
+  useEffect(() => {
+    console.log("Server file", serverFile);
+  }, [serverFile]);
 
   useEffect(() => {
     if (voiceCardSelected) {
       setExpanded(true);
     }
   }, [voiceCardSelected]);
+
+  const sendFileToServer = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    // Send file to Flask backend
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recording`, { 
+        method: 'POST',
+        body: formData,
+      });
+      if (response.ok) {
+        console.log("File uploaded successfully");
+      }
+    } catch (error) {
+      console.error("Error in uploading file", error);
+    }
+  };
 
   return (
     <Card sx={{ p: 2, position: 'relative' }}>
@@ -103,7 +163,7 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
       <Collapse in={expanded}>
         {inputAudio && !choseUpload && !choseRecord && !changeAudioSelected &&
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-          <AudioCard text={audioSource} audioURL={recordURL} audioDuration={recordDuration} />
+          <AudioCard text={audioSource} audioURL={audioSource==='录制音频' ? recordURL : audioURL} audioDuration={audioSource==='录制音频' ? recordDuration : null} />
           <Typography variant="body1" onClick={handleChangeClick}
           sx={{ color: 'info', mt:2, fontWeight: 'bold', cursor: 'pointer' }}>
                   更换音频
@@ -159,11 +219,11 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
 
 
         {choseUpload &&
-        <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2, borderStyle: 'dashed', borderColor: 'neutral.500'}}>
+        <Card onDrop={handleDrop} onDragOver={handleDragOver} onClick={handleUploadFile}  sx={{  cursor: 'pointer',display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2, borderStyle: 'dashed', borderColor: 'neutral.500'}}>
           <FileIcon sx={{ color: 'info.main', fontSize: 50, mt: 2}} />
           <Typography variant="body1" sx={{ color: 'text.secondary', mt: 2 }}>
-            <span onClick={handleUploadFile} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
-              上传音频文件</span> 或者将其拖到这里
+
+              上传音频文件, 或者将其拖到这里
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
             使用高质量的音频文件，少于1 min，仅人声
@@ -172,7 +232,7 @@ export const AudioUpload = ({voiceCardSelected, setAudioInput}) => {
           
 
         {choseRecord &&
-          <RecordCard handleRecordClickOverride={handleRecordClick} />
+          <RecordCard handleRecordClickOverride={handleRecordClick}/>
         }
       </Collapse>
     </Card>
