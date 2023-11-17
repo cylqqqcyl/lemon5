@@ -6,7 +6,7 @@ import { CustomSnackbar } from '../message/custom-snackbar';
 import { setDate } from 'date-fns';
 
 
-export const RecordCard = ({ handleRecordClickOverride}) => {
+export const RecordCard = ({ handleRecordClickOverride, voiceCardSelected}) => {
     const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
     const [anchorEl, setAnchorEl] = useState(null); 
     const [selectedMic, setSelectedMic] = useState(null);
@@ -167,7 +167,7 @@ export const RecordCard = ({ handleRecordClickOverride}) => {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <Button variant="outlined" color="error" onClick={handleRecordClick}
-          disabled={!selectedMic}
+          disabled={!selectedMic || !voiceCardSelected}
            sx={{ width: '100', borderRadius: '50px',
             animation: recording ? 'breathing 1s infinite' : 'none',
             '@keyframes breathing': {

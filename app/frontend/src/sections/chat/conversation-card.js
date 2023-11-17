@@ -262,7 +262,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
               variant="contained"
               edge="end"
               onClick={handleSendClick}
-              disabled={!inputValue}  // Disable button if inputValue is empty
+              disabled={!inputValue || !selectedCharacter}
               sx={{borderRadius: '15px',mr:1,
                 backgroundColor: inputValue ? 'success.main' : 'grey.300',  // Conditional background color
                 color: 'white',
@@ -280,7 +280,7 @@ export const ConversationCard = ({ messages, setMessages, selectedCharacter }) =
         )}
     {inputMode === 'audio' && (
       <Box sx={{ mt:2}}>
-        <RecordCard handleRecordClickOverride={handleRecordClick}/>
+        <RecordCard handleRecordClickOverride={handleRecordClick} voiceCardSelected={selectedCharacter} />
       </Box>
     )}
     </Card>

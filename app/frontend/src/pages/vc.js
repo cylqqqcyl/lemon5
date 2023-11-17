@@ -24,20 +24,58 @@ const Page = () => {
   const [audioInput, setAudioInput] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // New state for loading
   const [generatedCards, setGeneratedCards] = useState([]); // New state for generated cards
+  const [sourceFile, setSourceFile] = useState(null); // New state for generated cards
 
-  const handleButtonClick = () => {
+
+
+  const handleButtonClick = async () => {
     let id = 0;
     setIsLoading(true);
+    console.log('audioInput', sourceFile);
+    const audioBlob = await fetch(sourceFile).then(r => r.blob());
+
     // logic here,
-    // After the operation is complete, set isLoading back to false
-    // setIsLoading(false);
-    const newCard = {
-      id: id++,
-      voice: voiceCardSelected.name,
-      text: audioInput
-    };
-    setTimeout(() => setIsLoading(false), 2000); //delay 2s debug
-    setGeneratedCards([newCard, ...generatedCards]); // Add new card at the beginning
+    const formData = new FormData();
+    formData.append('file', audioBlob, 'recording.webm');
+    // Send file to Flask backend
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/vc`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (response.ok) {
+        console.log("File uploaded successfully");
+        console.log(response);
+      }
+      else {
+        console.log("File upload failed");
+        console.log(response);
+      }
+    const responseData = await response.json();  
+      if (responseData) {
+        if (response.ok) {
+          const audioResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/audio/${responseData.filename}`,
+          {
+            method: 'GET',
+          });
+          console.log('audioResponse', audioResponse)
+          const audioBlob = await audioResponse.blob();
+          const audioURL= URL.createObjectURL(audioBlob);
+          console.log('audio_path', audioURL)
+          setIsLoading(false);
+          const newCard = {
+            id: id++,
+            voice: voiceCardSelected.name,
+            text: audioInput,
+            audioURL: audioURL,
+          };
+          setGeneratedCards([newCard, ...generatedCards]); // Add new card at the beginning
+        }
+      }
+    } catch (error) {
+      console.error("Error in uploading file", error);
+      setIsLoading(false);
+    }
   };
 
   return(
@@ -90,8 +128,8 @@ const Page = () => {
             </Stack>
           </Stack>
           <VoicesSearch setSearchText={setSearchText} />
-          <VoicesSelect setVoiceCardSelected={setVoiceCardSelected} searchText={searchText} />
-          <AudioUpload voiceCardSelected={voiceCardSelected} setAudioInput={setAudioInput} />
+          <VoicesSelect setVoiceCardSelected={setVoiceCardSelected} searchText={searchText} pageQuery={'vc'} />
+          <AudioUpload voiceCardSelected={voiceCardSelected} setAudioInput={setAudioInput} setSourceURL={setSourceFile}/>
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
             {isLoading ? (
               <CircularProgress color="success"  />
