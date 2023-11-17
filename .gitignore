@@ -313,6 +313,7 @@ $RECYCLE.BIN/
 # Custom entries
 app/backend/chat/checkpoints/
 cache/
+recordings/
 # But not the folder itself
 
 # End of https://www.gitignore.io/api/linux,python,windows,pycharm+all,visualstudiocode

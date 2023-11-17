@@ -33,7 +33,7 @@ const Page = () => {
     // setIsLoading(false);
     const newCard = {
       id: id++,
-      voice: voiceCardSelected,
+      voice: voiceCardSelected.name,
       text: audioInput
     };
     setTimeout(() => setIsLoading(false), 2000); //delay 2s debug
