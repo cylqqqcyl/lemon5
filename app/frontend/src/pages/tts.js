@@ -141,7 +141,7 @@ const Page = () => {
           </Stack>
           <VoicesSearch setSearchText={setSearchText} />
           <VoicesSelect setVoiceCardSelected={setVoiceCardSelected}
-            searchText={searchText} />
+            searchText={searchText} pageQuery={'tts'} />
 
           <VoicesText voiceCardSelected={voiceCardSelected} setTextInput={setTextInput} 
           sdpValue={sdpValue} setSdpValue={setSdpValue}

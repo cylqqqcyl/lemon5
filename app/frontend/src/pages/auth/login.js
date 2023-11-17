@@ -19,6 +19,7 @@ import {
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 import { CustomSnackbar } from 'src/sections/message/custom-snackbar';
+import { handleBreakpoints } from '@mui/system';
 
 const Page = () => {
   const router = useRouter();
@@ -27,8 +28,8 @@ const Page = () => {
   const [snackbarConfig, setSnackbarConfig] = useState({ message: '', type: '' });
   const formik = useFormik({
     initialValues: {
-      email: 'login@lemon5.io',
-      password: 'lemon5',
+      email: null,
+      password: null,
       submit: null
     },
     validationSchema: Yup.object({
@@ -60,10 +61,10 @@ const Page = () => {
     }
   });
 
-  const handleSkip = useCallback(
+  const handleRegister = useCallback(
     () => {
       auth.skip();
-      router.push('/');
+      router.push('/auth/register');
     },
     [auth, router]
   );
@@ -116,7 +117,6 @@ const Page = () => {
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     type="email"
-                    value={formik.values.email}
                   />
                   <TextField
                     error={!!(formik.touched.password && formik.errors.password)}
@@ -127,18 +127,8 @@ const Page = () => {
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     type="password"
-                    value={formik.values.password}
                   />
                 </Stack>
-                <FormHelperText sx={{ mt: 1 }}>
-                  <Link
-                    component={NextLink}
-                    href="/auth/register"
-                    variant="subtitle1"
-                  >
-                    注册账号
-                  </Link>
-                </FormHelperText>
                 <Button
                   fullWidth
                   size="large"
@@ -152,9 +142,9 @@ const Page = () => {
                   fullWidth
                   size="large"
                   sx={{ mt: 3 }}
-                  onClick={handleSkip}
+                  onClick={handleRegister}
                 >
-                  跳过
+                  注册
                 </Button>
                 <Alert
                   color="primary"

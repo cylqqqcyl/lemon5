@@ -5,8 +5,6 @@ import requests
 import json
 from flask import Flask, request, send_file, jsonify
 from flask_socketio import SocketIO
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_
@@ -37,11 +35,6 @@ CORS(app)
 
 API_KEY = "tvGX7YwZGsaT3Vez8IMDSl8i",
 SECRET_KEY = "HO6dIOw4duyPQQULQ71ug3y6xnPF4OVM"
-
-limiter = Limiter(
-    app=app,
-    key_func=get_remote_address  # 使用请求的远程地址作为标识符
-)
 
 
 def get_access_token():
@@ -158,41 +151,55 @@ def handle_audio():
         os.makedirs(cache_dir)
     file_path = os.path.join(cache_dir, filename)
     file.save(file_path)
-    client = Client("https://hf-audio-whisper-large-v3.hf.space/")
+    client = Client("https://sanchit-gandhi-whisper-jax.hf.space/")
     result = client.predict(
         file_path,  # str (filepath or URL to file) in 'inputs' Audio component
         "transcribe",  # str in 'Task' Radio component
+        False,
         api_name="/predict_1"
     )
+    print(result)
+    result = result[0]
     return jsonify({'text': result}), 200
 
 # # voice conversion
-# @app.route("/api/vc", methods=["POST", "GET"])
-# @limiter.limit("50 per minute")
-# def vc():
-#     if "src_audio" not in request.files:
-#         return "No src_audio file uploaded."
-#
-#     if "tgt_audio" not in request.files:
-#         return "No tgt_audio file uploaded."
-#
-#     src_audio = request.files["src_audio"]
-#     src_audio_path = os.path.join(CACHE_DIR, src_audio.filename)
-#     src_audio.save(src_audio_path)
-#
-#     tgt_audio = request.files["tgt_audio"]
-#     tgt_audio_path = os.path.join(CACHE_DIR, tgt_audio.filename)
-#     tgt_audio.save(tgt_audio_path)
-#
-#     out_audio = convert_voice(src_audio_path, tgt_audio_path)
-#     out_filename = "{}-to-{}.wav".format(src_audio.filename.split('.')[0], tgt_audio.filename.split('.')[0])
-#     out_path = os.path.join(CACHE_DIR, out_filename)
-#     write(out_path, 16000, out_audio)
-#
-#     try:
-#         return send_file(out_path, mimetype="audio/wav", as_attachment=True)
-#     finally:
-#         os.remove(out_path)
+@app.route("/api/vc", methods=["POST", "GET"])
+def vc():
+    if 'file' not in request.files:
+        return 'No file part', 400
+    file = request.files['file']
+    # save file
+    filename = f"{uuid.uuid4()}.wav"
+    cache_dir = 'recordings'
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
+
+    file_path = os.path.join(cache_dir, filename)
+    file.save(file_path)
+
+    cache_dir = 'cache'
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
+    client = Client("zomehwh/sovits-teio", output_dir=cache_dir)
+    result = client.predict(
+        file_path,  # str (filepath or URL to file) in 'inputs' Audio component
+        0,  # str in 'Task' Radio component
+        True,
+        '',  # str in 'Model' Radio component
+        '',  # str in 'Model' Radio component
+        False,
+        fn_index=0,
+    )
+    print(result)
+    dirname, filename = result[1].split(path_delimiter)[-2], result[1].split(path_delimiter)[-1]
+    newfilename = dirname + '.wav'
+    # move file one level up
+    os.rename(os.path.join('cache', dirname, filename), os.path.join('cache', newfilename))
+    # remove folder
+    os.rmdir(os.path.join('cache', dirname))
+    socketio.emit('notification', {'message': f'语音转换完成',
+                                   'time': str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
+    return jsonify({'filename': newfilename})
 
 @app.route("/api/chat", methods=["POST"])
 @cross_origin()
@@ -315,6 +322,7 @@ class Voice(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     avatar = db.Column(db.String(200), nullable=False)
     audio = db.Column(db.String(200), nullable=False)
+    page = db.Column(db.String(200), nullable=False)
 
     # Relationship with attributes
     attributes = db.relationship('Attribute', backref='voice', lazy=True)
@@ -335,13 +343,17 @@ def get_filtered_voices():
     name_query = request.args.get('name')
     element_query = request.args.get('element')
     style_query = request.args.get('style')
-
+    page_query = request.args.get('page')
     # Base query
     query = Voice.query
 
     # Apply filters based on query parameters
     if name_query:
         query = query.filter(Voice.name.contains(name_query))
+
+    if page_query:
+        # find exact match
+        query = query.filter(Voice.page == page_query)
 
     if any([element_query, style_query]):
         query = query.join(Attribute).filter(
@@ -402,10 +414,13 @@ def login():
 @app.route('/api/signout', methods=['POST'])
 def logout():
     # clear cache
-    os.remove('cache')
-    os.remove('recordings')
-    # clear chat history
-    chat_history.clear()
+    try:
+        os.remove('cache')
+        os.remove('recordings')
+        # clear chat history
+        chat_history.clear()
+    except:
+        print('cache not exist')
     return jsonify({'message': 'User logout successfully'}), 200
 
 # Database model for Notification

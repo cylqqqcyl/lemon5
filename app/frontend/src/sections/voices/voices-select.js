@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { MenuItemCard } from './menuitem-card';
 
-export const VoicesSelect = ({setVoiceCardSelected, searchText}) => {
+export const VoicesSelect = ({setVoiceCardSelected, searchText, pageQuery}) => {
   const [expanded, setExpanded] = useState(true);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null); // New state variable
   const currentlyPlayingAudioRef = useRef(null);
@@ -37,6 +37,9 @@ export const VoicesSelect = ({setVoiceCardSelected, searchText}) => {
     if (selectedStyle&&selectedStyle!=='全部') {
       url.searchParams.append('style', selectedStyle);
     } 
+    if (pageQuery) {
+      url.searchParams.append('page', pageQuery);
+    }
     fetch(url)
       .then(response => response.json())
       .then(data => {

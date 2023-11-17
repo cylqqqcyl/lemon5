@@ -14,10 +14,11 @@ def populate_database():
             # Optional: Update existing record with new data
             existing_voice.avatar = voice_data['avatar']
             existing_voice.audio = voice_data['audio']
+
             voice = existing_voice
         else:
             # Create a new Voice instance if it doesn't exist
-            voice = Voice(name=voice_data['name'], avatar=voice_data['avatar'], audio=voice_data['audio'])
+            voice = Voice(name=voice_data['name'], avatar=voice_data['avatar'], audio=voice_data['audio'], page=voice_data['page'])
             db.session.add(voice)
 
             db.session.flush()  # This will assign an ID to voice without committing the transaction
@@ -46,7 +47,14 @@ def remove_duplicate_attributes():
 
     db.session.commit()
 
+def show_all():
+    voices = Voice.query.all()
+    for voice in voices:
+        print(voice.name)
+        for attribute in voice.attributes:
+            print(attribute.element, attribute.style)
+
 
 if __name__ == '__main__':
     with app.app_context():
-        remove_duplicate_attributes()
+        populate_database()
