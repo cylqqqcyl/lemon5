@@ -35,13 +35,13 @@ const Page = () => {
     validationSchema: Yup.object({
       email: Yup
         .string()
-        .email('Must be a valid email')
+        .email('必须是合法的邮箱地址')
         .max(255)
-        .required('Email is required'),
+        .required('需要输入邮箱'),
       password: Yup
         .string()
         .max(255)
-        .required('Password is required')
+        .required('需要输入密码')
     }),
     onSubmit: async (values, helpers) => {
       setSnackbarConfig({ message: '', type: '' });
@@ -112,7 +112,7 @@ const Page = () => {
                     error={!!(formik.touched.email && formik.errors.email)}
                     fullWidth
                     helperText={formik.touched.email && formik.errors.email}
-                    label="账户"
+                    label="邮箱"
                     name="email"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
